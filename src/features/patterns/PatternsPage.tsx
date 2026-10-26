@@ -162,11 +162,7 @@ export default function PatternsPage() {
                       <strong>Spot it</strong> {pattern.spot}
                     </p>
                     <div className="row pattern-card__actions">
-                      <Button
-                        size="sm"
-                        variant={solved ? 'secondary' : 'primary'}
-                        onClick={() => startDrill([pattern], false)}
-                      >
+                      <Button size="sm" onClick={() => startDrill([pattern], false)}>
                         {solved ? 'Solve it again' : 'Solve it'}
                       </Button>
                       <LinkButton size="sm" to={`/puzzles/themes?theme=${pattern.id}`}>

@@ -637,7 +637,8 @@ link to a card (`/settings#profiles` from the profile badge, `#lichess` after th
 join link's `#sync=…`) opens the card's tab and scrolls to it. The tabs are one tab stop: the arrow
 keys, Home and End move between them, and on phones they wrap onto two rows.
 
-**Appearance.** _Display_: the colour scheme (system, light, dark, or black for OLED screens) and
+**Appearance.** _Display_: the colour scheme (_System_, the default, which is _Nightshift_ unless the device asks for
+light; _Nightshift_, dark; or _Dayshift_, light) and
 **move notation** — figurines drawn from the piece set (♘f3) or letters (Nf3), everywhere a move is
 written. _Sound & vibration_: the sounds, their theme (which also picks the vibration patterns) and
 volume, and vibration. _Board_: every Lichess board — the flat Brown, Blue, Green, IC and Purple,
@@ -866,7 +867,7 @@ working), focus management, a
 colour-blind-safe high-contrast board theme, high-contrast piece sets (**MPChess** and **California**), a soft sound
 theme, reduced-motion support, a visible focus ring on every surface for keyboard use (none after a
 click or a tap moved the focus; Windows High Contrast styles too) and WCAG-AA text contrast — checked by an automated axe-core sweep of every page, one of each
-parameterised route included, in all three colour schemes. Quick search is a combobox over a list
+parameterised route included, in both colour schemes. Quick search is a combobox over a list
 of grouped options with a live count of the results, and a premove made from the keyboard is
 announced when it is set and when it is cancelled.
 

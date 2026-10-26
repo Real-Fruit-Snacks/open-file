@@ -31,7 +31,7 @@
 </p>
 
 <p align="center">
-  <img src="docs/screenshots/hero.webp" width="880" alt="Open File: a rated puzzle on a laptop, and a game against the engine on a phone in the dark theme">
+  <img src="docs/screenshots/hero.webp" width="880" alt="Open File: a rated puzzle on a laptop, and a game against the engine on a phone in Nightshift, the dark theme">
 </p>
 
 A complete chess trainer in a single web app: lessons, 48,000 puzzles, drills, opening repertoires,
@@ -51,7 +51,7 @@ game. This one is open too: free, open source, and yours to run anywhere.
   between devices is end-to-end encrypted with a recovery phrase only you hold, so the sync service
   never sees your data; a backup is a file you keep; and you can connect your Lichess account.
   Optional network features are off by default.
-- **Works everywhere.** Phones, tablets and desktops, light, dark or black, online and offline, with
+- **Works everywhere.** Phones, tablets and desktops, dark or light, online and offline, with
   screen readers and the keyboard.
 - **Honest chess.** Every lesson task, endgame drill position, study move and repertoire move is
   checked with Stockfish in CI, the puzzle rating is Glicko-2, and the coach explains mistakes with
@@ -219,7 +219,8 @@ opponent's model, Maia-3, and Lichess's board pictures are under the GNU Affero 
 License v3, which the GPL v3 allows the app to be combined with
 ([LICENSES/AGPL-3.0.txt](LICENSES/AGPL-3.0.txt)). Third-party components
 and their licences are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The built site
-ships the texts (`licence.txt`, `licence-agpl.txt`, `licence-apache.txt` and `notices.txt`) and links
+ships the texts (`licence.txt`, `licence-agpl.txt`, `licence-apache.txt`, `licence-ofl.txt` for the IBM
+Plex fonts, and `notices.txt`) and links
 them from the footer of every page, next to the credits the components ask for — among them the
 chosen piece set's. The piece sets come from the Lichess collection under their own licences; four of
 them (California, Maestro, Staunty and Cardinal) are CC BY-NC-SA 4.0 and may not be used commercially,

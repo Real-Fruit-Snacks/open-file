@@ -1,9 +1,11 @@
 import { expect, type Page, test } from '@playwright/test';
+import { siteConfig } from '../src/site.config';
 import { clickSquare, expectBoard, playMove, revealBoard } from './helpers';
 
 /**
- * 0.10: board and display preferences — figurine notation, the black colour
- * scheme, board highlights, the drag feel, piece sets, captured material and
+ * 0.10: board and display preferences — figurine notation, the colour scheme
+ * (0.10's black one went in 0.32; Nightshift, the dark one, is checked in its
+ * place), board highlights, the drag feel, piece sets, captured material and
  * focus mode.
  */
 async function seed(page: Page, settings: Record<string, unknown> = {}) {
@@ -63,17 +65,25 @@ test.describe('notation', () => {
 });
 
 test.describe('colour scheme and board', () => {
-  test('the black scheme, the piece sets and the palettes apply and persist', async ({ page }) => {
+  test('Nightshift, the piece sets and the palettes apply and persist', async ({ page }) => {
     await seed(page);
     await page.goto('/settings');
     await page
       .getByRole('radiogroup', { name: 'Colour scheme' })
-      .getByRole('radio', { name: 'Black' })
+      .getByRole('radio', { name: 'Nightshift' })
       .click();
-    await expect(page.locator('html')).toHaveAttribute('data-theme', 'black');
-    await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute('content', '#000000');
-    const background = await page.evaluate(() => getComputedStyle(document.body).backgroundColor);
-    expect(background).toBe('rgb(0, 0, 0)');
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+    await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute(
+      'content',
+      siteConfig.backgroundColor,
+    );
+    // The page is the browser chrome's colour (the colours settle: their transitions are short).
+    const [r, g, b] = [1, 3, 5].map((i) =>
+      parseInt(siteConfig.backgroundColor.slice(i, i + 2), 16),
+    );
+    await expect
+      .poll(() => page.evaluate(() => getComputedStyle(document.body).backgroundColor))
+      .toBe(`rgb(${r}, ${g}, ${b})`);
 
     // The picker shows every set at once, each drawn in its own style (the sets' stylesheets
     // load with the picker, so the strips are awaited).
@@ -106,7 +116,7 @@ test.describe('colour scheme and board', () => {
       .getByRole('button', { name: 'Ice' })
       .click();
     await page.reload();
-    await expect(page.locator('html')).toHaveAttribute('data-theme', 'black');
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
     await expect(page.locator('html')).toHaveAttribute('data-pieces', 'merida');
     await expect(page.getByTestId('pieces-merida')).toHaveAttribute('aria-pressed', 'true');
 

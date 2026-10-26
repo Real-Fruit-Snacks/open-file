@@ -6,10 +6,16 @@ describe('colour scheme', () => {
   const meta = document.createElement('meta');
   meta.name = 'theme-color';
   document.head.append(meta);
-  vi.stubGlobal('matchMedia', (query: string) => ({ matches: false, media: query }));
+  /** The scheme the device asks for, as the stubbed media queries answer; null states none. */
+  let prefers: 'light' | 'dark' | null = null;
+  vi.stubGlobal('matchMedia', (query: string) => ({
+    matches: prefers !== null && query === `(prefers-color-scheme: ${prefers})`,
+    media: query,
+  }));
 
   afterEach(() => {
     document.documentElement.removeAttribute('data-theme');
+    prefers = null;
   });
 
   it('puts the scheme on <html> and tints the browser chrome to match', () => {
@@ -20,19 +26,33 @@ describe('colour scheme', () => {
     applyColorScheme('dark');
     expect(document.documentElement.dataset.theme).toBe('dark');
     expect(meta.content).toBe(siteConfig.backgroundColor);
-    applyColorScheme('black');
-    expect(document.documentElement.dataset.theme).toBe('black');
-    expect(meta.content).toBe('#000000');
     applyColorScheme('system');
     expect(document.documentElement.dataset.theme).toBeUndefined();
+    // A device that states no preference gets Nightshift, the default.
+    expect(meta.content).toBe(siteConfig.backgroundColor);
+  });
+
+  it('shows the system scheme light only where the device asks for light', () => {
+    prefers = 'light';
+    applyColorScheme('system');
+    expect(meta.content).toBe(siteConfig.lightBackgroundColor);
+    prefers = 'dark';
+    applyColorScheme('system');
+    expect(meta.content).toBe(siteConfig.backgroundColor);
+    // A scheme the learner picked holds whatever the device asks for.
+    prefers = 'light';
+    applyColorScheme('dark');
+    expect(meta.content).toBe(siteConfig.backgroundColor);
+    prefers = 'dark';
+    applyColorScheme('light');
     expect(meta.content).toBe(siteConfig.lightBackgroundColor);
   });
 
   it('collapses the media-keyed tags from index.html into one resolved colour', () => {
-    const dark = document.createElement('meta');
-    dark.name = 'theme-color';
-    dark.media = '(prefers-color-scheme: dark)';
-    document.head.append(dark);
+    const light = document.createElement('meta');
+    light.name = 'theme-color';
+    light.media = '(prefers-color-scheme: light)';
+    document.head.append(light);
     applyColorScheme('dark');
     const tags = document.querySelectorAll('meta[name="theme-color"]');
     expect(tags).toHaveLength(1);

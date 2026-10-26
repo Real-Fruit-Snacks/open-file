@@ -56,11 +56,13 @@
   gap: var(--space-2);
   /* On a narrow phone the name gives way before the buttons do (see below). */
   min-width: 0;
-  font-weight: 800;
+  /* The brand's wordmark: Plex Mono SemiBold, set tight. */
+  font-family: var(--font-mono);
+  font-weight: 600;
   font-size: 1.05rem;
   color: var(--text);
   text-decoration: none;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.05em;
 }
 
 .shell__brand:hover {
@@ -373,7 +375,7 @@
   position: fixed;
   inset: 0 0 var(--bottom-nav-height);
   z-index: 55;
-  background: rgba(10, 14, 12, 0.45);
+  background: rgba(12, 13, 16, 0.5);
 }
 
 .more__group {
@@ -392,11 +394,12 @@
 
 .more__heading {
   padding: var(--space-1) var(--space-3) 2px;
-  font-size: 0.75rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-faint);
+  font-family: var(--font-mono);
 }
 
 .more__item {

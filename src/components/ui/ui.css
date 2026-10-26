@@ -19,6 +19,7 @@
     background var(--transition),
     border-color var(--transition),
     color var(--transition),
+    box-shadow var(--transition),
     transform var(--transition);
   user-select: none;
 }
@@ -47,6 +48,8 @@ a.btn:focus {
 .btn--primary:hover:not(:disabled) {
   background: var(--accent-strong);
   color: var(--accent-contrast);
+  /* Nightshift's Ember glows under the pointer; Dayshift's does not (--accent-glow: none). */
+  box-shadow: var(--accent-glow);
 }
 
 .btn--secondary {
@@ -211,12 +214,13 @@ a.btn:focus {
 }
 
 .card__eyebrow {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   text-transform: uppercase;
   letter-spacing: 0.08em;
   color: var(--text-muted);
-  font-weight: 600;
+  font-weight: 500;
   margin-bottom: var(--space-2);
+  font-family: var(--font-mono);
 }
 
 /* ---------- Badge ---------- */
@@ -361,7 +365,7 @@ a.btn:focus {
 }
 
 .dialog::backdrop {
-  background: rgba(10, 14, 12, 0.55);
+  background: rgba(12, 13, 16, 0.6);
   backdrop-filter: blur(2px);
 }
 
@@ -944,7 +948,8 @@ a.btn:focus {
   padding: 0 5px;
   border-radius: var(--radius-pill);
   background: var(--warning);
-  color: #fff;
+  /* The page colour reads on Amber in both themes (white does not in Nightshift). */
+  color: var(--bg);
   font-size: 0.75rem;
   line-height: 1.5;
   text-align: center;
@@ -968,10 +973,11 @@ a.btn:focus {
 
 .history th {
   color: var(--text-muted);
-  font-weight: 600;
-  font-size: 0.75rem;
+  font-weight: 500;
+  font-size: 0.6875rem;
   text-transform: uppercase;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.08em;
+  font-family: var(--font-mono);
 }
 
 .history td.num {

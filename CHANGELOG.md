@@ -6,6 +6,54 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.32.0] - 2026-10-26
+
+Open File takes on the RFS brand ([Real-Fruit-Snacks/.github](https://github.com/Real-Fruit-Snacks/.github)):
+its two themes, its one accent, its type and its mark.
+
+### Changed
+
+- **Nightshift and Dayshift.** The colour schemes are Nightshift, dark, and Dayshift, light: a
+  near-black or a warm off-white page rather than pure black or white, borders in place of
+  shadows, and no gradients. _System_, the default, follows the device, and is Nightshift unless
+  the device asks for light. The header's theme button goes System, Nightshift, Dayshift, the
+  order Settings lists them in, and search finds them under "night", "day", "dark" or "light".
+- **Ember, once a screen.** The accent is Ember, `#FF6A3D` in Nightshift and a darker `#B83A0F` in
+  Dayshift so that it passes WCAG AA on every surface the app puts it on. It marks a screen's main
+  action: on a list of cards, the buttons are secondary now (the arcade's Play, except for the game
+  of the day; the repertoires' Learn, Review and Practise; the games for two; the open games to
+  join; a correspondence game's Play; each mating pattern's _Solve it_). A primary button glows on
+  hover in Nightshift. Icon tiles on Home, What's new, the arcade and Play are neutral.
+- **Links** are text with a thin Ember underline, Ember under the pointer; so are the cards'
+  "Start: …" lines and the buttons that sit in running text, such as the footer's _Keyboard
+  shortcuts_. A link styled as something else (a button, a tab, the skip link) keeps its own
+  colours under the pointer.
+- **IBM Plex.** Plex Sans for the interface and prose, and Plex Mono for the wordmark and the small
+  capitals over cards, lists and tables. Both are part of the app (about 170 KB, under the SIL Open
+  Font License, published with it as `licence-ofl.txt` and credited in the footer), so they work
+  offline too. Body text is 15 px on a line height of 1.6, the way the brand sets it.
+- **The rook tile.** The icon is the white rook on a dark rounded tile with an Ember rule under
+  it: the app icons, the favicon, the shortcuts' icons and the header's mark.
+- **Information is plain.** Inaccuracies and notes take the text colour, and the cursors of the
+  evaluation graph and the time chart are grey, which shows on either half of the graph. Amber
+  warns and prompts (a mistake, a hint, your move in a correspondence game, what is due), and
+  Mint only ever means good.
+- **The board** marks the selected square, its moves and the drag target in Ember, a hint in
+  Amber, and right and wrong in Mint and red.
+- **The README's pictures** are the new look, on the brand's flat colours.
+
+### Fixed
+
+- **The High contrast board** draws a lesson's hint, right and wrong squares in its own
+  colour-blind-safe colours again; the ordinary board's were drawn over them.
+- **The skip link** no longer turns its text the colour of its background under the pointer.
+
+### Removed
+
+- **The Black scheme.** Nightshift is near-black already; a learner who had chosen Black gets
+  Nightshift, as does a backup or a synced copy that says Black, and the page paints it so from
+  the first frame.
+
 ## [0.31.3] - 2026-10-13
 
 ### Fixed

@@ -1,4 +1,5 @@
 import { expect, type Page, test } from '@playwright/test';
+import { siteConfig } from '../src/site.config';
 import { completeOnboarding, expectBoard } from './helpers';
 
 /**
@@ -128,19 +129,25 @@ test.describe('shell', () => {
     await expect(page.getByRole('link', { name: /home/i }).first()).toBeVisible();
   });
 
-  test('a saved dark scheme applies before the app chunk runs', async ({ page }) => {
-    await seed(page, { colorScheme: 'dark' });
-    // Block the app's own script: whatever is on <html> now came from the inline script.
-    await page.route(/\/assets\/.*\.js$/, (route) => route.abort());
-    await page.goto('/', { waitUntil: 'domcontentloaded' });
-    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
-    const themeColor = await page
-      .locator('meta[name="theme-color"]')
-      .first()
-      .getAttribute('content');
-    expect(themeColor).toBe('#0f1512');
-    await page.unroute(/\/assets\/.*\.js$/);
-  });
+  // The black scheme went in 0.32: a save that still names it shows the dark one from the start.
+  for (const saved of ['dark', 'black'] as const) {
+    test(`a saved ${saved} scheme applies as Nightshift before the app chunk runs`, async ({
+      page,
+    }) => {
+      await seed(page, { colorScheme: saved });
+      // Block the app's own script: whatever is on <html> now came from the inline script.
+      await page.route(/\/assets\/.*\.js$/, (route) => route.abort());
+      await page.goto('/', { waitUntil: 'domcontentloaded' });
+      await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+      const themeColor = await page
+        .locator('meta[name="theme-color"]')
+        .first()
+        .getAttribute('content');
+      expect(themeColor).toBe(siteConfig.backgroundColor);
+      await expect(page.locator('meta[name="theme-color"]')).toHaveCount(1);
+      await page.unroute(/\/assets\/.*\.js$/);
+    });
+  }
 
   test('the title and social tags come from one site config', async ({ page }) => {
     await seed(page);

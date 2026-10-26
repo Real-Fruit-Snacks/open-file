@@ -25,11 +25,12 @@
 .humanmoves__table th {
   padding: 4px 6px;
   color: var(--text-muted);
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.04em;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.08em;
   text-align: left;
   text-transform: uppercase;
+  font-family: var(--font-mono);
 }
 
 .humanmoves__table td {

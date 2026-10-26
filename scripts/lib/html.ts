@@ -44,7 +44,6 @@ interface SiteMetadata {
   siteUrl: string;
   lightBackgroundColor: string;
   backgroundColor: string;
-  blackBackgroundColor: string;
 }
 
 /** The value of every `%SITE_…%` placeholder in index.html. */
@@ -57,7 +56,6 @@ export function sitePlaceholders(site: SiteMetadata): Record<string, string> {
     SITE_URL: site.siteUrl,
     SITE_LIGHT_BACKGROUND: site.lightBackgroundColor,
     SITE_BACKGROUND: site.backgroundColor,
-    SITE_BLACK_BACKGROUND: site.blackBackgroundColor,
   };
 }
 

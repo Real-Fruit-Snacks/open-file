@@ -195,8 +195,8 @@ export default defineConfig(({ mode }) => {
           launch_handler: { client_mode: 'navigate-existing' },
           // The splash screen and the title bar take the page background, so the
           // app's own header carries on from them without a colour change.
-          background_color: siteConfig.lightBackgroundColor,
-          theme_color: siteConfig.lightBackgroundColor,
+          background_color: siteConfig.backgroundColor,
+          theme_color: siteConfig.backgroundColor,
           lang: 'en-GB',
           dir: 'ltr',
           categories: ['education', 'games'],

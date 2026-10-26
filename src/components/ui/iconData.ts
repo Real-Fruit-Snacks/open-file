@@ -31,7 +31,6 @@ export type IconName =
   | 'search'
   | 'sun'
   | 'moon'
-  | 'moon-filled'
   | 'auto'
   | 'more'
   | 'chevron-down'
@@ -123,8 +122,6 @@ export const ICONS: Record<IconName, IconShape> = {
     d: 'M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8zM12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4',
   },
   moon: { d: 'M20 14.5A8.5 8.5 0 0 1 9.5 4a7 7 0 1 0 10.5 10.5z' },
-  /* The black scheme: the same moon, filled in. */
-  'moon-filled': { d: 'M20 14.5A8.5 8.5 0 0 1 9.5 4a7 7 0 1 0 10.5 10.5z', fill: true },
   auto: { d: 'M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18zm0 3v12a6 6 0 0 0 0-12z' },
   more: {
     d: 'M5 10.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm7 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm7 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z',

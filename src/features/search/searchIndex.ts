@@ -432,7 +432,8 @@ const SETTINGS = rows('setting', [
     id: 'display',
     title: 'Display',
     detail: 'Colour scheme and move notation',
-    keywords: 'dark mode light black theme colour color scheme notation figurines material',
+    keywords:
+      'dark mode light nightshift dayshift night day theme colour color scheme notation figurines material',
     icon: 'palette',
     to: '/settings#display',
   },

@@ -37,6 +37,24 @@ export interface Release {
 /** Newest first. */
 export const RELEASES: readonly Release[] = [
   {
+    version: '0.32.0',
+    date: '2026-10-26',
+    highlights: [
+      {
+        icon: 'palette',
+        title: 'A new look',
+        text: 'IBM Plex type, warmer colours, and one Ember button on each screen for what to do next.',
+        to: '/settings',
+      },
+      {
+        icon: 'moon',
+        title: 'Nightshift and Dayshift',
+        text: 'The two colour schemes: Nightshift, dark, unless your device asks for light; Dayshift, light.',
+        to: '/settings',
+      },
+    ],
+  },
+  {
     version: '0.31.0',
     date: '2026-10-12',
     highlights: [

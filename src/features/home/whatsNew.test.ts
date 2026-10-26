@@ -93,10 +93,16 @@ describe('the highlights', () => {
     }
   });
 
-  it('give 0.31 the new name', () => {
+  it('give 0.32 the new look, and keep 0.31 its new name', () => {
     const release = RELEASES[0];
-    expect(release?.version).toBe('0.31.0');
-    expect(release?.highlights.map((h) => h.title)).toEqual(['A new name: Open File']);
+    expect(release?.version).toBe('0.32.0');
+    expect(release?.highlights.map((h) => h.title)).toEqual([
+      'A new look',
+      'Nightshift and Dayshift',
+    ]);
+    expect(RELEASES.find((r) => r.version === '0.31.0')?.highlights.map((h) => h.title)).toEqual([
+      'A new name: Open File',
+    ]);
   });
 
   it('give 0.30 the polish pass: the setup screens, the searchable lists and the hidden themes', () => {

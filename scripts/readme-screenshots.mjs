@@ -390,18 +390,28 @@ async function write(page, name, png, quality = 0.86) {
 const dataUrl = (png) => `data:image/png;base64,${png.toString('base64')}`;
 
 /** Lays out `body` (HTML around data-URL images) at the device's size and writes it. */
+/** The app's own type, IBM Plex Sans, for the captions of a composed image. */
+const PLEX_SANS = join(ROOT, 'src', 'styles', 'fonts', 'ibm-plex-sans-latin-wght-normal.woff2');
+
 async function compose(browser, device, name, style, body, quality) {
+  const plex = (await readFile(PLEX_SANS)).toString('base64');
   const context = await browser.newContext(device);
   const page = await context.newPage();
   await page.setContent(`<!doctype html><style>
+  @font-face {
+    font-family: 'IBM Plex Sans';
+    font-weight: 100 700;
+    src: url(data:font/woff2;base64,${plex}) format('woff2');
+  }
   html, body { margin: 0; height: 100%; }
   body {
-    font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-      sans-serif;
+    font-family: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
   }
   ${style}
 </style>${body}`);
-  await page.evaluate(() => Promise.all([...document.images].map((img) => img.decode())));
+  await page.evaluate(() =>
+    Promise.all([document.fonts.ready, ...[...document.images].map((img) => img.decode())]),
+  );
   await write(page, name, await page.screenshot({ type: 'png' }), quality);
   await context.close();
 }
@@ -434,7 +444,8 @@ async function hero(browser) {
     `body {
     position: relative;
     overflow: hidden;
-    background: linear-gradient(160deg, #e7eee8 0%, #f3f0e8 55%, #ece6da 100%);
+    /* The brand's Dayshift, flat: no gradients, and borders rather than shadows. */
+    background: #eceae4;
   }
   .laptop, .phone { position: absolute; }
   .laptop {
@@ -443,8 +454,8 @@ async function hero(browser) {
     width: 880px;
     border-radius: 14px;
     overflow: hidden;
-    border: 1px solid rgb(0 0 0 / 7%);
-    box-shadow: 0 2px 6px rgb(0 0 0 / 8%), 0 24px 60px rgb(31 50 40 / 22%);
+    border: 1px solid #d6d3cb;
+    box-shadow: 0 1px 2px rgb(26 27 30 / 8%);
   }
   .phone {
     left: 888px;
@@ -452,8 +463,8 @@ async function hero(browser) {
     width: 248px;
     padding: 9px;
     border-radius: 44px;
-    background: #121614;
-    box-shadow: 0 2px 6px rgb(0 0 0 / 20%), 0 28px 60px rgb(20 30 25 / 35%);
+    background: #1a1d24;
+    border: 1px solid #262a33;
   }
   img { display: block; width: 100%; }
   .phone img { border-radius: 35px; }`,
@@ -485,8 +496,8 @@ async function boards(browser) {
     TILE,
     'boards.webp',
     `body {
-    background: #f6f4ef;
-    color: #1b1f1d;
+    background: #f6f5f2;
+    color: #1a1b1e;
     display: grid;
     align-content: center;
     justify-items: center;
@@ -498,11 +509,11 @@ async function boards(browser) {
     display: block;
     width: 268px;
     border-radius: 5px;
-    box-shadow: 0 1px 3px rgb(0 0 0 / 12%), 0 10px 24px rgb(31 50 40 / 15%);
+    border: 1px solid #d6d3cb;
   }
   figcaption { margin-top: 10px; font-size: 15px; font-weight: 600; }
-  figcaption span { color: #5c655f; font-weight: 500; }
-  p { margin: 0; font-size: 16px; color: #5c655f; }`,
+  figcaption span { color: #6b6f78; font-weight: 500; }
+  p { margin: 0; font-size: 16px; color: #6b6f78; }`,
     `<div class="boards">${SHOWCASE.map(
       (s, i) =>
         `<figure><img src="${dataUrl(shots[i])}" alt=""><figcaption>${s.boardLabel} <span>· ${s.piecesLabel}</span></figcaption></figure>`,

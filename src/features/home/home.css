@@ -98,20 +98,25 @@
   gap: var(--space-2);
 }
 
+/* Icon tiles are raised and neutral: Ember is kept for the one main action on a screen. */
 .feature__icon {
   width: 44px;
   height: 44px;
   border-radius: var(--radius-md);
   display: grid;
   place-items: center;
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
 }
 
 .feature__cta {
   margin-top: auto;
   font-weight: 600;
-  color: var(--accent);
+  /* Read as a link, as links do now: text with a thin Ember underline. */
+  color: var(--text);
+  text-decoration: underline 1px var(--accent);
+  text-underline-offset: 3px;
   font-size: 0.9rem;
 }
 

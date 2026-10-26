@@ -52,6 +52,8 @@ test.describe('licence and credits', () => {
     await expect(credits).toContainText('Chessground (GPL-3.0)');
     await expect(credits).toContainText('Lichess (CC0)');
     await expect(credits).toContainText('Human-like opponent: Maia-3 (AGPL-3.0)');
+    // 0.32: the brand's type, under its own licence, which ships with the site.
+    await expect(credits).toContainText('Type: IBM Plex (OFL-1.1)');
   });
 
   test('the footer links the licence and the notices, which ship with the site', async ({
@@ -89,6 +91,15 @@ test.describe('licence and credits', () => {
     expect(agpl.status()).toBe(200);
     expect(await agpl.text()).toContain('GNU AFFERO GENERAL PUBLIC LICENSE');
     expect(text).toContain('Maia-3');
+    // 0.32: IBM Plex is OFL-1.1, and its licence ships too.
+    await expect(footer.getByRole('link', { name: 'OFL-1.1' })).toHaveAttribute(
+      'href',
+      `${base}licence-ofl.txt`,
+    );
+    const ofl = await page.request.get(`${base}licence-ofl.txt`);
+    expect(ofl.status()).toBe(200);
+    expect(await ofl.text()).toContain('SIL OPEN FONT LICENSE Version 1.1');
+    expect(text).toContain('IBM Plex');
   });
 });
 

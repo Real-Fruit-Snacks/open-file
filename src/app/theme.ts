@@ -2,11 +2,28 @@ import { useEffect } from 'react';
 import { type ColorScheme, PIECE_SET_IDS, type PieceSet, useSettings } from '@/store/settings';
 import { siteConfig } from '@/site.config';
 
+/**
+ * What the schemes are called: the brand's names for its two themes. Nightshift is the dark one
+ * and Dayshift the light one; the values stored and put on <html> stay 'dark' and 'light'.
+ */
+export const SCHEME_NAMES: Record<ColorScheme, string> = {
+  system: 'System',
+  dark: 'Nightshift',
+  light: 'Dayshift',
+};
+
+/**
+ * The system scheme is Dayshift only on a device that asks for light; on any other, one that
+ * asks for dark or states no preference, it is Nightshift, as the stylesheet has it.
+ */
+const LIGHT_QUERY = '(prefers-color-scheme: light)';
+
 /** The browser-UI colour for a scheme: the page background, so the chrome and the page are one. */
-export function themeColorFor(scheme: ColorScheme, prefersDark: boolean): string {
-  if (scheme === 'black') return siteConfig.blackBackgroundColor;
-  if (scheme === 'dark' || (scheme === 'system' && prefersDark)) return siteConfig.backgroundColor;
-  return siteConfig.lightBackgroundColor;
+export function themeColorFor(scheme: ColorScheme, prefersLight: boolean): string {
+  if (scheme === 'light' || (scheme === 'system' && prefersLight)) {
+    return siteConfig.lightBackgroundColor;
+  }
+  return siteConfig.backgroundColor;
 }
 
 /**
@@ -19,23 +36,24 @@ export function applyColorScheme(scheme: ColorScheme): void {
   if (scheme === 'system') root.removeAttribute('data-theme');
   else root.setAttribute('data-theme', scheme);
 
-  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-  // The inline script leaves two media-keyed tags for the system scheme; once
-  // the app runs, one tag with the resolved colour is what every browser reads.
+  const prefersLight = window.matchMedia(LIGHT_QUERY).matches;
+  // The page leaves two theme-colour tags for the system scheme (light when the device asks for
+  // it, dark otherwise); once the app runs, one tag with the resolved colour is what every
+  // browser reads.
   const metas = document.querySelectorAll<HTMLMetaElement>('meta[name="theme-color"]');
   const [first, ...rest] = Array.from(metas);
   for (const extra of rest) extra.remove();
   const meta = first ?? document.head.appendChild(document.createElement('meta'));
   meta.name = 'theme-color';
   meta.removeAttribute('media');
-  meta.content = themeColorFor(scheme, prefersDark);
+  meta.content = themeColorFor(scheme, prefersLight);
 }
 
 export function useColorScheme(): void {
   const scheme = useSettings((s) => s.colorScheme);
   useEffect(() => {
     applyColorScheme(scheme);
-    const media = window.matchMedia('(prefers-color-scheme: dark)');
+    const media = window.matchMedia(LIGHT_QUERY);
     const onChange = () => applyColorScheme(scheme);
     media.addEventListener('change', onChange);
     return () => media.removeEventListener('change', onChange);

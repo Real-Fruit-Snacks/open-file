@@ -595,7 +595,6 @@ function CorrespondenceCard({ games }: { games: readonly CorrespondenceGame[] })
               </span>
               <LinkButton
                 size="sm"
-                variant={mine ? 'primary' : undefined}
                 className="live__seek-join"
                 to={liveGamePath('relay', game.id)}
                 aria-label={
@@ -692,7 +691,6 @@ function OpenGamesCard({ connection, posted }: { connection: LobbyConnection; po
                   </span>
                   <Button
                     size="sm"
-                    variant="primary"
                     className="live__seek-join"
                     disabled={!open}
                     title={posted ? 'Joining withdraws your own posted game.' : undefined}
@@ -755,7 +753,6 @@ function GamesForTwo({
               </Link>
             ) : null}
             <Button
-              variant="primary"
               size="sm"
               className="hub-game__play"
               disabled={disabled}

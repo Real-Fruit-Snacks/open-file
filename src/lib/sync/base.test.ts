@@ -30,6 +30,22 @@ describe('the copies merges are measured against', () => {
     expect(await other.loadCopy('copy-two-1234')).toBeNull();
   });
 
+  it('read their settings as a load does: a Black scheme kept by 0.31 is Nightshift', async () => {
+    const caches = fakeCaches();
+    vi.stubGlobal('caches', caches.api);
+    const old = copy(1);
+    await saveCopy('copy-old-1234', {
+      ...old,
+      snapshot: { ...old.snapshot, settings: { colorScheme: 'black', notation: 'letters' } },
+    } as never);
+    vi.resetModules();
+    const other = await import('./base');
+    expect((await other.loadCopy('copy-old-1234'))?.snapshot.settings).toEqual({
+      colorScheme: 'dark',
+      notation: 'letters',
+    });
+  });
+
   it('serve from this tab’s memory when the Cache API refuses them', async () => {
     const caches = fakeCaches();
     caches.failPuts = true;

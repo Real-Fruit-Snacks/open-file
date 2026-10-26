@@ -26,6 +26,7 @@ import {
   DEFAULT_SETTINGS,
   DEVICE_SETTINGS_STORAGE_KEY,
   SETTINGS_STORAGE_KEY,
+  SETTINGS_VERSION,
   useSettings,
 } from './settings';
 
@@ -238,6 +239,16 @@ describe('backups from earlier versions', () => {
     useSettings.setState({ ...DEFAULT_SETTINGS });
   });
 
+  it('reads the black scheme of a backup, gone in 0.32, as the dark one', () => {
+    const file = { ...backupV12, settings: { ...backupV12.settings, colorScheme: 'black' } };
+    // A synced copy is read with the same check as an import.
+    const checked = validateBackupFile(file);
+    expect(checked.ok && checked.shape.settings?.colorScheme).toBe('dark');
+    expect(useProgress.getState().importState(file).ok).toBe(true);
+    expect(useSettings.getState().colorScheme).toBe('dark');
+    useSettings.setState({ ...DEFAULT_SETTINGS });
+  });
+
   it('gives an older backup the new records empty', () => {
     expect(useProgress.getState().importState(backupV7).ok).toBe(true);
     const s = useProgress.getState();
@@ -392,7 +403,8 @@ describe('stored state from earlier versions', () => {
       4,
     );
     expect(useSettings.getState()).toMatchObject({
-      colorScheme: 'black',
+      // The black scheme went in 0.32: the dark one, the nearest, takes its place.
+      colorScheme: 'dark',
       soundVolume: 0.4,
       engineThreads: true,
       engineFull: false,
@@ -409,6 +421,17 @@ describe('stored state from earlier versions', () => {
     useSettings.getState().reset();
     await rehydrate(useSettings, SETTINGS_STORAGE_KEY, { engineFull: 'yes' }, 5);
     expect(useSettings.getState().engineFull).toBe(false);
+  });
+
+  it('reads the black scheme, gone in 0.32, as the dark one in a save of this version', async () => {
+    await rehydrate(
+      useSettings,
+      SETTINGS_STORAGE_KEY,
+      { colorScheme: 'black', boardTheme: 'blue' },
+      SETTINGS_VERSION,
+    );
+    expect(useSettings.getState()).toMatchObject({ colorScheme: 'dark', boardTheme: 'blue' });
+    useSettings.getState().reset();
   });
 
   it('remembers the human-like opponent and its rating, and drops what it does not offer', async () => {

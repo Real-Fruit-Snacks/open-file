@@ -8,10 +8,11 @@
  * 2. `.nojekyll` — tells Pages not to run Jekyll, which would otherwise ignore
  *    files and folders that start with an underscore (Vite's asset hashes can
  *    produce those) and slow down deployments.
- * 3. `licence.txt`, `licence-agpl.txt`, `licence-apache.txt` and `notices.txt` — the
- *    project's licence (`LICENSE`), the licence of the human-like opponent's model (Maia-3,
+ * 3. `licence.txt`, `licence-agpl.txt`, `licence-apache.txt`, `licence-ofl.txt` and `notices.txt`
+ *    — the project's licence (`LICENSE`), the licence of the human-like opponent's model (Maia-3,
  *    AGPL-3.0: `LICENSES/AGPL-3.0.txt`), the licence of the Chessnut piece set (Apache-2.0:
- *    `LICENSES/Apache-2.0.txt`) and the third-party notices (`THIRD_PARTY_NOTICES.md`) ship
+ *    `LICENSES/Apache-2.0.txt`), the fonts' (IBM Plex, OFL-1.1: `LICENSES/OFL-1.1.txt`, which
+ *    asks for its licence to travel with the fonts) and the third-party notices (`THIRD_PARTY_NOTICES.md`) ship
  *    with the site, and the footer links to them (the Apache licence while Chessnut is chosen). They are not precached:
  *    they are small and rarely opened, and the service worker leaves them to the
  *    network.
@@ -32,6 +33,7 @@ export const LICENCE_FILES = [
   ['LICENSE', 'licence.txt'],
   ['LICENSES/AGPL-3.0.txt', 'licence-agpl.txt'],
   ['LICENSES/Apache-2.0.txt', 'licence-apache.txt'],
+  ['LICENSES/OFL-1.1.txt', 'licence-ofl.txt'],
   ['THIRD_PARTY_NOTICES.md', 'notices.txt'],
 ];
 

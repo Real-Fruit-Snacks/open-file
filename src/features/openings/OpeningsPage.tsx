@@ -213,7 +213,7 @@ export default function OpeningsPage() {
                         <span style={{ width: `${s.total ? (s.learned / s.total) * 100 : 0}%` }} />
                       </div>
                       <div className="row">
-                        <LinkButton variant="primary" size="sm" to={`/openings/${rep.id}`}>
+                        <LinkButton size="sm" to={`/openings/${rep.id}`}>
                           {s.learned === 0 ? 'Learn' : s.due > 0 ? 'Review' : 'Practise'}
                         </LinkButton>
                         <LinkButton

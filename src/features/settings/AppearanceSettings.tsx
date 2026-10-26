@@ -1,4 +1,5 @@
 import type { CSSProperties } from 'react';
+import { SCHEME_NAMES } from '@/app/theme';
 import { BOARD_PALETTES, boardThumbnail } from '@/components/board/boardThemes';
 import { PIECE_SETS } from '@/components/board/pieceSets';
 import { PieceSetPicker } from '@/components/board/PieceSetPicker';
@@ -45,19 +46,14 @@ function DisplayCard() {
             value={settings.colorScheme}
             onChange={(v) => settings.update({ colorScheme: v })}
             options={[
-              { value: 'system', label: 'System' },
-              { value: 'light', label: 'Light' },
-              { value: 'dark', label: 'Dark' },
-              { value: 'black', label: 'Black' },
+              { value: 'system', label: SCHEME_NAMES.system },
+              { value: 'dark', label: SCHEME_NAMES.dark },
+              { value: 'light', label: SCHEME_NAMES.light },
             ]}
           />
         </div>
         <p className="small muted" style={{ margin: 0 }}>
-          {settings.colorScheme === 'black'
-            ? 'The dark scheme on a pure black background, for OLED screens.'
-            : settings.colorScheme === 'system'
-              ? 'Follows the device setting.'
-              : ' '}
+          Nightshift is dark, Dayshift is light. System follows your device.
         </p>
         <div className="settings__row">
           <span>Move notation</span>

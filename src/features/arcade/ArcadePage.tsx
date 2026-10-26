@@ -61,8 +61,9 @@ export default function ArcadePage() {
                 <span className="small muted" data-testid={`arcade-best-${game.id}`}>
                   {best ?? 'Not played yet'}
                 </span>
+                {/* Ember once on the screen: the game of the day. */}
                 <LinkButton
-                  variant="primary"
+                  variant={featured ? 'primary' : 'secondary'}
                   size="sm"
                   to={`/arcade/${game.id}`}
                   aria-label={`Play ${game.name}`}

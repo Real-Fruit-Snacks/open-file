@@ -5,16 +5,17 @@ import { type LiveRelay, startLiveRelay } from './live';
 
 /**
  * An automated accessibility sweep (axe-core, WCAG 2.1 A/AA) over every page —
- * the top-level ones and one of each parameterised route — in all three colour
+ * the top-level ones and one of each parameterised route — in both colour
  * schemes. It catches the mechanical slips — missing labels, bad contrast,
  * invalid ARIA — that the hand-written accessibility tests do not look for.
  *
- * Each page loads once and is checked in full in the light scheme, then switched to dark and
- * to black with the header's own theme button (which goes light, dark, black) and checked for
- * what a scheme can change: the colours (contrast, and links told apart from the text around
- * them). Labels, roles and structure are the same in every scheme, so one page costs one load
- * and one full check rather than three of each. The pages are independent: they run in
- * parallel, and CI's shards share them out rather than one shard taking the whole sweep.
+ * Each page loads once and is checked in full in Nightshift (the dark scheme), then switched
+ * to Dayshift (the light one) with the header's own theme button (which goes System,
+ * Nightshift, Dayshift) and checked for what a scheme can change: the colours (contrast, and
+ * links told apart from the text around them). Labels, roles and structure are the same in
+ * every scheme, so one page costs one load and one full check rather than two of each. The
+ * pages are independent: they run in parallel, and CI's shards share them out rather than one
+ * shard taking the whole sweep.
  */
 test.describe.configure({ mode: 'parallel' });
 const PAGES = [
@@ -74,7 +75,7 @@ const PAGES = [
   '/arcade/ghost-knight',
 ];
 
-type Scheme = 'light' | 'dark' | 'black';
+type Scheme = 'light' | 'dark';
 
 async function seed(page: Page, scheme: Scheme) {
   await page.addInitScript(
@@ -151,13 +152,15 @@ test.afterAll(async () => {
   relay = null;
 });
 
-const SCHEMES = ['light', 'dark', 'black'] as const satisfies readonly Scheme[];
+/** The schemes in the order the theme button goes through them, each with the name it shows. */
+const SCHEMES = ['dark', 'light'] as const satisfies readonly Scheme[];
+const NAMES: Record<Scheme, string> = { dark: 'Nightshift', light: 'Dayshift' };
 
 test.describe('axe sweep', () => {
   for (const path of PAGES) {
     test(`${path} has no WCAG A/AA violations in any colour scheme`, async ({ page }) => {
       if (relay) await relay.attach(page.context());
-      await seed(page, 'light');
+      await seed(page, SCHEMES[0]);
       await page.goto(path);
       // Code-split pages: wait for the page's own heading, then for the engine or
       // boards to settle so what is audited is what a visitor sees.
@@ -168,8 +171,9 @@ test.describe('axe sweep', () => {
         if (i > 0) {
           // The next scheme, as a visitor would switch to it; the colours settle (their
           // transitions are short) before the check.
+          const before = SCHEMES[i - 1];
           await page
-            .getByRole('button', { name: `Theme: ${SCHEMES[i - 1]}. Switch theme` })
+            .getByRole('button', { name: `Theme: ${NAMES[before]} (${before}). Switch theme` })
             .click();
           await expect(page.locator('html')).toHaveAttribute('data-theme', scheme);
           await page.waitForTimeout(300);

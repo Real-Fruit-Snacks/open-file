@@ -12,7 +12,7 @@ import { DEFAULT_HUMAN_RATING, isHumanRating } from '@/engine/maia/ratings';
 import { BLIND_DEPTHS, type BlindDepth } from '@/features/puzzles/blind';
 import { resetIsolationFlag } from '@/sw/isolation';
 
-export const COLOR_SCHEMES = ['system', 'light', 'dark', 'black'] as const;
+export const COLOR_SCHEMES = ['system', 'light', 'dark'] as const;
 export type ColorScheme = (typeof COLOR_SCHEMES)[number];
 export const BOARD_THEMES = [
   'brown',
@@ -415,7 +415,10 @@ const nullableNumber = (min: number): Check<number | null> => {
  * piece set (from a hand-edited file or a future version) would otherwise
  * crash every board. Nested defaults are merged field by field, so a save
  * with half a `simul` block keeps the other half's defaults. Unknown keys are
- * passed through so a save from a newer version loses nothing.
+ * passed through so a save from a newer version loses nothing. A value the app
+ * no longer offers, but has a near match for, is read as that match: the black
+ * scheme, gone in 0.32, is the dark one. Every save comes through here (a load,
+ * a backup, a synced copy), so each reads it the same way.
  */
 export function sanitizeSettings(
   stored: unknown,
@@ -423,8 +426,9 @@ export function sanitizeSettings(
   if (typeof stored !== 'object' || stored === null || Array.isArray(stored)) return {};
   const input = stored as Record<string, unknown>;
   const out: Record<string, unknown> = {};
-  for (const [key, value] of Object.entries(input)) {
-    if (value === undefined) continue;
+  for (const [key, saved] of Object.entries(input)) {
+    if (saved === undefined) continue;
+    const value = key === 'colorScheme' && saved === 'black' ? 'dark' : saved;
     if (key in CHECKS) {
       const check = CHECKS[key as keyof typeof CHECKS] as Check<unknown>;
       if (check(value)) out[key] = value;

@@ -622,6 +622,8 @@ profile list:
   settings of its own yet reads the main profile's, a new profile is given a copy of the current
   one's, and a save from before the split gives the device's from the profile's. Backups (format 12) and sync carry the learner's (`learnerSettingsOf`, checked on the way in by
   `learnerSettingsFrom`). The page's inline script reads the active profile's colour scheme.
+  `sanitizeSettings` reads a scheme the app no longer offers as its nearest one (0.31's `black`
+  as `dark`), so a load, a backup, a synced copy and the sync's base copy all agree.
 - `progress` (version 8) — onboarding flag, puzzle rating and history, attempts (capped) plus
   `lifetime` counters that never forget (attempts, solved, failed, solves per theme, solve time), seen
   puzzle IDs (capped at 20,000), streaks (`puzzleStreak()` gives the live value, `bestStreak` the
@@ -775,7 +777,8 @@ now" on the install banner is remembered in `localStorage['open-file:install-dis
 days; `detectStandalone` recognises every `display_override` mode, and `installUnavailableReason` tells
 Settings why there is nothing to offer. `index.html` runs a small inline script that applies the saved
 colour scheme and piece set before the first paint (the page's Content-Security-Policy allows it by
-hash), and its title, description and social-card tags are filled from `site.config.ts` by a Vite
+hash; _System_ is Dayshift only when the device asks for light, and a saved `black` is Nightshift),
+and its title, description and social-card tags are filled from `site.config.ts` by a Vite
 html transform.
 
 The worker also shows the notices the relay pushes (`push`: a correspondence game's news, the daily
@@ -1415,9 +1418,9 @@ warning gives way to a confirmation.
   engine and in Analyze and My games, and between browser contexts premoves, watching, a
   correspondence game, the notifications card, Chess960 online and race rooms.
 - **Accessibility sweep (axe-core):** `e2e/axe.spec.ts` audits every page — the top-level ones and
-  one of each parameterised route — in all three colour schemes, against WCAG 2.1 A/AA, and fails on
+  one of each parameterised route — in both colour schemes, against WCAG 2.1 A/AA, and fails on
   any violation (the chessground board and the transient toasts are excluded). A page loads once:
-  it is checked in full in the light scheme, then switched to dark and to black with the header's
+  it is checked in full in Nightshift, the dark scheme, then switched to Dayshift with the header's
   theme button and checked for what a scheme can change, contrast and links told apart from text
   (axe's `color-contrast` and `link-in-text-block`). Its pages run in parallel mode, so CI's shards
   share them out. It sees each page as it first renders; states reached by playing are covered by
@@ -1463,6 +1466,15 @@ warning gives way to a confirmation.
   each lazily loaded page's static imports and fails if a component uses a class defined only in a
   stylesheet that page does not load. Styles shared by several pages belong in `ui.css` or
   `global.css`; a component that has its own rules imports its stylesheet itself.
+- **The look.** `src/styles/tokens.css` is the RFS brand
+  ([BRAND.md](https://github.com/Real-Fruit-Snacks/.github/blob/main/BRAND.md)) as CSS variables:
+  Nightshift in `:root`, Dayshift under `prefers-color-scheme: light` (unless `data-theme='dark'`)
+  and under `data-theme='light'`. A colour that differs between the schemes is a token. Ember
+  (`--accent`) is a screen's main action, so the buttons on a list of cards are secondary; Amber
+  (`--warning`) warns and prompts, Mint (`--success`) means good, information (`--info`) is the text
+  colour. The base link rules are `:where()` rules, with no specificity, so a class's colours win.
+  IBM Plex Sans and Mono are part of the app (`src/styles/fonts.css`, under
+  `LICENSES/OFL-1.1.txt`), and the icon's master is `scripts/icons/logo.svg`.
 - **The test lab** (`src/features/lab/`) is for the checks no automation covers: sounds, haptics,
   installs and the feel of a real device.
 - **Engine verification:** `npm run lessons:verify` checks every lesson task — every move of its line —

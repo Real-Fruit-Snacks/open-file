@@ -1,5 +1,6 @@
 import { safeLocalStorage, writeStorage } from '@/lib/persistStorage';
 import { ACTIVE_PROFILE_ID, storageKeyFor } from '@/store/profiles';
+import { learnerSettingsFrom } from '@/store/settings';
 import type { SyncBase, SyncSnapshot } from './merge';
 import { isSyncPart } from './parts';
 import { randomId } from './randomId';
@@ -110,8 +111,13 @@ function asCopy(value: unknown): SyncCopy | null {
     return null;
   }
   const copy: SyncCopy = {
-    // A copy kept before settings synced holds none.
-    snapshot: { ...(snapshot as SyncSnapshot), settings: parts.settings ?? {} },
+    // A copy kept before settings synced holds none. Its settings are read as a load reads them
+    // (the Black scheme of 0.31 as Nightshift), so a setting that only changed its name is not
+    // taken for a change on the other side.
+    snapshot: {
+      ...(snapshot as SyncSnapshot),
+      settings: learnerSettingsFrom(parts.settings ?? {}),
+    },
     writes,
   };
   if (typeof parked === 'object' && parked !== null) {

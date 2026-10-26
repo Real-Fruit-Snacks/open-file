@@ -49,7 +49,8 @@ const STARTUP_LIMIT_BYTES = 46 * KB;
  * some 0.2 MB gzipped — so every lesson still works offline; a lesson page loads only its file.
  * 0.29 raised it from 7.5 MB for its features, about 0.25 MB on disk — Chess960's rules (chessops),
  * correspondence, race and analysis rooms, notifications, quick search, human moves, the gap
- * finder — so all of them work offline from the first visit as well.)
+ * finder — so all of them work offline from the first visit as well. 0.32's fonts, IBM Plex Sans
+ * and Mono, about 0.17 MB of woff2, fit within it.)
  */
 const PRECACHE_LIMIT_BYTES = 7.75 * KB * KB;
 

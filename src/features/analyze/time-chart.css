@@ -6,11 +6,13 @@
 }
 
 .timechart__heading {
-  font-size: 0.75rem;
+  font-size: 0.6875rem;
   text-transform: uppercase;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.08em;
   color: var(--text-muted);
   margin: 0 0 6px;
+  font-family: var(--font-mono);
+  font-weight: 500;
 }
 
 .timechart__reading {
@@ -89,8 +91,9 @@
   fill: var(--warning-soft);
 }
 
+/* Grey, apart from the inaccuracies' plain bars. */
 .timechart__cursor {
-  stroke: var(--info);
+  stroke: var(--text-muted);
   stroke-width: 2;
 }
 

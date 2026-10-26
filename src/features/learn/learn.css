@@ -118,7 +118,9 @@
 .lesson-card__category {
   text-transform: uppercase;
   letter-spacing: 0.08em;
-  font-weight: 600;
+  font-weight: 500;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
 }
 
 .lesson-card__time {
@@ -438,7 +440,10 @@
   margin-top: auto;
   font-weight: 600;
   font-size: 0.9rem;
-  color: var(--accent);
+  /* Read as a link, as links do now: text with a thin Ember underline. */
+  color: var(--text);
+  text-decoration: underline 1px var(--accent);
+  text-underline-offset: 3px;
 }
 
 .course__summary {

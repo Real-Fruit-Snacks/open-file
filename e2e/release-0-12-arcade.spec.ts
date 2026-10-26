@@ -239,38 +239,36 @@ test.describe('engine says', () => {
 });
 
 test.describe('daily opening', () => {
-  for (const scheme of ['dark', 'black'] as const) {
-    test(`the tiles say what they mean in words and glyphs, with AA contrast (${scheme})`, async ({
-      page,
-    }) => {
-      await seed(page, {}, { colorScheme: scheme });
-      await mockOpeningBook(page, DAILY_BOOK);
-      await page.goto('/arcade/daily-opening');
-      const input = page.getByTestId('daily-opening-input');
-      await input.fill('italian game');
-      await page
-        .getByTestId('daily-opening-matches')
-        .getByRole('button', { name: /^Italian Game C\d\d/ })
-        .click();
-      const tiles = page.getByTestId('daily-opening-guesses').locator('li.arcade__tile');
-      await expect(tiles).toHaveCount(5);
-      // Every tile carries words for screen readers and a glyph, not just a tint.
-      await expect(tiles.nth(0)).toHaveText('e4: in the right place');
-      await expect(tiles.nth(4)).toContainText(': not in the line');
-      for (let i = 0; i < 5; i++) {
-        // One spoken state per tile (a figurine move adds its own hidden letter as well).
-        await expect(
-          tiles.nth(i).locator('.sr-only', { hasText: /right place|in the line/ }),
-        ).toHaveCount(1);
-        await expect(tiles.nth(i).locator('svg')).toHaveCount(1);
-      }
-      await expect(page.getByRole('list', { name: 'What the marks mean' })).toBeVisible();
-      // White on the green and amber tiles was about 2.2:1 in the dark schemes.
-      const results = await new AxeBuilder({ page })
-        .withRules(['color-contrast'])
-        .include('[data-testid="daily-opening-guesses"]')
-        .analyze();
-      expect(results.violations.map((v) => v.nodes.map((n) => n.target.join(' ')))).toEqual([]);
-    });
-  }
+  test('the tiles say what they mean in words and glyphs, with AA contrast (Nightshift)', async ({
+    page,
+  }) => {
+    await seed(page, {}, { colorScheme: 'dark' });
+    await mockOpeningBook(page, DAILY_BOOK);
+    await page.goto('/arcade/daily-opening');
+    const input = page.getByTestId('daily-opening-input');
+    await input.fill('italian game');
+    await page
+      .getByTestId('daily-opening-matches')
+      .getByRole('button', { name: /^Italian Game C\d\d/ })
+      .click();
+    const tiles = page.getByTestId('daily-opening-guesses').locator('li.arcade__tile');
+    await expect(tiles).toHaveCount(5);
+    // Every tile carries words for screen readers and a glyph, not just a tint.
+    await expect(tiles.nth(0)).toHaveText('e4: in the right place');
+    await expect(tiles.nth(4)).toContainText(': not in the line');
+    for (let i = 0; i < 5; i++) {
+      // One spoken state per tile (a figurine move adds its own hidden letter as well).
+      await expect(
+        tiles.nth(i).locator('.sr-only', { hasText: /right place|in the line/ }),
+      ).toHaveCount(1);
+      await expect(tiles.nth(i).locator('svg')).toHaveCount(1);
+    }
+    await expect(page.getByRole('list', { name: 'What the marks mean' })).toBeVisible();
+    // White on the green and amber tiles was about 2.2:1 in the dark schemes of 0.12.
+    const results = await new AxeBuilder({ page })
+      .withRules(['color-contrast'])
+      .include('[data-testid="daily-opening-guesses"]')
+      .analyze();
+    expect(results.violations.map((v) => v.nodes.map((n) => n.target.join(' ')))).toEqual([]);
+  });
 });

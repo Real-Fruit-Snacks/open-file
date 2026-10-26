@@ -78,26 +78,44 @@
   justify-content: center;
 }
 
-/* Slightly stronger highlights than the default theme for readability */
+/* Slightly stronger highlights than the default theme for readability. What the learner is doing
+   (a selection, its moves, a hint, a drag) is Ember; right is Mint, wrong the danger red. */
 .board cg-board square.last-move {
   background-color: rgba(255, 204, 0, 0.42);
 }
 
 .board cg-board square.selected {
-  background-color: rgba(31, 111, 91, 0.55);
+  background-color: rgba(255, 106, 61, 0.5);
 }
 
 .board cg-board square.move-dest {
-  background: radial-gradient(rgba(31, 111, 91, 0.6) 22%, transparent 24%);
+  background: radial-gradient(rgba(255, 106, 61, 0.7) 22%, transparent 24%);
 }
 
 .board cg-board square.oc.move-dest {
-  background: radial-gradient(transparent 0%, transparent 78%, rgba(31, 111, 91, 0.45) 80%);
+  background: radial-gradient(transparent 0%, transparent 78%, rgba(255, 106, 61, 0.55) 80%);
 }
 
 .board cg-board square.move-dest:hover,
 .board cg-board square.move-dest.hover {
-  background: rgba(31, 111, 91, 0.35);
+  background: rgba(255, 106, 61, 0.35);
+}
+
+/*
+ * Custom square highlights used by lessons: a hint is a prompt, so Amber (Ember is the
+ * selection); wrong and right are the danger red and Mint. Before the High contrast theme's,
+ * which override them at the same specificity by coming later.
+ */
+.board cg-board square.hint {
+  background-color: rgba(255, 194, 71, 0.55);
+}
+
+.board cg-board square.wrong {
+  background-color: rgba(242, 85, 122, 0.6);
+}
+
+.board cg-board square.right {
+  background-color: rgba(61, 220, 151, 0.55);
 }
 
 /*
@@ -146,19 +164,6 @@
 
 .board--theme-contrast cg-board square.right {
   background-color: rgba(0, 158, 115, 0.7);
-}
-
-/* Custom square highlights used by lessons */
-.board cg-board square.hint {
-  background-color: rgba(31, 111, 91, 0.45);
-}
-
-.board cg-board square.wrong {
-  background-color: rgba(214, 69, 65, 0.55);
-}
-
-.board cg-board square.right {
-  background-color: rgba(60, 170, 90, 0.55);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -250,12 +255,12 @@
 
 .board__dragtarget--circle {
   border-radius: 50%;
-  border: 0.35cqw solid rgba(20, 30, 20, 0.45);
+  border: 0.35cqw solid rgba(12, 13, 16, 0.45);
   transform: scale(0.82);
 }
 
 .board__dragtarget--square {
-  background: rgba(20, 85, 30, 0.28);
+  background: rgba(255, 106, 61, 0.28);
 }
 
 /* ---------- Premoves (live games) ---------- */

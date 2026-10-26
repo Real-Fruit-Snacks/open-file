@@ -29,8 +29,9 @@
   border-radius: var(--radius-md);
   display: grid;
   place-items: center;
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
 }
 
 .arcade-card__heading {

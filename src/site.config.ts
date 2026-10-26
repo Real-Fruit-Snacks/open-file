@@ -25,12 +25,11 @@ export const siteConfig = {
    * connect-src. An empty string turns device sync off: Settings does not offer it.
    */
   syncRelay: 'https://open-file-sync.real-fruit-snacks.workers.dev',
-  /** Brand colour used for the manifest theme colour and accents. */
-  themeColor: '#1f6f5b',
+  /** The brand's page colour (Nightshift), for the manifest and anywhere one colour stands for the app. */
+  themeColor: '#0c0d10',
   /** The page background in each scheme: the browser UI colour follows the page, not the accent. */
-  lightBackgroundColor: '#f6f4ef',
-  backgroundColor: '#0f1512',
-  blackBackgroundColor: '#000000',
+  lightBackgroundColor: '#f6f5f2',
+  backgroundColor: '#0c0d10',
   /** Locale used for dates and number formatting. */
   locale: 'en-GB',
 } as const;

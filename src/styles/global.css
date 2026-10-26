@@ -1,4 +1,5 @@
 @import './tokens.css';
+@import './fonts.css';
 
 /* ---------- Reset ---------- */
 *,
@@ -27,8 +28,9 @@ body {
   background: var(--bg);
   color: var(--text);
   font-family: var(--font-sans);
-  font-size: 1rem;
-  line-height: 1.55;
+  /* The brand's body: 15 px on 1.6 at the browser's default size. */
+  font-size: 0.9375rem;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overscroll-behavior-y: none;
 }
@@ -52,6 +54,13 @@ textarea {
   color: inherit;
 }
 
+/* A field below 16 px makes iOS zoom the page when it takes focus. */
+input,
+select,
+textarea {
+  font-size: 1rem;
+}
+
 button {
   cursor: pointer;
   border: 0;
@@ -59,16 +68,21 @@ button {
   padding: 0;
 }
 
-a {
-  color: var(--accent);
+/* Links read as text with an Ember underline: Ember stays the one brand colour on a screen. */
+:where(a) {
+  color: inherit;
+  text-decoration-color: var(--accent);
   text-decoration-thickness: 1px;
-  text-underline-offset: 2px;
+  text-underline-offset: 3px;
 }
 
-a:hover {
-  color: var(--accent-strong);
+/* Neither rule has any specificity: a link styled by a class (a button, a tab, the skip link)
+   keeps its own colours, on hover too, unless its own rules change them. */
+:where(a:hover) {
+  color: var(--accent);
 }
 
+/* The brand's type roles: h1 32 on 1.1, bold, -0.02em; h2 22 on 1.2, semibold, -0.01em. */
 h1,
 h2,
 h3,
@@ -76,19 +90,22 @@ h4 {
   margin: 0 0 var(--space-3);
   line-height: 1.2;
   letter-spacing: -0.01em;
-  font-weight: 700;
+  font-weight: 600;
 }
 
 h1 {
-  font-size: clamp(1.75rem, 1.2rem + 2vw, 2.5rem);
+  font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  font-weight: 700;
 }
 
 h2 {
-  font-size: clamp(1.35rem, 1.1rem + 1vw, 1.75rem);
+  font-size: 1.375rem;
 }
 
 h3 {
-  font-size: 1.15rem;
+  font-size: 1.0625rem;
 }
 
 p {
@@ -228,7 +245,8 @@ kbd {
 }
 
 .small {
-  font-size: 0.875rem;
+  font-size: 0.8125rem;
+  line-height: 1.5;
 }
 
 .mono {
@@ -529,9 +547,15 @@ kbd {
   padding: 3px 0;
   margin-block: -3px;
   font: inherit;
-  color: var(--accent);
-  text-decoration: underline;
+  /* As a link reads: text with a thin Ember underline, Ember under the pointer. */
+  color: inherit;
+  text-decoration: underline 1px var(--accent);
+  text-underline-offset: 3px;
   cursor: pointer;
+}
+
+.linklike:hover {
+  color: var(--accent);
 }
 
 /* A disclosure's row is at least 24px high, a comfortable target for a pointer, and opens with

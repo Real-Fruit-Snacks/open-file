@@ -53,7 +53,7 @@ describe('Content-Security-Policy of index.html', () => {
   });
 
   it('follows the theme script when it changes', () => {
-    const edited = read('index.html').replace("'black'", "'black' /* edited */");
+    const edited = read('index.html').replace("'dark'", "'dark' /* edited */");
     const before = policyOf(builtHtml()).directives.get('script-src');
     const after = policyOf(builtHtml(edited)).directives.get('script-src');
     expect(after).not.toEqual(before);

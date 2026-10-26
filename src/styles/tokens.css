@@ -1,58 +1,71 @@
 /*
- * Design tokens. Light is the default; dark overrides follow the system
- * preference unless the user picks a scheme explicitly (data-theme on <html>).
+ * Design tokens, from the RFS brand (github.com/Real-Fruit-Snacks/.github, BRAND.md): two
+ * themes, Nightshift (dark, the default) and Dayshift (light), one accent, Ember. Nightshift
+ * holds unless the device asks for light, or the learner picks a scheme (data-theme on <html>).
+ *
+ * The brand's colours are used as they are, except where the app sets text on a raised surface
+ * the brand did not test: there Dayshift's Ember, grey, Amber and Mint are shifted a step darker,
+ * by the brand's own rule, until they pass WCAG AA (4.5:1) there too. Danger has no brand colour
+ * (Ember is the brand, never an error), so it is a red kept well apart from Ember.
  */
 :root {
-  color-scheme: light;
+  color-scheme: dark;
 
-  --font-sans:
-    'Inter', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-  --font-mono: ui-monospace, 'SFMono-Regular', Menlo, Consolas, 'Liberation Mono', monospace;
+  --font-sans: 'IBM Plex Sans', Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
 
-  /* Brand */
-  --accent: #1f6f5b;
-  --accent-strong: #165446;
-  --accent-soft: #dcefe8;
-  --accent-contrast: #ffffff;
+  /* Brand: Ember. One per screen; Nightshift may glow, never Dayshift. */
+  --accent: #ff6a3d;
+  --accent-strong: #ff8a66;
+  --accent-soft: #33190f;
+  --accent-contrast: #0c0d10;
+  --accent-glow: 0 0 0 4px rgba(255, 106, 61, 0.16), 0 0 18px rgba(255, 106, 61, 0.28);
+  /* The mark keeps the brand's own values: its tile, and Ember for its rule. */
+  --logo-tile: #1a1d24;
+  --logo-rule: #ff6a3d;
 
-  /* Surfaces & text */
-  --bg: #f6f4ef;
-  --bg-elevated: #ffffff;
-  --surface: #ffffff;
-  --surface-2: #efece4;
-  --surface-3: #e5e1d6;
+  /* Surfaces & text: bg, surface (cards), raised (inputs, chips), a step above for presses. */
+  --bg: #0c0d10;
+  --bg-elevated: #13151a;
+  --surface: #13151a;
+  --surface-2: #1a1d24;
+  --surface-3: #22262e;
   /* The chosen option of a segmented control: lifted off its track. */
-  --segmented-on: var(--surface);
-  --text: #1b1f1d;
-  --text-muted: #5c655f;
-  --text-faint: #5f6862;
-  --border: #d9d4c8;
-  --border-strong: #b9b3a5;
+  --segmented-on: #262a33;
+  --text: #e8e6e1;
+  --text-muted: #8a8f99;
+  --text-faint: #8a8f99;
+  /* Borders replace shadows. */
+  --border: #262a33;
+  --border-strong: #3a3f4a;
 
-  /* Semantic */
-  --success: #24734a;
-  --success-soft: #dff3e6;
-  --warning: #8f5b08;
-  --warning-soft: #fbeed7;
-  --danger: #b33636;
-  --danger-soft: #f9dede;
-  --danger-contrast: #ffffff;
-  --info: #27619e;
-  --info-soft: #dce9f7;
+  /* Semantic: Mint only ever means OK; Amber warns and prompts. */
+  --success: #3ddc97;
+  --success-soft: #10291f;
+  --warning: #ffc247;
+  --warning-soft: #2e2410;
+  --danger: #f2557a;
+  --danger-soft: #33121b;
+  --danger-contrast: #0c0d10;
+  /* Information is plain: the brand has no third accent, and Amber is kept for warnings, so an
+     inaccuracy (info) never looks like a mistake (warning). */
+  --info: #e8e6e1;
+  --info-soft: #1a1d24;
 
   /* Eval bar */
-  --eval-white: #f2f2f2;
-  --eval-black: #2b2b2b;
+  --eval-white: #e8e6e1;
+  --eval-black: #1a1d24;
 
   /* Geometry */
   --radius-sm: 6px;
   --radius-md: 10px;
-  --radius-lg: 16px;
+  --radius-lg: 14px;
   --radius-pill: 999px;
 
-  --shadow-sm: 0 1px 2px rgba(20, 24, 22, 0.08);
-  --shadow-md: 0 6px 20px rgba(20, 24, 22, 0.1);
-  --shadow-board: 0 10px 30px rgba(20, 24, 22, 0.18);
+  /* Nightshift has no shadows: a border marks every edge. */
+  --shadow-sm: none;
+  --shadow-md: none;
+  --shadow-board: none;
 
   --space-1: 4px;
   --space-2: 8px;
@@ -75,111 +88,101 @@
    * places that cannot use an outline; `--selected-ring` marks a selected swatch
    * or strip and is deliberately different from focus (inset, accent).
    */
-  --focus: #1f6f5b;
-  --focus-halo: #f6f4ef;
+  --focus: #ff6a3d;
+  --focus-halo: #0c0d10;
   --focus-ring: 0 0 0 1px var(--focus-halo), 0 0 0 3px var(--focus);
   --selected-ring: inset 0 0 0 2px var(--accent);
   --transition: 160ms ease;
 }
 
-:root[data-theme='dark'],
-:root[data-theme='black'] {
-  color-scheme: dark;
+/* Dayshift: the light theme, for a device that asks for light or a learner who picks it. */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme='dark']) {
+    color-scheme: light;
 
-  --accent: #4fb397;
-  --accent-strong: #6cc7ad;
-  --accent-soft: #163f34;
-  --accent-contrast: #0b1512;
+    --accent: #b83a0f;
+    --accent-strong: #9a300c;
+    --accent-soft: #f7e1d8;
+    --accent-contrast: #ffffff;
+    --accent-glow: none;
+    --logo-tile: #1a1b1e;
+    --logo-rule: #c43f11;
 
-  --bg: #0f1512;
-  --bg-elevated: #161e1a;
-  --surface: #161e1a;
-  --surface-2: #1d2722;
-  --surface-3: #263129;
-  --segmented-on: #2d3a33;
-  --text: #e8ece9;
-  --text-muted: #a3ada7;
-  --text-faint: #8a958f;
-  --border: #2a3630;
-  --border-strong: #3c4a43;
+    --bg: #f6f5f2;
+    --bg-elevated: #ffffff;
+    --surface: #ffffff;
+    --surface-2: #eceae4;
+    --surface-3: #e2dfd7;
+    --segmented-on: #ffffff;
+    --text: #1a1b1e;
+    --text-muted: #5f636c;
+    --text-faint: #5f636c;
+    --border: #d6d3cb;
+    --border-strong: #b9b5ab;
 
-  --success: #5cc48a;
-  --success-soft: #173425;
-  --warning: #e0a43a;
-  --warning-soft: #3a2c10;
-  --danger: #e36b6b;
-  --danger-soft: #3d1c1c;
-  --danger-contrast: #1a0b0b;
-  --info: #6aa5e6;
-  --info-soft: #172a40;
+    --success: #147048;
+    --success-soft: #ddf2e8;
+    --warning: #8c5e00;
+    --warning-soft: #f8edd3;
+    --danger: #b4233f;
+    --danger-soft: #f8dde2;
+    --danger-contrast: #ffffff;
+    --info: #1a1b1e;
+    --info-soft: #eceae4;
 
-  --eval-white: #e6e6e6;
-  --eval-black: #1a1a1a;
+    --eval-white: #ffffff;
+    --eval-black: #1a1b1e;
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.45);
-  --shadow-board: 0 10px 30px rgba(0, 0, 0, 0.55);
+    /* Dayshift may add a hairline under a card, nothing more. */
+    --shadow-sm: 0 1px 0 rgba(26, 27, 30, 0.06);
+    --shadow-md: 0 1px 2px rgba(26, 27, 30, 0.08);
+    --shadow-board: none;
 
-  --focus: #8fdcc4;
-  --focus-halo: #0f1512;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) {
-    color-scheme: dark;
-
-    --accent: #4fb397;
-    --accent-strong: #6cc7ad;
-    --accent-soft: #163f34;
-    --accent-contrast: #0b1512;
-
-    --bg: #0f1512;
-    --bg-elevated: #161e1a;
-    --surface: #161e1a;
-    --surface-2: #1d2722;
-    --surface-3: #263129;
-    --segmented-on: #2d3a33;
-    --text: #e8ece9;
-    --text-muted: #a3ada7;
-    --text-faint: #8a958f;
-    --border: #2a3630;
-    --border-strong: #3c4a43;
-
-    --success: #5cc48a;
-    --success-soft: #173425;
-    --warning: #e0a43a;
-    --warning-soft: #3a2c10;
-    --danger: #e36b6b;
-    --danger-soft: #3d1c1c;
-    --danger-contrast: #1a0b0b;
-    --info: #6aa5e6;
-    --info-soft: #172a40;
-
-    --eval-white: #e6e6e6;
-    --eval-black: #1a1a1a;
-
-    --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.4);
-    --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.45);
-    --shadow-board: 0 10px 30px rgba(0, 0, 0, 0.55);
-
-    --focus: #8fdcc4;
-    --focus-halo: #0f1512;
+    --focus: #b83a0f;
+    --focus-halo: #f6f5f2;
   }
 }
 
-/* Black: the dark scheme on a pure black background, for OLED screens. */
-:root[data-theme='black'] {
-  --bg: #000000;
-  --bg-elevated: #0c100e;
-  --surface: #0c100e;
-  --surface-2: #151b18;
-  --surface-3: #1e2622;
-  --segmented-on: #26302b;
-  --border: #222b26;
-  --border-strong: #35413b;
-  --focus-halo: #000000;
+:root[data-theme='light'] {
+  color-scheme: light;
 
-  --shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.6);
-  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.7);
-  --shadow-board: 0 10px 30px rgba(0, 0, 0, 0.8);
+  --accent: #b83a0f;
+  --accent-strong: #9a300c;
+  --accent-soft: #f7e1d8;
+  --accent-contrast: #ffffff;
+  --accent-glow: none;
+  --logo-tile: #1a1b1e;
+  --logo-rule: #c43f11;
+
+  --bg: #f6f5f2;
+  --bg-elevated: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #eceae4;
+  --surface-3: #e2dfd7;
+  --segmented-on: #ffffff;
+  --text: #1a1b1e;
+  --text-muted: #5f636c;
+  --text-faint: #5f636c;
+  --border: #d6d3cb;
+  --border-strong: #b9b5ab;
+
+  --success: #147048;
+  --success-soft: #ddf2e8;
+  --warning: #8c5e00;
+  --warning-soft: #f8edd3;
+  --danger: #b4233f;
+  --danger-soft: #f8dde2;
+  --danger-contrast: #ffffff;
+  --info: #1a1b1e;
+  --info-soft: #eceae4;
+
+  --eval-white: #ffffff;
+  --eval-black: #1a1b1e;
+
+  --shadow-sm: 0 1px 0 rgba(26, 27, 30, 0.06);
+  --shadow-md: 0 1px 2px rgba(26, 27, 30, 0.08);
+  --shadow-board: none;
+
+  --focus: #b83a0f;
+  --focus-halo: #f6f5f2;
 }

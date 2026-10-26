@@ -546,14 +546,16 @@ button.movelist__move:hover {
   vector-effect: non-scaling-stroke;
 }
 
+/* Grey reads on both halves of the graph, the light and the dark. */
 .evalgraph__cursor {
-  stroke: var(--info);
+  stroke: var(--text-muted);
   stroke-width: 2;
   vector-effect: non-scaling-stroke;
 }
 
+/* Ringed in the card's colour, so a marker shows on either half, an inaccuracy's plain one too. */
 .evalgraph__marker {
-  stroke: #fff;
+  stroke: var(--surface);
   stroke-width: 1.5;
   vector-effect: non-scaling-stroke;
 }

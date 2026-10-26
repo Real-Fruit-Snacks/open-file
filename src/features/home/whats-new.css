@@ -18,8 +18,9 @@
   display: grid;
   place-items: center;
   border-radius: var(--radius-md);
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
 }
 
 .whatsnew__heading {
@@ -88,8 +89,9 @@
   display: grid;
   place-items: center;
   border-radius: var(--radius-sm);
-  background: var(--accent-soft);
-  color: var(--accent);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
 }
 
 .whatsnew__text {

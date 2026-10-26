@@ -220,34 +220,32 @@ test.describe('quick search', () => {
   });
 });
 
-test.describe('in the dark and black schemes', () => {
-  for (const scheme of ['dark', 'black'] as const) {
-    test(`the search results and the card read clearly (${scheme})`, async ({ page }) => {
-      await seed(page, '0.0.1');
-      await page.addInitScript(
-        (value) => {
-          localStorage.setItem('open-file:settings', value);
-        },
-        JSON.stringify({ state: { colorScheme: scheme }, version: 3 }),
-      );
-      await page.goto('/');
-      await expect(page.getByTestId('whats-new')).toBeVisible();
-      await page.keyboard.press('Control+K');
-      await searchField(page).fill('mate');
-      await expect(page.getByRole('listbox', { name: 'Results' })).toBeVisible();
-      const results = await new AxeBuilder({ page })
-        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
-        .include('dialog.search')
-        .analyze();
-      expect(results.violations, JSON.stringify(results.violations, null, 2)).toEqual([]);
-      await page.keyboard.press('Escape');
-      const card = await new AxeBuilder({ page })
-        .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
-        .include('[data-testid="whats-new"]')
-        .analyze();
-      expect(card.violations, JSON.stringify(card.violations, null, 2)).toEqual([]);
-    });
-  }
+test.describe('in Nightshift, the dark scheme', () => {
+  test('the search results and the card read clearly', async ({ page }) => {
+    await seed(page, '0.0.1');
+    await page.addInitScript(
+      (value) => {
+        localStorage.setItem('open-file:settings', value);
+      },
+      JSON.stringify({ state: { colorScheme: 'dark' }, version: 3 }),
+    );
+    await page.goto('/');
+    await expect(page.getByTestId('whats-new')).toBeVisible();
+    await page.keyboard.press('Control+K');
+    await searchField(page).fill('mate');
+    await expect(page.getByRole('listbox', { name: 'Results' })).toBeVisible();
+    const results = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+      .include('dialog.search')
+      .analyze();
+    expect(results.violations, JSON.stringify(results.violations, null, 2)).toEqual([]);
+    await page.keyboard.press('Escape');
+    const card = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21a', 'wcag21aa'])
+      .include('[data-testid="whats-new"]')
+      .analyze();
+    expect(card.violations, JSON.stringify(card.violations, null, 2)).toEqual([]);
+  });
 });
 
 test.describe('quick search on a 320px phone', () => {

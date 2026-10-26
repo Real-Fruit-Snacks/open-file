@@ -215,16 +215,25 @@ describe('SettingsPage', () => {
 
   it('offers the board and display preferences and keeps them', () => {
     renderAt('/settings');
-    // Colour scheme has a black option; notation shows a sample in the chosen style.
+    // The colour schemes go by the brand's names, with a line that says which is which;
+    // notation shows a sample in the chosen style.
     const schemes = screen.getByRole('radiogroup', { name: 'Colour scheme' });
     expect(
       within(schemes)
         .getAllByRole('radio')
         .map((b) => b.textContent),
-    ).toEqual(['System', 'Light', 'Dark', 'Black']);
-    fireEvent.click(within(schemes).getByRole('radio', { name: 'Black' }));
-    expect(useSettings.getState().colorScheme).toBe('black');
-    expect(screen.getByText(/pure black background/)).toBeInTheDocument();
+    ).toEqual(['System', 'Nightshift', 'Dayshift']);
+    expect(
+      screen.getByText('Nightshift is dark, Dayshift is light. System follows your device.'),
+    ).toBeInTheDocument();
+    fireEvent.click(within(schemes).getByRole('radio', { name: 'Nightshift' }));
+    expect(useSettings.getState().colorScheme).toBe('dark');
+    fireEvent.click(within(schemes).getByRole('radio', { name: 'Dayshift' }));
+    expect(useSettings.getState().colorScheme).toBe('light');
+    expect(within(schemes).getByRole('radio', { name: 'Dayshift' })).toHaveAttribute(
+      'aria-checked',
+      'true',
+    );
 
     const sample = screen.getByTestId('notation-sample');
     expect(sample.querySelectorAll('piece')).toHaveLength(4);

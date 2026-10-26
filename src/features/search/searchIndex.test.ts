@@ -140,6 +140,10 @@ describe('the search index', () => {
     expect(best('lucena')?.to).toBe('/drills/endgame/lucena');
     expect(best('opera game')?.to).toBe('/classics/opera-game');
     expect(best('dark mode')?.to).toBe('/settings#display');
+    // The colour schemes by their names, and by the plain words for them.
+    for (const query of ['nightshift', 'dayshift', 'night', 'day', 'dark', 'light']) {
+      expect(best(query)?.to, query).toBe('/settings#display');
+    }
     expect(best('puzzle race')?.to).toBe('/play?play=race');
     expect(best('race room')?.to).toBe('/play?play=race-room');
     expect(best('analyse together')?.to).toBe('/analyze?together=1');

@@ -24,9 +24,10 @@ const ROOT = join(__dirname, '..');
 const SRC = join(__dirname, 'icons');
 const OUT = join(ROOT, 'public', 'icons');
 
-const BRAND = '#1f6f5b';
+/** The brand tile's fill (RFS Caps Tile, Nightshift), behind every icon. */
+const BRAND = '#1a1d24';
 
-/** Simple single-colour glyphs for manifest shortcuts (96×96, brand background). */
+/** Simple white glyphs for manifest shortcuts (96×96, on the brand tile). */
 const shortcutGlyphs = {
   puzzles:
     '<path d="M36 22h24a6 6 0 0 1 6 6v10h-4a6 6 0 1 0 0 12h4v10a6 6 0 0 1-6 6H36a6 6 0 0 1-6-6V50h4a6 6 0 1 0 0-12h-4V28a6 6 0 0 1 6-6z"/>',
@@ -38,7 +39,7 @@ const shortcutGlyphs = {
 function shortcutSvg(glyph) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96">
   <rect width="96" height="96" rx="20" fill="${BRAND}"/>
-  <g fill="#f4efe2">${glyph}</g>
+  <g fill="#ffffff">${glyph}</g>
 </svg>`;
 }
 
@@ -56,22 +57,24 @@ function maskableSvg(logoSvg) {
 
 /**
  * iOS rounds the home-screen icon itself and paints any transparent corner black, so the Apple
- * icon is the logo with square corners.
+ * icon is the logo with square corners: the tile's (the first rect), not the rule's.
  */
 function squareSvg(logoSvg) {
-  return logoSvg.replace(/ rx="\d+"/g, '');
+  return logoSvg.replace(/(<rect[^>]*?) rx="\d+"/, '$1');
 }
 
 /**
  * Themed launcher icons (Android 13 and later) use only the alpha channel of a
- * `monochrome` icon and paint it in the system colour: the rook alone, in the
- * same safe zone as the maskable icon, on a transparent canvas.
+ * `monochrome` icon and paint it in the system colour: the rook and its rule, without the tile,
+ * in the same safe zone as the maskable icon, on a transparent canvas.
  */
 function monochromeSvg(logoSvg) {
-  const rook = /<g fill="#f4efe2">([\s\S]*?)<\/g>/.exec(logoSvg)?.[1];
-  if (!rook) throw new Error('logo.svg: the rook group (fill="#f4efe2") was not found');
+  const rook = /<g id="rook"[\s\S]*?<\/g>/.exec(logoSvg)?.[0];
+  const rule = /<rect id="rule"[^>]*\/>/.exec(logoSvg)?.[0];
+  if (!rook || !rule)
+    throw new Error('logo.svg: the rook group or the rule (id="rook", id="rule") was not found');
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
-  <g fill="#ffffff" transform="translate(64 64) scale(0.75)">${rook}</g>
+  <g transform="translate(64 64) scale(0.75)">${rook}${rule.replace(/fill="[^"]*"/, 'fill="#ffffff"')}</g>
 </svg>`;
 }
 

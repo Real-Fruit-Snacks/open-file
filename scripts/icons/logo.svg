@@ -1,28 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Open File">
-  <defs>
-    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0" stop-color="#2a8a72"/>
-      <stop offset="1" stop-color="#155646"/>
-    </linearGradient>
-    <pattern id="checker" width="128" height="128" patternUnits="userSpaceOnUse">
-      <rect width="64" height="64" fill="#ffffff" fill-opacity="0.08"/>
-      <rect x="64" y="64" width="64" height="64" fill="#ffffff" fill-opacity="0.08"/>
-    </pattern>
-    <clipPath id="sides">
-      <rect x="0" y="0" width="192" height="512"/>
-      <rect x="320" y="0" width="192" height="512"/>
-    </clipPath>
-  </defs>
-  <rect width="512" height="512" rx="96" fill="url(#bg)"/>
-  <!-- The board around the file -->
-  <rect width="512" height="512" rx="96" fill="url(#checker)" clip-path="url(#sides)"/>
-  <!-- The open file: an empty lane from edge to edge -->
-  <rect x="192" y="0" width="128" height="512" fill="#f4efe2" fill-opacity="0.16"/>
-  <!-- Rook -->
-  <g fill="#f4efe2">
+  <!-- The brand's Caps Tile (RFS BRAND.md): a 64-unit tile with corner radius 14, Ember rule 36 by 4 at y 48; here at 512 units. -->
+  <rect width="512" height="512" rx="112" fill="#1a1d24"/>
+  <!-- The rook, always white, standing where the mark's letters stand. -->
+  <g id="rook" fill="#ffffff" transform="translate(149.48 88) scale(0.85906) translate(-132 -156)">
     <path d="M176 156h36v28h22v-28h44v28h22v-28h36v64c0 8-6 14-14 14H190c-8 0-14-6-14-14z"/>
     <path d="M200 246h112l12 118H188z"/>
     <path d="M172 376h168c10 0 18 8 18 18v4c0 6-4 10-10 10H164c-6 0-10-4-10-10v-4c0-10 8-18 18-18z"/>
     <path d="M150 420h212c10 0 18 8 18 18v6c0 6-4 10-10 10H142c-6 0-10-4-10-10v-6c0-10 8-18 18-18z"/>
   </g>
+  <!-- The Ember rule beneath. -->
+  <rect id="rule" x="112" y="384" width="288" height="32" rx="16" fill="#ff6a3d"/>
 </svg>

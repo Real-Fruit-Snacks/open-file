@@ -320,7 +320,7 @@ test.describe('repertoire gap finder', () => {
     await expect(builtIn).toContainText('0/');
   });
 
-  for (const scheme of ['light', 'dark', 'black'] as const) {
+  for (const scheme of ['light', 'dark'] as const) {
     test(`its panel, results and answer card pass the WCAG A/AA checks (${scheme})`, async ({
       page,
     }) => {

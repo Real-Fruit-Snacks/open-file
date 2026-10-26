@@ -65,10 +65,12 @@
 
 .pattern-card__spot strong {
   display: block;
-  font-size: 0.75rem;
-  letter-spacing: 0.06em;
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
   color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-weight: 500;
 }
 
 .pattern-card__actions {

@@ -110,6 +110,9 @@ describe('the settings, the learner’s and the device’s', () => {
         fromTheFuture: 1,
       }),
     ).toEqual({ boardTheme: 'green' });
+    // A scheme the app no longer has reads as the nearest it does: black (until 0.32) is dark.
+    expect(learnerSettingsFrom({ colorScheme: 'black' })).toEqual({ colorScheme: 'dark' });
+    expect(learnerSettingsFrom({ colorScheme: 'sepia' })).toEqual({});
   });
 });
 

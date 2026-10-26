@@ -6,18 +6,20 @@
     <title>%SITE_NAME% — %SITE_TAGLINE%</title>
     <meta name="description" content="%SITE_DESCRIPTION%" />
     <!-- The browser UI follows the page background; the inline script below picks
-         the saved scheme before the first paint, the app keeps it current after. -->
+         the saved scheme before the first paint, the app keeps it current after.
+         Without one, the light colour holds only where the device asks for light
+         and the dark one everywhere else (the first tag that matches is used). -->
     <meta
       name="theme-color"
       media="(prefers-color-scheme: light)"
       content="%SITE_LIGHT_BACKGROUND%"
     />
-    <meta name="theme-color" media="(prefers-color-scheme: dark)" content="%SITE_BACKGROUND%" />
-    <meta name="color-scheme" content="light dark" />
+    <meta name="theme-color" content="%SITE_BACKGROUND%" />
+    <meta name="color-scheme" content="dark light" />
     <script>
       // Applies the saved colour scheme and piece set before anything paints, so
-      // a visitor who chose dark (or light, or black) never sees a flash of the
-      // other scheme. Mirrors applyColorScheme() in src/app/theme.ts.
+      // a visitor who chose Nightshift (dark) or Dayshift (light) never sees a
+      // flash of the other one. Mirrors applyColorScheme() in src/app/theme.ts.
       (function () {
         try {
           // The active profile's settings (a profile without its own has the main one's).
@@ -30,15 +32,12 @@
           var raw = localStorage.getItem(key);
           var state = raw ? JSON.parse(raw).state || {} : {};
           var scheme = state.colorScheme;
+          // The black scheme went in 0.32: a save that still names it is dark, as the app reads it.
+          if (scheme === 'black') scheme = 'dark';
           var root = document.documentElement;
-          if (scheme === 'light' || scheme === 'dark' || scheme === 'black') {
+          if (scheme === 'light' || scheme === 'dark') {
             root.setAttribute('data-theme', scheme);
-            var colour =
-              scheme === 'black'
-                ? '%SITE_BLACK_BACKGROUND%'
-                : scheme === 'dark'
-                  ? '%SITE_BACKGROUND%'
-                  : '%SITE_LIGHT_BACKGROUND%';
+            var colour = scheme === 'dark' ? '%SITE_BACKGROUND%' : '%SITE_LIGHT_BACKGROUND%';
             var metas = document.querySelectorAll('meta[name="theme-color"]');
             for (var i = 0; i < metas.length; i++) {
               if (i === 0) {
