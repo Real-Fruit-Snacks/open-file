@@ -233,13 +233,20 @@ describe('TreeMoveList', () => {
         onSelect={onSelect}
       />,
     );
-    expect(screen.getByRole('button', { name: '1. Pawn e2 to e4' })).toHaveAttribute(
+    // The move as written first (what the button shows), then in words.
+    expect(screen.getByRole('button', { name: '1. e4, pawn e2 to e4' })).toHaveAttribute(
       'aria-current',
       'true',
     );
-    expect(screen.getByRole('button', { name: '1 Black Pawn e7 to e5' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: '2. Knight g1 to f3, blunder' })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: '2. Queen d1 to h5' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '1 Black e5, pawn e7 to e5' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: '2. Nf3, knight g1 to f3, blunder' }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: '2. Qh5, queen d1 to h5' })).toBeInTheDocument();
+    // A Black move whose number is shown (after a variation) says whose it is after the number.
+    expect(
+      screen.getByRole('button', { name: '2… Nc6, Black, knight b8 to c6' }),
+    ).toBeInTheDocument();
     render(
       <TreeNavigation
         canBack

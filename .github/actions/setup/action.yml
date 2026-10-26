@@ -72,6 +72,43 @@ runs:
       shell: bash
       run: echo "version=$(node -p "require('@playwright/test/package.json').version")" >> "$GITHUB_OUTPUT"
 
+    # The browser's system libraries come from Ubuntu's mirror: about 120 MB for WebKit. A slow
+    # mirror once held two WebKit shards in this step past their 30 minutes, so apt keeps its
+    # downloads where the cache can save them, and a later run downloads only the packages that
+    # changed since (the package lists still come from the mirror, a few MB). The key follows
+    # the runner image, which brings its own package versions.
+    - name: Read the runner image
+      if: inputs.browser != ''
+      id: image
+      shell: bash
+      run: |
+        echo "os=${ImageOS:-unknown}" >> "$GITHUB_OUTPUT"
+        echo "version=${ImageVersion:-unknown}" >> "$GITHUB_OUTPUT"
+
+    - name: Keep apt's downloads for the cache
+      if: inputs.browser != ''
+      shell: bash
+      # Outside the home folder, which apt's download user (_apt) cannot enter.
+      run: |
+        dir=/var/cache/open-file-apt
+        sudo mkdir -p "$dir/partial"
+        sudo chown "$USER" "$dir"
+        sudo chown _apt "$dir/partial"
+        printf '%s\n' \
+          "Dir::Cache::Archives \"$dir/\";" \
+          'APT::Keep-Downloaded-Packages "true";' \
+          'Binary::apt::APT::Keep-Downloaded-Packages "true";' \
+          | sudo tee /etc/apt/apt.conf.d/90-open-file-cache > /dev/null
+
+    - name: Restore the browser's system packages
+      if: inputs.browser != ''
+      uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
+      with:
+        path: /var/cache/open-file-apt/*.deb
+        key: apt-${{ steps.image.outputs.os }}-${{ inputs.browser }}-${{ steps.playwright.outputs.version }}-${{ steps.image.outputs.version }}
+        restore-keys: |
+          apt-${{ steps.image.outputs.os }}-${{ inputs.browser }}-
+
     - name: Restore the Playwright browser
       if: inputs.browser != ''
       id: browser-cache
@@ -80,17 +117,25 @@ runs:
         path: ~/.cache/ms-playwright
         key: playwright-${{ runner.os }}-${{ inputs.browser }}-${{ steps.playwright.outputs.version }}
 
+    # Each install has 15 minutes (and a minute more to stop): one that stalls fails here, in time
+    # to re-run, rather than taking the job's whole 30.
     - name: Install the Playwright browser
       if: inputs.browser != '' && steps.browser-cache.outputs.cache-hit != 'true'
       shell: bash
       env:
         BROWSER: ${{ inputs.browser }}
-      run: npx playwright install --with-deps "$BROWSER"
+      run: timeout -k 1m 15m npx playwright install --with-deps "$BROWSER"
 
-    # The cache holds the browser, not the system libraries it needs.
+    # The browser comes from its cache; its system libraries are installed from the packages above.
     - name: Install the browser's system libraries
       if: inputs.browser != '' && steps.browser-cache.outputs.cache-hit == 'true'
       shell: bash
       env:
         BROWSER: ${{ inputs.browser }}
-      run: npx playwright install-deps "$BROWSER"
+      run: timeout -k 1m 15m npx playwright install-deps "$BROWSER"
+
+    # Versions the mirror no longer has leave the cache, so it keeps one set rather than every set.
+    - name: Drop superseded packages from the cache
+      if: inputs.browser != ''
+      shell: bash
+      run: sudo apt-get autoclean -qq

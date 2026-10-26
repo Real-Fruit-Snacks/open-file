@@ -56,7 +56,8 @@ test.describe('analysis board', () => {
     await page.getByRole('button', { name: 'Load', exact: true }).click();
     await expect(page.locator('.analyze__opening')).toContainText('Ruy Lopez');
     await expect(page.locator('.treemoves')).toContainText('Bc4');
-    // Moves are buttons with spoken names ("2. bishop to c4"); find this one by its notation.
+    // Moves are buttons named as written, then in words ("2. Bc4, bishop f1 to c4"); find this
+    // one by its notation.
     await page.locator('.treemoves__move').filter({ hasText: 'Bc4' }).click();
     await expect(page.locator('.analyze__opening')).toContainText('Bishop’s Opening');
     await page.getByRole('button', { name: 'Make main line' }).click();

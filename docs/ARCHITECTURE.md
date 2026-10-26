@@ -376,8 +376,10 @@ from settings too: `draggable`/`selectable` follow the move method, the magnifie
 events while Chessground reports a drag in progress.
 
 Move notation is a display concern: `src/chess/notation.ts` splits a SAN move into piece letters
-and the rest, and `San.tsx` draws each letter as a `piece` element from the active set (with the
-letter kept in a visually hidden span, so screen readers, searches and copying still see "Nf3");
+and the rest, and `San.tsx` draws each letter as a `piece` element from the active set, with the
+letter inside it in transparent ink, so screen readers, searches and copying still see "Nf3", and a
+control that shows a move contains its text in either notation (WCAG 2.5.3, _Label in Name_: a
+move in the game tree is named "12. Nf3, knight g1 to f3", the move as written, then in words).
 `Notated` does the same for moves inside prose. Stored games, PGN and share links always use
 letters.
 

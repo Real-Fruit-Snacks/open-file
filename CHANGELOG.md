@@ -6,6 +6,35 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.32.1] - 2026-10-26
+
+### Fixed
+
+- **Names that say what is shown.** A control's name now contains the text it shows, so a learner
+  using speech can say what they see (WCAG 2.5.3, _Label in Name_):
+  - a move in the game tree is named as written, then in words: "12. Nf3, knight g1 to f3";
+  - with figurines on, a move's letter is inside the drawn piece, so an engine line's "Play Nf3"
+    matches the move it shows;
+  - the edge labels of the tap-to-move board (blind puzzles, the vision drill, the board editor)
+    are drawn by the stylesheet, so a square's button is named by its square alone ("a8, black
+    rook"), not by the label printed in its corner;
+  - quick search's results are named title first, then what they show under it, then their kind:
+    "Mate in 1, Deliver checkmate immediately, Puzzles";
+  - a course's rows are named in the order they show, title first;
+  - a simul's board buttons read "1 Your move" as they show it.
+- **Figurines in print and in find-in-page.** A printed move shows its piece letter (printing leaves
+  the drawn piece out), and the browser's find no longer paints the hidden letter over the piece.
+
+### Changed
+
+- **Dependencies.** axe-core 4.14 (which checks _Label in Name_ as part of WCAG 2.1 A), Playwright
+  1.64.1, React 19.3.1, React Router 8.5, zustand 5.0.16, Chessground 10.5, Vite 8.3.5,
+  Vitest 5.0.5, ESLint 10.13, typescript-eslint 8.72, knip 6.43, Prettier 3.9.10, jsdom 30.1.3,
+  and the lockfile's undici, serialize-javascript, fast-uri and zod, which `npm audit` flagged.
+- **CI.** The packages a browser needs from Ubuntu are kept in the Actions cache, so a run downloads
+  only those that changed since, and each install has 15 minutes: a slow Ubuntu mirror held two
+  WebKit shards past their 30 minutes on 26 October.
+
 ## [0.32.0] - 2026-10-26
 
 Open File takes on the RFS brand ([Real-Fruit-Snacks/.github](https://github.com/Real-Fruit-Snacks/.github)):

@@ -5,16 +5,13 @@ import './notation.css';
 
 /**
  * Moves shown in the current notation. With figurines on, the piece letter is
- * drawn as the piece itself from whichever piece set is active, and the letter
- * stays in the DOM for screen readers, searches and copying.
+ * drawn as the piece itself from whichever piece set is active. The letter is
+ * inside the drawing, in transparent ink: screen readers, searches and copying
+ * get it, and the move's text is the same in either notation, so a button that
+ * shows a move can be named by it (WCAG 2.5.3, Label in Name).
  */
 function Figurine({ piece }: { piece: PieceLetter }) {
-  return (
-    <>
-      <piece className={`white ${PIECE_ROLES[piece]} san__piece`} aria-hidden="true" />
-      <span className="sr-only">{piece}</span>
-    </>
-  );
+  return <piece className={`white ${PIECE_ROLES[piece]} san__piece`}>{piece}</piece>;
 }
 
 /** One move. */

@@ -56,7 +56,8 @@ test.describe('0.27.1 polish', () => {
 
     await page.goto('/learn/course/first-steps');
     const row = page.getByRole('link', {
-      name: /^Lesson: The board and the notation, \d+ min · Rules$/,
+      // As the row shows it, title first (WCAG 2.5.3, Label in Name, since 0.32.1).
+      name: /^The board and the notation, Lesson, \d+ min · Rules$/,
     });
     await expect(row.locator('.course__item-title')).toHaveText('The board and the notation');
     await expect(row).toContainText(/Lesson · \d+ min · Rules/);

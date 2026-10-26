@@ -1,10 +1,9 @@
 /*
  * Figurine notation: the piece letter of a move is drawn as the piece itself,
  * from whichever piece set is active (the piece CSS looks for `piece` elements
- * inside a `.cg-wrap`). The letter stays in the DOM for screen readers and copying.
+ * inside a `.cg-wrap`). The letter is the piece's own text, in transparent ink,
+ * so it is read, found and copied but only the drawing shows.
  */
-/* Relative, so the visually hidden letters (absolutely positioned) stay inside
-   the move and never widen the page. */
 .san.cg-wrap {
   display: inline;
   position: relative;
@@ -25,4 +24,32 @@
   z-index: auto;
   will-change: auto;
   pointer-events: none;
+  overflow: hidden;
+  color: transparent;
+  line-height: 1.2em;
+  text-align: center;
+}
+
+/* Find in page paints a match in its own colours: keep the letter out of sight there too. */
+.san .san__piece::search-text {
+  color: transparent;
+}
+
+/* Printing leaves background pictures out, the figurine with them: print the letter instead. */
+@media print {
+  .san .san__piece {
+    width: auto;
+    height: auto;
+    background: none;
+    color: inherit;
+    vertical-align: baseline;
+  }
+}
+
+/* High contrast would ink the letter over the drawing: keep it transparent. */
+@media (forced-colors: active) {
+  .san .san__piece {
+    forced-color-adjust: none;
+    color: transparent;
+  }
 }

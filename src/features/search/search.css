@@ -175,6 +175,10 @@
   visibility: hidden;
 }
 
+.search__enter .kbd::before {
+  content: attr(data-key);
+}
+
 .search__option.is-active .search__enter {
   visibility: visible;
 }

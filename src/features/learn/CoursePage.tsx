@@ -106,11 +106,12 @@ export default function CoursePage() {
                   <Link
                     to={item.to}
                     className="course__item"
-                    // The name carries what the row shows: the kind and title, whether it
-                    // is done, and the detail ("3 of 5 solved", "5 min · Rules").
-                    aria-label={`${item.kind}: ${item.title}${item.done ? ' (done)' : ''}, ${item.detail}`}
+                    // The name is what the row shows, in its order (WCAG 2.5.3, Label in Name):
+                    // the title, the kind and the detail ("3 of 5 solved", "5 min · Rules"), then
+                    // whether it is done, which the row shows with its tick.
+                    aria-label={`${item.title}, ${item.kind}, ${item.detail}${item.done ? ', done' : ''}`}
                   >
-                    <span className="course__item-title">{item.title}</span>
+                    <span className="course__item-title">{item.title}</span>{' '}
                     <span className="small muted">
                       {item.kind} · {item.detail}
                     </span>

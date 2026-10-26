@@ -289,7 +289,7 @@ test.describe('courses', () => {
     await expect(page.getByRole('heading', { level: 1, name: 'First steps' })).toBeVisible();
     await expect(page.getByTestId('unit-rules')).toContainText('The board');
     await expect(
-      page.getByRole('link', { name: /Lesson: The board and the notation \(done\)/ }),
+      page.getByRole('link', { name: /^The board and the notation, Lesson, .*, done$/ }),
     ).toBeVisible();
     await expect(page.getByTestId('unit-material')).toHaveClass(/is-locked/);
     await expect(page.getByTestId('course-continue')).toHaveText('Continue');

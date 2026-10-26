@@ -257,7 +257,7 @@ test.describe('daily opening', () => {
     await expect(tiles.nth(0)).toHaveText('e4: in the right place');
     await expect(tiles.nth(4)).toContainText(': not in the line');
     for (let i = 0; i < 5; i++) {
-      // One spoken state per tile (a figurine move adds its own hidden letter as well).
+      // One spoken state per tile.
       await expect(
         tiles.nth(i).locator('.sr-only', { hasText: /right place|in the line/ }),
       ).toHaveCount(1);

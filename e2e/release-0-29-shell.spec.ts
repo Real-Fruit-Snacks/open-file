@@ -50,6 +50,14 @@ async function seed(page: Page, seen: string | null = VERSION) {
 const searchDialog = (page: Page) => page.getByRole('dialog', { name: 'Search' });
 const searchField = (page: Page) => page.getByRole('combobox', { name: 'Search the app' });
 const searchButton = (page: Page) => page.getByRole('button', { name: 'Search', exact: true });
+/**
+ * An option's name: its title, what it shows under the title if anything, then its kind
+ * ("Puzzle Rush, Puzzles", or "Learn, Lessons and courses, Page").
+ */
+const optionName = (title: string, kind: string) => {
+  const literal = (text: string) => text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  return new RegExp(`^${literal(title)}, (.+, )?${literal(kind)}$`);
+};
 
 /** The option the field's aria-activedescendant points at. */
 async function activeOptionName(page: Page): Promise<string | null> {
@@ -73,7 +81,9 @@ test.describe('quick search', () => {
     await expect(searchField(page)).toBeFocused();
     await searchField(page).fill('castling lesson');
     await expect(
-      page.getByRole('option', { name: 'Castling, en passant and promotion, Lesson' }),
+      page.getByRole('option', {
+        name: optionName('Castling, en passant and promotion', 'Lesson'),
+      }),
     ).toBeVisible();
     await page.keyboard.press('Enter');
     await expect(page).toHaveURL(/\/learn\/special-moves$/);
@@ -86,7 +96,9 @@ test.describe('quick search', () => {
 
     await page.keyboard.press('Control+K');
     await searchField(page).fill('caro');
-    await expect(page.getByRole('option', { name: 'Caro-Kann Defence, Opening' })).toBeVisible();
+    await expect(
+      page.getByRole('option', { name: optionName('Caro-Kann Defence', 'Opening') }),
+    ).toBeVisible();
     await page.keyboard.press('Enter');
     await expect(page).toHaveURL(/\/openings\/caro-kann$/);
 
@@ -106,23 +118,26 @@ test.describe('quick search', () => {
     await expect(searchDialog(page)).toBeVisible();
     // Before anything is typed: the places to go.
     const places = page.getByRole('listbox', { name: 'Places to go' });
-    await expect(places.getByRole('option', { name: 'Learn, Page' })).toBeVisible();
+    await expect(places.getByRole('option', { name: optionName('Learn', 'Page') })).toBeVisible();
     await expect(places.getByRole('option')).toHaveCount(14);
 
     await searchField(page).fill('rush');
     await expect(page.getByRole('listbox', { name: 'Results' })).toBeVisible();
     // The results grow as the lists arrive (the puzzle themes wait for the puzzle index): the
     // arrows move through what is shown, so wait for the second result before moving to it.
-    await expect(page.getByRole('option', { name: 'Crushing, Puzzles' })).toBeVisible();
-    await expect.poll(() => activeOptionName(page)).toBe('Puzzle Rush, Puzzles');
+    await expect(
+      page.getByRole('option', { name: optionName('Crushing', 'Puzzles') }),
+    ).toBeVisible();
+    await expect.poll(() => activeOptionName(page)).toMatch(optionName('Puzzle Rush', 'Puzzles'));
     await page.keyboard.press('ArrowDown');
-    await expect.poll(() => activeOptionName(page)).not.toBe('Puzzle Rush, Puzzles');
+    await expect
+      .poll(() => activeOptionName(page))
+      .not.toMatch(optionName('Puzzle Rush', 'Puzzles'));
     await page.keyboard.press('ArrowUp');
-    await expect.poll(() => activeOptionName(page)).toBe('Puzzle Rush, Puzzles');
-    await expect(page.getByRole('option', { name: 'Puzzle Rush, Puzzles' })).toHaveAttribute(
-      'aria-selected',
-      'true',
-    );
+    await expect.poll(() => activeOptionName(page)).toMatch(optionName('Puzzle Rush', 'Puzzles'));
+    await expect(
+      page.getByRole('option', { name: optionName('Puzzle Rush', 'Puzzles') }),
+    ).toHaveAttribute('aria-selected', 'true');
     await page.keyboard.press('Enter');
     await expect(page).toHaveURL(/\/puzzles\/rush$/);
 
@@ -131,7 +146,7 @@ test.describe('quick search', () => {
     await expect(searchField(page)).toHaveValue('rush');
     await page.keyboard.type('ghost');
     await expect(searchField(page)).toHaveValue('ghost');
-    await page.getByRole('option', { name: 'Ghost Knight, Arcade game' }).click();
+    await page.getByRole('option', { name: optionName('Ghost Knight', 'Arcade game') }).click();
     await expect(page).toHaveURL(/\/arcade\/ghost-knight$/);
     await expect(searchDialog(page)).toBeHidden();
   });
@@ -142,7 +157,7 @@ test.describe('quick search', () => {
     await expect(page.getByTestId('home-today')).toBeVisible();
     await page.keyboard.press('Control+K');
     await searchField(page).fill('zugzwang');
-    await page.getByRole('option', { name: 'Zugzwang, Reference' }).click();
+    await page.getByRole('option', { name: optionName('Zugzwang', 'Reference') }).click();
     await expect(page).toHaveURL(/\/reference#glossary-zugzwang$/);
     await expect(page.locator('#glossary-zugzwang')).toBeInViewport();
   });
@@ -283,7 +298,7 @@ test.describe('quick search on a 320px phone', () => {
     expect(box?.x ?? -1).toBeGreaterThanOrEqual(0);
     expect((box?.x ?? 0) + (box?.width ?? 999)).toBeLessThanOrEqual(320);
     await searchField(page).fill('daily');
-    await page.getByRole('option', { name: 'Daily puzzle, Puzzles' }).tap();
+    await page.getByRole('option', { name: optionName('Daily puzzle', 'Puzzles') }).tap();
     await expect(page).toHaveURL(/\/puzzles\/daily$/);
   });
 });

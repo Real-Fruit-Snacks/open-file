@@ -30,12 +30,12 @@ describe('CoursePage', () => {
     expect(meta).toBeDefined();
     renderCourse('/learn/course/first-steps');
     const link = screen.getByRole('link', {
-      name: `Lesson: ${meta?.title}, ${meta?.minutes} min · ${meta?.category}`,
+      name: `${meta?.title}, Lesson, ${meta?.minutes} min · ${meta?.category}`,
     });
     expect(link).toHaveAttribute('href', '/learn/the-board?course=first-steps');
     expect(
       screen.getByRole('link', {
-        name: 'Checkpoint: Solve 5 Hanging piece puzzles, 0 of 5 solved',
+        name: 'Solve 5 Hanging piece puzzles, Checkpoint, 0 of 5 solved',
       }),
     ).toBeInTheDocument();
   });
@@ -48,7 +48,7 @@ describe('CoursePage', () => {
     renderCourse('/learn/course/first-steps');
     expect(
       screen.getByRole('link', {
-        name: `Lesson: ${meta?.title} (done), ${meta?.minutes} min · ${meta?.category}`,
+        name: `${meta?.title}, Lesson, ${meta?.minutes} min · ${meta?.category}, done`,
       }),
     ).toBeInTheDocument();
   });
@@ -60,7 +60,7 @@ describe('CoursePage: marking lessons done', () => {
   it('has a done check for every lesson, and only for lessons', () => {
     renderCourse('/learn/course/first-steps');
     const checks = screen.getAllByRole('checkbox', { name: /^Mark as done: / });
-    const lessons = screen.getAllByRole('link', { name: /^Lesson: / });
+    const lessons = screen.getAllByRole('link', { name: /, Lesson, / });
     expect(checks).toHaveLength(lessons.length);
     expect(screen.queryByRole('checkbox', { name: /Coordinates/ })).toBeNull();
   });

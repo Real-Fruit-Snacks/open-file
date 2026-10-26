@@ -339,7 +339,9 @@ export default function SearchDialog({
                         id={optionId(entry)}
                         role="option"
                         aria-selected={isActive}
-                        aria-label={`${entry.title}, ${KINDS[entry.kind].label}`}
+                        // What the option shows, in its order (WCAG 2.5.3, Label in Name), then
+                        // what kind of place it is.
+                        aria-label={`${entry.title}${entry.detail ? `, ${entry.detail.replace(/\.$/, '')}` : ''}, ${KINDS[entry.kind].label}`}
                         tabIndex={-1}
                         className={isActive ? 'search__option is-active' : 'search__option'}
                         onClick={() => leaveFor(entry)}
@@ -351,13 +353,15 @@ export default function SearchDialog({
                         <span className="search__text">
                           <span className="search__title">
                             <Highlighted text={entry.title} tokens={tokens} />
-                          </span>
+                          </span>{' '}
                           {entry.detail ? (
                             <span className="search__detail">{entry.detail}</span>
                           ) : null}
                         </span>
+                        {/* The key that opens the active option, drawn by CSS: a hint beside
+                            the option, not part of what it is called. */}
                         <span className="search__enter" aria-hidden="true">
-                          <Kbd>Enter</Kbd>
+                          <kbd className="kbd" data-key="Enter" />
                         </span>
                       </Link>
                     );

@@ -138,15 +138,21 @@ export const ClickBoard = memo(function ClickBoard({
                 aria-pressed={mark === 'selected' ? true : undefined}
                 data-square={square}
               >
+                {/* The board's edge labels, drawn by CSS from data-coord: they mark the board, not
+                    the square's button, whose name ("a8, black rook") already starts with them. */}
                 {coordinates && file === files[0] ? (
-                  <span className="clickboard__coord clickboard__coord--rank" aria-hidden="true">
-                    {rank}
-                  </span>
+                  <span
+                    className="clickboard__coord clickboard__coord--rank"
+                    data-coord={rank}
+                    aria-hidden="true"
+                  />
                 ) : null}
                 {coordinates && rank === ranks[ranks.length - 1] ? (
-                  <span className="clickboard__coord clickboard__coord--file" aria-hidden="true">
-                    {file}
-                  </span>
+                  <span
+                    className="clickboard__coord clickboard__coord--file"
+                    data-coord={file}
+                    aria-hidden="true"
+                  />
                 ) : null}
                 {piece ? <piece className={`${piece.role} ${piece.color}`} /> : null}
               </button>

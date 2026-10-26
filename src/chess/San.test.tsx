@@ -8,12 +8,13 @@ describe('San and Notated', () => {
     useSettings.getState().reset();
   });
 
-  it('draws the piece from the piece set and keeps the letter for screen readers', () => {
+  it('draws the piece from the piece set and keeps the letter inside it, as the move’s text', () => {
     const { container } = render(<San san="Nf3" />);
     const piece = container.querySelector('piece');
     expect(piece).toHaveClass('white', 'knight', 'san__piece');
-    expect(piece).toHaveAttribute('aria-hidden', 'true');
-    expect(container.querySelector('.sr-only')).toHaveTextContent('N');
+    // Not hidden: the letter in it is what screen readers read and a button showing it is named by.
+    expect(piece).not.toHaveAttribute('aria-hidden');
+    expect(piece).toHaveTextContent('N');
     // The whole move is still there as text.
     expect(container.textContent).toBe('Nf3');
     expect(container.querySelector('.san')).toHaveClass('cg-wrap');

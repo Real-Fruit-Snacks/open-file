@@ -73,14 +73,22 @@ export function TreeMoveList({
     const judgementGlyph = judgement && !glyphs ? JUDGEMENT_GLYPH[judgement] : '';
     const number = moveNumberFor(node, forceNumber);
     const shownGlyph = glyphs || judgementGlyph;
-    // Spoken: "12. Knight g1 to f3, check, blunder" rather than the raw "12. Nf3+??".
+    // The name starts with what the button shows, as it is written (WCAG 2.5.3, Label in
+    // Name: a learner using speech says what they see), then says the move in words:
+    // "12. Nf3, knight g1 to f3, check, blunder", "12 Black Nc6, knight b8 to c6".
     const parentFen = node.parent?.fen ?? '';
     const fenParts = parentFen.split(' ');
-    const prefix = fenParts[1] === 'b' ? `${fenParts[5] ?? '1'} Black` : `${fenParts[5] ?? '1'}.`;
-    const words = describeSan(parentFen, node.san) ?? node.san;
+    const black = fenParts[1] === 'b';
+    const described = describeSan(parentFen, node.san);
+    // The check and mate signs are said in the words, when there are words.
+    const written = described ? node.san.replace(/[+#]+$/, '') : node.san;
+    const lead = number
+      ? `${number} ${written}${black ? ', Black' : ''}`
+      : `${fenParts[5] ?? '1'} Black ${written}`;
+    const words = described ? `, ${described.charAt(0).toLowerCase()}${described.slice(1)}` : '';
     const glyphWords = shownGlyph ? `, ${GLYPH_WORDS[shownGlyph] ?? shownGlyph}` : '';
     const flagged = marked?.has(node.id) ?? false;
-    const spoken = `${prefix} ${words}${glyphWords}${flagged ? ', marked' : ''}`;
+    const spoken = `${lead}${words}${glyphWords}${flagged ? ', marked' : ''}`;
     return (
       <button
         type="button"

@@ -118,9 +118,13 @@ describe('SearchDialog', () => {
     expect(field()).toHaveAttribute('aria-expanded', 'true');
     expect(field()).toHaveAttribute('aria-autocomplete', 'list');
     expect(within(listbox).getByRole('group', { name: 'Go to' })).toBeInTheDocument();
-    expect(optionNames().slice(0, 3)).toEqual(['Learn, Page', 'Puzzles, Page', 'Drills, Page']);
+    expect(optionNames().slice(0, 3)).toEqual([
+      'Learn, Lessons and courses, Page',
+      'Puzzles, Tactics from real games, Page',
+      'Drills, Vision and endgames, Page',
+    ]);
     // The first place is the one Enter opens.
-    expect(activeOption()).toHaveAccessibleName('Learn, Page');
+    expect(activeOption()).toHaveAccessibleName('Learn, Lessons and courses, Page');
     expect(activeOption()).toHaveAttribute('aria-selected', 'true');
     await screen.findByRole('dialog');
   });
@@ -128,7 +132,9 @@ describe('SearchDialog', () => {
   it('finds as you type, groups by kind and says how many once typing pauses', async () => {
     renderSearch();
     type('zebra');
-    await waitFor(() => expect(optionNames()).toContain('Zebra openings, Lesson'));
+    await waitFor(() =>
+      expect(optionNames()).toContain('Zebra openings, First of the zebras, Lesson'),
+    );
     const group = screen.getByRole('group', { name: 'Lessons' });
     expect(within(group).getAllByRole('option')).toHaveLength(3);
     expect(screen.getByRole('listbox', { name: 'Results' })).toBeInTheDocument();
@@ -149,20 +155,20 @@ describe('SearchDialog', () => {
     await waitFor(() => expect(optionNames()).toHaveLength(3));
     // Equal matches: the shorter title first.
     expect(optionNames()).toEqual([
-      'Zebra tactics, Lesson',
-      'Zebra endgames, Lesson',
-      'Zebra openings, Lesson',
+      'Zebra tactics, Third of the zebras, Lesson',
+      'Zebra endgames, Second of the zebras, Lesson',
+      'Zebra openings, First of the zebras, Lesson',
     ]);
-    expect(activeOption()).toHaveAccessibleName('Zebra tactics, Lesson');
+    expect(activeOption()).toHaveAccessibleName('Zebra tactics, Third of the zebras, Lesson');
     press('ArrowDown');
-    expect(activeOption()).toHaveAccessibleName('Zebra endgames, Lesson');
+    expect(activeOption()).toHaveAccessibleName('Zebra endgames, Second of the zebras, Lesson');
     expect(activeOption()).toHaveAttribute('aria-selected', 'true');
     press('ArrowDown');
     press('ArrowDown');
     // Past the last, back to the first; and up from the first, the last.
-    expect(activeOption()).toHaveAccessibleName('Zebra tactics, Lesson');
+    expect(activeOption()).toHaveAccessibleName('Zebra tactics, Third of the zebras, Lesson');
     press('ArrowUp');
-    expect(activeOption()).toHaveAccessibleName('Zebra openings, Lesson');
+    expect(activeOption()).toHaveAccessibleName('Zebra openings, First of the zebras, Lesson');
     expect(screen.getAllByRole('option', { selected: true })).toHaveLength(1);
     press('Enter');
     await waitFor(() => expect(screen.getByTestId('where')).toHaveTextContent('/learn/zebra-one'));
@@ -176,16 +182,18 @@ describe('SearchDialog', () => {
     await waitFor(() => expect(optionNames()).toHaveLength(3));
     press('ArrowDown');
     press('ArrowDown');
-    expect(activeOption()).toHaveAccessibleName('Zebra openings, Lesson');
+    expect(activeOption()).toHaveAccessibleName('Zebra openings, First of the zebras, Lesson');
     type('zebr');
-    expect(activeOption()).toHaveAccessibleName('Zebra tactics, Lesson');
+    expect(activeOption()).toHaveAccessibleName('Zebra tactics, Third of the zebras, Lesson');
   });
 
   it('opens a result that is clicked, and the pointer chooses as it moves', async () => {
     const { onClose } = renderSearch();
     type('zebra');
     await waitFor(() => expect(optionNames()).toHaveLength(3));
-    const tactics = screen.getByRole('option', { name: 'Zebra tactics, Lesson' });
+    const tactics = screen.getByRole('option', {
+      name: 'Zebra tactics, Third of the zebras, Lesson',
+    });
     fireEvent.pointerMove(tactics, { clientX: 10, clientY: 20 });
     expect(activeOption()).toBe(tactics);
     fireEvent.click(tactics);
@@ -289,7 +297,9 @@ describe('SearchDialog', () => {
     });
     renderSearch();
     type('zebra gambit');
-    await waitFor(() => expect(optionNames()[0]).toBe('Zebra Gambit, Opening'));
+    await waitFor(() =>
+      expect(optionNames()[0]).toBe('Zebra Gambit, Your repertoire · Black, Opening'),
+    );
     expect(screen.getByText('Your repertoire · Black')).toBeInTheDocument();
     press('Enter');
     await waitFor(() =>

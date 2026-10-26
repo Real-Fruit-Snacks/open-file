@@ -637,7 +637,8 @@ function SimulStrip({
             aria-label={`Board ${b.index + 1}: ${STATE_LABEL[kind].toLowerCase()}`}
             onClick={() => onSelect(b.index)}
           >
-            <span className="simul__chip-number">{b.index + 1}</span>
+            {/* A space between the two, so the shown text reads "1 Your move" as the name does. */}
+            <span className="simul__chip-number">{b.index + 1}</span>{' '}
             <span className="simul__chip-state" aria-hidden="true">
               {STATE_LABEL[kind]}
             </span>
