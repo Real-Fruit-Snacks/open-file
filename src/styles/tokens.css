@@ -1,5 +1,5 @@
 /*
- * Design tokens, from the RFS brand (github.com/Real-Fruit-Snacks/rfs-brand, BRAND.md): two
+ * Design tokens, from the RFS brand (github.com/Real-Fruit-Snacks/.github, BRAND.md): two
  * themes, Nightshift (dark, the default) and Dayshift (light), one accent, Ember. Nightshift
  * holds unless the device asks for light, or the learner picks a scheme (data-theme on <html>).
  *

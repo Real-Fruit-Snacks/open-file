@@ -119,7 +119,9 @@ jobs:
   e2e:
     name: End-to-end (${{ matrix.project }}, shard ${{ matrix.shard }} of ${{ matrix.shards }})
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    # Room for the browser's packages to come from a slow mirror's fallback (up to 18 minutes,
+    # see .github/actions/setup) and the slowest shard's tests.
+    timeout-minutes: 40
     needs: build
     strategy:
       fail-fast: false

@@ -1469,7 +1469,7 @@ warning gives way to a confirmation.
   stylesheet that page does not load. Styles shared by several pages belong in `ui.css` or
   `global.css`; a component that has its own rules imports its stylesheet itself.
 - **The look.** `src/styles/tokens.css` is the RFS brand
-  ([BRAND.md](https://github.com/Real-Fruit-Snacks/rfs-brand/blob/main/BRAND.md)) as CSS variables:
+  ([BRAND.md](https://github.com/Real-Fruit-Snacks/.github/blob/main/BRAND.md)) as CSS variables:
   Nightshift in `:root`, Dayshift under `prefers-color-scheme: light` (unless `data-theme='dark'`)
   and under `data-theme='light'`. A colour that differs between the schemes is a token. Ember
   (`--accent`) is a screen's main action, so the buttons on a list of cards are secondary; Amber

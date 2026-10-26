@@ -6,6 +6,13 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- **CI, again.** Azure's Ubuntu mirror crawled on 0.32.1's first run too, before the cache held
+  anything. A browser's packages now get 6 minutes from it, then 12 from Ubuntu's own archive with
+  what was already fetched in hand; the cache keeps whatever was downloaded even when a job fails,
+  so the next run starts from it; and an end-to-end job has 40 minutes.
+
 ## [0.32.1] - 2026-10-26
 
 ### Fixed
