@@ -10,5 +10,5 @@ bullets = [
 ]
 
 [panel]
-kind = "art"
-file = "cover-art.svg"
+kind = "screenshot"
+file = "cover-shot-{theme}.png"   # the forks lesson, 1100x843 at 2x, scaled to 960x736

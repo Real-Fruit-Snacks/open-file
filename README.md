@@ -4,7 +4,7 @@ Learn and play chess in your browser, offline
 
 <picture>
   <source media="(prefers-color-scheme: dark)" srcset="docs/assets/cover-dark.svg">
-  <img alt="open-file: a rated puzzle on the board, a knight fork shown as an arrow, with the solution and Stockfish's evaluation beside it" src="docs/assets/cover-light.svg" width="100%">
+  <img alt="open-file: the forks lesson, a knight on f6 checking the king and attacking the rook, with the coach explaining why it works" src="docs/assets/cover-light.svg" width="100%">
 </picture>
 
 Open **<https://real-fruit-snacks.github.io/open-file/>**. To keep it as an app, use the install button in the address bar (Chrome and Edge), _Share → Add to Home Screen_ (iPhone and iPad) or _Menu → Install app_ (Android). Everything it needs downloads on the first visit; after that it works offline, and _Download every puzzle_ in Settings keeps all 48,000 puzzles offline too.
