@@ -1,63 +1,21 @@
-<p align="center">
-  <a href="https://real-fruit-snacks.github.io/open-file/">
-    <img src="public/icons/icon-192.png" width="88" height="88" alt="Open File">
-  </a>
-</p>
+# open-file
 
-<h1 align="center">Open File</h1>
+Learn and play chess in your browser, offline
 
-<p align="center">
-  <strong>Learn, practise and play chess at any level — free, private, and fully offline.</strong>
-</p>
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/cover-dark.svg">
+  <img alt="open-file: a rated puzzle on the board, a knight fork shown as an arrow, with the solution and Stockfish's evaluation beside it" src="docs/assets/cover-light.svg" width="100%">
+</picture>
 
-<p align="center">
-  <a href="https://github.com/Real-Fruit-Snacks/open-file/actions/workflows/ci.yml"><img src="https://github.com/Real-Fruit-Snacks/open-file/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
-  <a href="https://github.com/Real-Fruit-Snacks/open-file/actions/workflows/deploy.yml"><img src="https://github.com/Real-Fruit-Snacks/open-file/actions/workflows/deploy.yml/badge.svg" alt="Deploy"></a>
-  <a href="https://github.com/Real-Fruit-Snacks/open-file/releases"><img src="https://img.shields.io/github/v/release/Real-Fruit-Snacks/open-file?display_name=tag&color=1f6f5b" alt="Latest release"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/licence-GPL--3.0--or--later-blue.svg" alt="Licence: GPL-3.0-or-later"></a>
-  <img src="https://img.shields.io/badge/PWA-works%20offline-1f6f5b" alt="PWA: works offline">
-</p>
+Open **<https://real-fruit-snacks.github.io/open-file/>**. To keep it as an app, use the install button in the address bar (Chrome and Edge), _Share → Add to Home Screen_ (iPhone and iPad) or _Menu → Install app_ (Android). Everything it needs downloads on the first visit; after that it works offline, and _Download every puzzle_ in Settings keeps all 48,000 puzzles offline too.
 
-<p align="center">
-  <a href="https://real-fruit-snacks.github.io/open-file/"><strong>Open the app</strong></a>
-  &nbsp;·&nbsp;
-  <a href="docs/FEATURES.md">Features</a>
-  &nbsp;·&nbsp;
-  <a href="docs/ARCHITECTURE.md">Architecture</a>
-  &nbsp;·&nbsp;
-  <a href="CONTRIBUTING.md">Contributing</a>
-  &nbsp;·&nbsp;
-  <a href="CHANGELOG.md">Changelog</a>
-</p>
+Or take the whole app with you: every [release](https://github.com/Real-Fruit-Snacks/open-file/releases/latest) has `open-file-<version>-offline.zip` (about 190 MB). Unzip it and double-click **Start Open File** (the `.exe` on Windows, the `.command` on macOS, `start-open-file.sh` on Linux); it opens at `http://localhost:8064/` with no internet connection.
 
-<p align="center">
-  <img src="docs/screenshots/hero.webp" width="880" alt="Open File: a rated puzzle on a laptop, and a game against the engine on a phone in Nightshift, the dark theme">
-</p>
+A complete chess trainer in one web app: lessons, puzzles, drills, opening repertoires, a Stockfish opponent with a coach, a human-like opponent that plays like a person rated 600 to 2600, game analysis and an arcade of chess games, with nothing to sign up for. No ads and no tracking; progress lives on your device. Sync between devices is end-to-end encrypted with a recovery phrase only you hold, and optional network features are off by default.
 
-A complete chess trainer in a single web app: lessons, 48,000 puzzles, drills, opening repertoires,
-a Stockfish opponent with a coach, a human-like opponent that plays like a person of any rating from
-600 to 2600, game analysis and an arcade of chess games — with nothing to sign up for. It runs
-entirely in your browser, installs as an app and keeps working on a plane.
+The name: in chess, an open file is a column with no pawns on it, the road a rook takes into the game.
 
-The name: in chess, an open file is a column with no pawns on it, the road a rook takes into the
-game. This one is open too: free, open source, and yours to run anywhere.
-
-## Why Open File
-
-- **Everything in one place.** Learn a concept, drill it, solve puzzles on it, play it against the
-  engine and review the game — every part links to the others, and Ctrl+K finds any lesson,
-  opening, puzzle theme or setting.
-- **Yours, and only yours.** No sign-up, no ads, no tracking. Progress lives on your device. Sync
-  between devices is end-to-end encrypted with a recovery phrase only you hold, so the sync service
-  never sees your data; a backup is a file you keep; and you can connect your Lichess account.
-  Optional network features are off by default.
-- **Works everywhere.** Phones, tablets and desktops, dark or light, online and offline, with
-  screen readers and the keyboard.
-- **Honest chess.** Every lesson task, endgame drill position, study move and repertoire move is
-  checked with Stockfish in CI, the puzzle rating is Glicko-2, and the coach explains mistakes with
-  rules, not guesswork.
-
-## Highlights
+## What's in it
 
 **Learn** — 75 interactive lessons in three courses, each a conversation with a coach who says why
 every move works, answers your mistakes with the reply that punishes them, and plays combinations
@@ -139,78 +97,39 @@ Army Draft, Blindfold, Arbiter and Who Stands Better? can also be played against
   </tr>
 </table>
 
-The full list, section by section, is in [docs/FEATURES.md](docs/FEATURES.md).
+Every section in detail: [docs/FEATURES.md](docs/FEATURES.md). How it is built: [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md). Contributing, especially chess content: [CONTRIBUTING.md](CONTRIBUTING.md) and the [content guide](docs/CONTENT_GUIDE.md).
 
-## Getting started
+## Tested on
 
-### Use it
+- Any evergreen browser with WebAssembly and Web Workers: Chrome and Edge 111+, Firefox 121+, Safari 16.4+ (iOS 16.4+)
+- CI on every push: lint, typecheck, unit tests with a coverage floor, the puzzle data, the end-to-end suite on desktop and phone Chromium, Firefox and WebKit, visual snapshots and Lighthouse; a separate workflow checks every lesson, drill, study and repertoire move with Stockfish ([what CI runs](CONTRIBUTING.md#what-ci-runs))
+- _Not_ tested: browsers older than those above, which lack the features the engine needs
 
-Open **<https://real-fruit-snacks.github.io/open-file/>**. To install it as an app, use the
-install button in the address bar (Chrome and Edge), _Share → Add to Home Screen_ (iPhone and iPad)
-or _Menu → Install app_ (Android). Everything the app needs downloads on the first visit, after
-which it works offline; _Download every puzzle_ in Settings keeps all 48,000 puzzles offline too.
+## Known issues
 
-### Download it
+- Browsers give a site about 5 MB of local storage. The app caps what it keeps (recent puzzles, games, analyses) to stay inside it, and keeps running if a write no longer fits; a backup or device sync keeps the rest.
+- The human-like opponent (about 25 MB) and Stockfish's full network (about 99 MB) are optional downloads, kept on the device once fetched.
+- Device sync, live games and notifications while the app is closed need the relay. The public build uses mine; a fork either deploys its own or turns them off (see Configuration).
+- The interface is in British English only.
+- Four piece sets (California, Maestro, Staunty, Cardinal) are CC BY-NC-SA 4.0: a commercial fork must remove them.
 
-Every [release](https://github.com/Real-Fruit-Snacks/open-file/releases/latest) has an offline
-copy, `open-file-<version>-offline.zip` (about 190 MB): the whole app, with every lesson and
-puzzle, the full engine and the human-like opponent. Unzip it and double-click **Start Open
-File** (the `.exe` on Windows, the `.command` on macOS; `start-open-file.sh` on Linux). It
-opens in your browser at `http://localhost:8064/`, with no internet connection and nothing to
-install; the README inside says what to click the first time Windows or macOS asks about it.
+## Configuration
 
-### Run it locally
+Everything the app can be set to is under Settings, listed in [docs/FEATURES.md](docs/FEATURES.md). To run or host your own copy:
 
 ```bash
 git clone https://github.com/Real-Fruit-Snacks/open-file.git
 cd open-file
 npm install     # Node 22.22 or newer
 npm run dev     # downloads the engine and the human-like opponent on first run, then serves http://localhost:5173
+npm run check   # CI's quality and build gates: lint, dead code, format, typecheck, unit tests, build, bundle budget
 ```
 
-`npm run check` runs CI's quality and build gates locally: lint, dead-code and dependency check,
-format check, typecheck, unit tests, a production build and the bundle budget. CI also holds the
-unit tests to a coverage floor, validates the puzzle data, and runs the end-to-end suite in four
-browser projects (desktop and phone Chromium, Firefox, WebKit), each split across several runners
-and merged into one report, a smoke test under the production
-base path, the visual snapshots and Lighthouse, and a separate workflow checks the chess content
-with Stockfish — see [what CI runs](CONTRIBUTING.md#what-ci-runs). The other scripts are listed in
-[CONTRIBUTING.md](CONTRIBUTING.md#scripts).
+To host a fork, enable its workflows on the **Actions** tab, set **Settings → Pages → Source** to **GitHub Actions**, and push to `main`; once CI passes, the deploy workflow publishes it, and a version tag publishes a release with the offline copy. Custom domains and other static hosts: [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
 
-### Host your own
+`src/site.config.ts` holds the name, URLs and the sync relay. Device sync, live games and pushed notifications go through a small relay of your own, a Cloudflare Worker (free plan) or a plain Node server: [relay/README.md](relay/README.md) shows how to deploy it and what it can and cannot see. Setting `syncRelay` to `''` leaves all three out.
 
-Fork the repository, enable its workflows on the **Actions** tab, set **Settings → Pages → Source**
-to **GitHub Actions**, and push to `main`. Once CI has passed, the deploy workflow builds the site
-with the right base path and deploys it; a version tag publishes a GitHub release with the offline copy attached. Custom domains
-and other static hosts are covered in [docs/DEPLOYMENT.md](docs/DEPLOYMENT.md).
-
-Sync between devices, live games and the notifications that come while the app is closed go through
-a tiny relay of your own: a Cloudflare Worker with D1 and Durable Objects on the free plan, or a
-plain Node server. [relay/README.md](relay/README.md) shows how to deploy it and what it can and
-cannot see. Setting `syncRelay` to `''` in `src/site.config.ts` leaves them all out.
-
-## Built with
-
-| Part            | Technology                                                                                                                                                                  |
-| --------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| App             | [React 19](https://react.dev), [TypeScript](https://www.typescriptlang.org), [Vite](https://vite.dev), Workbox                                                              |
-| Engine          | [Stockfish 19](https://stockfishchess.org) as WebAssembly in a worker: multi-threaded, full network optional                                                                |
-| Human-like play | [Maia-3](https://huggingface.co/UofTCSSLab/Maia3-5M) run by [ONNX Runtime Web](https://onnxruntime.ai) in a worker                                                          |
-| Board and chess | [Chessground](https://github.com/lichess-org/chessground), [chess.js](https://github.com/jhlywa/chess.js), [chessops](https://github.com/niklasf/chessops) (Chess960 rules) |
-| Data            | [Lichess](https://lichess.org) puzzle database and the chess-openings dataset (both CC0)                                                                                    |
-| Sync and live   | Web Crypto (HKDF, AES-GCM) on the device; a relay on Cloudflare Workers, D1 and Durable Objects, or Node, with Web Push for notifications                                   |
-
-Any evergreen browser with WebAssembly and Web Workers works: Chrome and Edge 111+, Firefox 121+,
-Safari 16.4+ (iOS 16.4+); the test suite runs on Chromium, Firefox and WebKit. The interface is in
-British English.
-
-## Contributing
-
-Bug reports, lesson proposals and pull requests are welcome — the most valuable contributions are
-chess content, and the [content guide](docs/CONTENT_GUIDE.md) shows how a lesson, drill or repertoire
-is written and verified. Please read [CONTRIBUTING.md](CONTRIBUTING.md) first.
-
-## Licence
+## License
 
 Open File is licensed under the [GNU General Public License v3.0 or later](LICENSE). It bundles
 GPL-licensed components that are inseparable from the delivered app (Chessground for the board,

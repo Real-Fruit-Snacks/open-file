@@ -8,6 +8,10 @@ All notable changes to this project are documented here. The format follows
 
 ### Changed
 
+- **The README in the RFS layout.** One line on what it is, a cover generated from
+  `docs/assets/cover.toml` by [rfs-brand](https://github.com/Real-Fruit-Snacks/rfs-brand)'s
+  `make-cover.py` (also the repository's social preview), how to open or download it, then what's
+  in it, what it is tested on, known issues, configuration and the licence.
 - **CI, again.** Azure's Ubuntu mirror crawled on 0.32.1's first run too, before the cache held
   anything. A browser's packages now get 6 minutes from it, then 12 from Ubuntu's own archive with
   what was already fetched in hand; the cache keeps whatever was downloaded even when a job fails,
