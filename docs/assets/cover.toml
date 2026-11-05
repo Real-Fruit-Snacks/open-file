@@ -1,14 +1,15 @@
 # Cover + social preview. Regenerate with Real-Fruit-Snacks/rfs-brand, from the folder holding both clones:
 #   python3 rfs-brand/tools/make-cover.py open-file/docs/assets/cover.toml
+# Layout v2 (BRAND.md section 7): name, rule, the README one-liner, and one panel.
 name        = "open-file"
-description = "Learn and play chess in your browser, offline."
-bullets = [
-  "75 lessons, 48,000 puzzles, drills, repertoires",
-  "Stockfish 19 and a human-like opponent",
-  "No account; progress stays on your device",
-  "Installs as an app and works on a plane",
-]
+description = "Learn and play chess in your browser, offline"   # README line 1
 
+# The forks lesson, cropped to the board: the knight on f6 checks the king on
+# e8 and attacks the rook on d5. The whole app screen turns to mush on a 400px
+# card; the board still reads. The shots are the app at 2x (960x736); the
+# app's page is the brand bg, so "contain" sits the board on it seamlessly.
 [panel]
 kind = "screenshot"
-file = "cover-shot-{theme}.png"   # the forks lesson, 1100x843 at 2x, scaled to 960x736
+file = "cover-shot-{theme}.png"
+crop = [4, 182, 546, 532]       # x, y, width, height in the shot's pixels: rank and file labels included
+fit  = "contain"
