@@ -67,8 +67,8 @@ be published again from the **Actions** tab (_Release → Run workflow_, with th
 own code.
 
 When a release changes how the app looks, refresh the README's pictures before tagging it: run
-`npm run build && npm run preview`, then `npm run readme:screenshots` in another terminal, and
-commit `docs/screenshots/`. The pictures are seeded and dated from a fixed day, so a run that
+`npm run build && npm run preview`, then `npm run readme:screenshots` and `npm run readme:art` in
+another terminal, and commit `docs/screenshots/` and `docs/assets/`. The pictures are seeded and dated from a fixed day, so a run that
 changes one has found a real change in the app — except the game review, whose engine analysis
 varies a little from run to run.
 

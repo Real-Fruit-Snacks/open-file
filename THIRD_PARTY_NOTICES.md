@@ -95,6 +95,11 @@ Each is under the same permission notice, here with scalalib's copyright line:
 Vite, TypeScript, Vitest, Playwright, ESLint, Prettier and their dependencies — MIT/Apache-2.0 licensed.
 Run `npx license-checker --summary` for the full transitive list.
 
+The captions of the README's moving picture and the social card (`scripts/readme-art.mjs`) are set in
+[Newsreader](https://github.com/productiontype/Newsreader) by the Newsreader Project Authors, under
+the SIL Open Font License 1.1 (`scripts/fonts/OFL-Newsreader.txt`); the fonts are in `scripts/fonts/`
+and are not part of the site.
+
 ## Piece sets
 
 Every set but Classic is copied unchanged from the Lichess repository (`public/piece/<set>/` in

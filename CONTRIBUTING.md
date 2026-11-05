@@ -56,6 +56,13 @@ them locally, install them (`npx playwright install --with-deps firefox webkit`)
   `lessons:verify`, `studies:verify`, `repertoires:verify` and `drills:verify` — whenever a pull
   request or push touches the lessons, studies, repertoires, endgame drills or the checks
   themselves, every Monday, and on demand.
+- **README art** (`.github/workflows/readme-art.yml`): plays the lesson the README's moving picture
+  shows in a production build (`npm run readme:art -- --check`) and fails when the coach's words or
+  the moves no longer match the picture, whenever a pull request or push touches the lessons, the
+  board or the picture; the pictures it drew are its artifact. A workflow of its own, so a stale
+  picture never holds up a deploy.
+- **Links** (`.github/workflows/links.yml`): every link in the Markdown, checked with lychee when the
+  Markdown changes on `main` and once a month.
 - **Deploy** runs only after CI has passed on `main`, and builds exactly the commit CI tested.
 - **Release** runs on a version tag: it builds the offline copy from the tag, tries it as CI does,
   and publishes the GitHub release with the copy attached (see
@@ -95,6 +102,7 @@ them locally, install them (`npx playwright install --with-deps firefox webkit`)
 | `npm run icons:generate`     | Re-render the PWA icons (standard, maskable, monochrome, shortcuts) from `scripts/icons/logo.svg`.                                                                                                                                                                                                                          |
 | `npm run screenshots`        | Re-render the install-dialog screenshots in `public/screenshots/` from a running preview (`npm run build && npm run preview` first).                                                                                                                                                                                        |
 | `npm run readme:screenshots` | Re-render the README's pictures in `docs/screenshots/` (the hero and six screens, WebP) from a running preview (`npm run build && npm run preview` first); seeded, so only a change in the app changes them (the game review's engine analysis aside).                                                                      |
+| `npm run readme:art`         | Redraw the README's moving picture (`docs/assets/smothered-mate-*.svg`, a lesson played in the app) and the social card (`docs/assets/social.png`) from a running preview (`npm run build && npm run preview` first); `-- --check` fails if the lesson no longer matches the picture.                                       |
 | `npm run pieces:generate`    | Rebuild the piece-set stylesheets (`src/components/board/pieces/<set>.css`) from the sets' SVGs beside them (sources and licences in `pieces/README.md`).                                                                                                                                                                   |
 | `npm run boards:thumbs`      | Re-render the 128-pixel board previews in `public/boards/thumbs/` from the board pictures beside them (Lichess's, AGPL-3.0; see THIRD_PARTY_NOTICES.md), with Playwright's Chromium.                                                                                                                                        |
 | `npm run relay:dev`          | Run the relay on <http://localhost:8787> with nothing kept (`relay/src/server.mjs --db :memory:`): device sync, live games and push; point `syncRelay` in `src/site.config.ts` at it to try them locally.                                                                                                                   |

@@ -8,10 +8,18 @@ All notable changes to this project are documented here. The format follows
 
 ### Changed
 
-- **The README in the RFS layout.** One line on what it is, a cover generated from
-  `docs/assets/cover.toml` by [rfs-brand](https://github.com/Real-Fruit-Snacks/rfs-brand)'s
-  `make-cover.py` (also the repository's social preview), how to open or download it, then what's
-  in it, what it is tested on, known issues, configuration and the licence.
+- **The README opens on the app itself.** At the top, a lesson played in the app: the smothered
+  mate from _Mating patterns every player should know_, the tempting Nxd8+ first, the coach's
+  answer and the take-back, then the mate, its pieces sliding from square to square, in the light
+  and the dark theme. `npm run readme:art` (`scripts/readme-art.mjs`) draws it from a running
+  preview, and from the same run the social card for the repository's settings,
+  `docs/assets/social.png`. Then how to open or download it, a table of what's in it, what it is
+  tested on, known issues, how to run your own copy and the licence. The RFS cover
+  (`docs/assets/cover.toml`, made by [rfs-brand](https://github.com/Real-Fruit-Snacks/rfs-brand)'s
+  `make-cover.py`) stays for the brand's gallery.
+- **Two workflows for the README.** _README art_ plays the lesson again in a production build and
+  fails when its words or moves no longer match the picture; _Links_ checks every link in the
+  Markdown when it changes and once a month.
 - **CI, again.** Azure's Ubuntu mirror crawled on 0.32.1's first run too, before the cache held
   anything. A browser's packages now get 6 minutes from it, then 12 from Ubuntu's own archive with
   what was already fetched in hand; the cache keeps whatever was downloaded even when a job fails,

@@ -42,6 +42,7 @@
     "icons:generate": "node scripts/generate-icons.mjs",
     "screenshots": "node scripts/generate-screenshots.mjs",
     "readme:screenshots": "node scripts/readme-screenshots.mjs",
+    "readme:art": "node scripts/readme-art.mjs",
     "pieces:generate": "node scripts/generate-pieces.mjs",
     "boards:thumbs": "node scripts/generate-board-thumbs.mjs",
     "studies:verify": "node scripts/verify-studies.mjs",

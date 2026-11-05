@@ -3,76 +3,30 @@
 Learn and play chess in your browser, offline
 
 <picture>
-  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/cover-dark.svg">
-  <img alt="open-file: the forks lesson, a knight on f6 checking the king and attacking the rook, with the coach explaining why it works" src="docs/assets/cover-light.svg" width="100%">
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/smothered-mate-dark.svg">
+  <img alt="A lesson played in the app, move by move. White takes the queen with Nxd8+, the coach answers with Nxe6, taking White's queen back, and says why the move fails. After Take back: Nh6+, a double check; Kh8; the queen sacrifice Qg8+; Rxg8; and Nf7#, smothered mate" src="docs/assets/smothered-mate-light.svg" width="100%">
 </picture>
 
-Open **<https://real-fruit-snacks.github.io/open-file/>**. To keep it as an app, use the install button in the address bar (Chrome and Edge), _Share → Add to Home Screen_ (iPhone and iPad) or _Menu → Install app_ (Android). Everything it needs downloads on the first visit; after that it works offline, and _Download every puzzle_ in Settings keeps all 48,000 puzzles offline too.
+**[Open it in your browser](https://real-fruit-snacks.github.io/open-file/)** and start. There is no account to make, no ads and no tracking: your progress stays on your device, and the optional network features are off by default. Everything it needs downloads on the first visit; after that it works offline, and _Download every puzzle_ in Settings keeps all 48,000 puzzles offline too. To keep it as an app, use the install button in the address bar (Chrome and Edge), _Share → Add to Home Screen_ (iPhone and iPad) or _Menu → Install app_ (Android).
 
-Or take the whole app with you: every [release](https://github.com/Real-Fruit-Snacks/open-file/releases/latest) has `open-file-<version>-offline.zip` (about 190 MB). Unzip it and double-click **Start Open File** (the `.exe` on Windows, the `.command` on macOS, `start-open-file.sh` on Linux); it opens at `http://localhost:8064/` with no internet connection.
+Above is the first step of _Mating patterns every player should know_, one of 75 lessons, played in the app the way a learner might: the tempting move first. Each lesson is a conversation with a coach who says why every move works, and who answers a tempting mistake by playing the reply that punishes it, on the board, until you take the move back. The pieces are Colin M.L. Burnett's ([CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)); the sets in the other pictures are credited in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md#piece-sets).
 
-A complete chess trainer in one web app: lessons, puzzles, drills, opening repertoires, a Stockfish opponent with a coach, a human-like opponent that plays like a person rated 600 to 2600, game analysis and an arcade of chess games, with nothing to sign up for. No ads and no tracking; progress lives on your device. Sync between devices is end-to-end encrypted with a recovery phrase only you hold, and optional network features are off by default.
+To take the whole app with you, every [release](https://github.com/Real-Fruit-Snacks/open-file/releases/latest) has `open-file-<version>-offline.zip` (about 190 MB). Unzip it and double-click **Start Open File** (the `.exe` on Windows, the `.command` on macOS, `start-open-file.sh` on Linux); it opens at `http://localhost:8064/` with no internet connection.
 
 The name: in chess, an open file is a column with no pawns on it, the road a rook takes into the game.
 
 ## What's in it
 
-**Learn** — 75 interactive lessons in three courses, each a conversation with a coach who says why
-every move works, answers your mistakes with the reply that punishes them, and plays combinations
-out move by move; a placement quiz that picks your starting point, spaced recall of what you
-learned, lessons you already know marked done in a tap, and a gallery of the nineteen named mates.
-
-**Puzzles** — 48,000 engine-verified tactics across eight rating bands, a Glicko-2 rating with
-calibration, daily puzzle, Puzzle Rush, blind puzzles (the line in notation only, the board frozen
-at the start), Woodpecker sets, a review queue for misses, and puzzles made from the blunders in
-your own games.
-
-**Play** — Stockfish 19 at eight levels from a beatable Newcomer to full strength, or a human-like
-opponent: Maia-3, a neural network trained on millions of real games, which plays like a person rated
-600 to 2600 — the plausible plans and the missed tactics of that rating, not an engine's random
-blunders (an optional 25 MB download, run on your device). With clocks, take-backs, hints, a coach
-that pauses on a mistake and explains it, a blunder check that asks "checks, captures, threats?"
-before a move that hangs material, blindfold play, two players at one device, Chess960 from a new
-start position every game, and a start from any position.
-
-**Play online** — live games against people, with no account: post a game at a tap and carry on
-with anything else in the app until someone joins, join one from the list, or send a friend a
-private link: to a game now, or to a correspondence game of days a move, with a notification when it
-is your turn. Moves can be premoved, and friends can watch from a link. Or one of the games made for
-two: Chess960, a puzzle race on the same puzzle at the same moment (or a race room for up to
-eight), Arbiter and Who Stands Better? duels, Army Draft and blindfold chess. The relay referees,
-keeping both clocks; you play under a made-up name, and messages are a few set phrases, so nothing a
-stranger types ever reaches you. Signed in to Lichess, the same post looks for an opponent there
-too, rated if you like, and the game is played here.
-
-**Analyze** — multi-line analysis by a multi-threaded Stockfish (with its full network as an optional
-99 MB download), a full variation tree, a position report, game review with an evaluation graph,
-key moments explained in words and a chart of where the clock time went — or analyse the game
-yourself first and let the review score what you found — and then a second try at each of your
-mistakes. Beside the board, what players of a chosen rating play in the position (and which of
-their favourite moves are traps), and your own games that reached it. Analyse a finished game with
-your opponent, or any game with friends, on one shared board. Chess960 too, Lichess and chess.com
-imports, and shareable links that carry the whole game.
-
-**Sync** — turn on sync between devices and your phone, tablet and computer stay in step: progress,
-lessons, review schedules, repertoires, analyses, games and settings, so any device is ready to
-play as you left it — and each device can keep any of them to itself. There is no account, only a
-12-word recovery phrase (or its QR code), and everything is encrypted on the device before it
-leaves. Changes made offline are merged, not overwritten. Or connect your Lichess account and the app keeps
-in step with it, both ways: puzzles you solve here count on Lichess, your Lichess puzzle history and
-its misses come here, games you play are imported to Lichess, and your own repertoires and saved
-analyses live in private Lichess studies.
-
-**Train** — coordinate, vision and endgame drills on a 41-rung ladder, "What's the threat?" (name
-the opponent's threat, then meet it — in real positions and in your own games), sixteen opening
-repertoires trained with spaced repetition (or import your own, and find the common replies one has
-no answer to yet), eight endgame studies and 46 classic games to guess move by move.
-
-**Arcade** — eleven games that are not puzzles: a simul against up to eight engines at once, each
-board with its own clocks, Hand & Brain with Stockfish as your partner, a daily opening Wordle, Who
-Stands Better?, the Odds Ladder, Army Draft, Fortress, Engine Says, Blindfold, Arbiter (catch the
-illegal move in a replayed classic) and Ghost Knight (hunt a knight you only see every third move).
-Army Draft, Blindfold, Arbiter and Who Stands Better? can also be played against a person online.
+| Section         | What you get                                                                                                                                                                                                                                                                                                                                                                                   |
+| --------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| **Learn**       | 75 interactive lessons in three courses, from how the pieces move to exchange sacrifices. A placement quiz picks your starting point, spaced recall brings back what you learned, lessons you already know are marked done in a tap, and a gallery shows the nineteen named mates.                                                                                                             |
+| **Puzzles**     | 48,000 engine-verified tactics across eight rating bands, with a Glicko-2 rating, the daily puzzle, Puzzle Rush, blind puzzles (the line in notation only, the board frozen at the start), Woodpecker sets, a review queue for misses, and puzzles made from the blunders in your own games.                                                                                                   |
+| **Play**        | Stockfish 19 at eight levels, from a beatable Newcomer to full strength, or Maia-3, a neural network trained on millions of real games, which plays like a person rated 600 to 2600 (an optional 25 MB download, run on your device). Clocks, take-backs, hints, a coach that pauses on a mistake, a blunder check, blindfold play, two players at one device and Chess960.                    |
+| **Play online** | Live games against people with no account: post one and carry on with anything else until someone joins, join one from the list, or send a friend a private link, to a game now or to a correspondence game of days a move. Puzzle races and the two-player arcade games too. You play under a made-up name, and messages are a few set phrases, so nothing a stranger types ever reaches you. |
+| **Analyze**     | Multi-line analysis by a multi-threaded Stockfish, a variation tree, game review with an evaluation graph and the key moments in words, then a second try at each of your mistakes. Beside the board, what players of a chosen rating play in the position and your own games that reached it. Lichess and chess.com imports, and a shared board for analysing with friends.                   |
+| **Sync**        | Phone, tablet and computer in step, with no account: a 12-word recovery phrase, and everything encrypted on the device before it leaves. Changes made offline are merged, not overwritten. Or keep in step with your Lichess account, both ways.                                                                                                                                               |
+| **Train**       | Coordinate, vision and endgame drills on a 41-rung ladder, "What's the threat?", sixteen opening repertoires trained with spaced repetition (or your own), eight endgame studies and 46 classic games to guess move by move.                                                                                                                                                                   |
+| **Arcade**      | Eleven games that are not puzzles: a simul against up to eight engines, Hand & Brain with Stockfish as your partner, a daily opening Wordle, Who Stands Better?, the Odds Ladder, Army Draft, Fortress, Engine Says, Blindfold, Arbiter and Ghost Knight.                                                                                                                                      |
 
 <table>
   <tr>
@@ -109,11 +63,11 @@ Every section in detail: [docs/FEATURES.md](docs/FEATURES.md). How it is built: 
 
 - Browsers give a site about 5 MB of local storage. The app caps what it keeps (recent puzzles, games, analyses) to stay inside it, and keeps running if a write no longer fits; a backup or device sync keeps the rest.
 - The human-like opponent (about 25 MB) and Stockfish's full network (about 99 MB) are optional downloads, kept on the device once fetched.
-- Device sync, live games and notifications while the app is closed need the relay. The public build uses mine; a fork either deploys its own or turns them off (see Configuration).
+- Device sync, live games and notifications while the app is closed need the relay. The public build uses mine; a fork either deploys its own or turns them off (see [Run your own copy](#run-your-own-copy)).
 - The interface is in British English only.
 - Four piece sets (California, Maestro, Staunty, Cardinal) are CC BY-NC-SA 4.0: a commercial fork must remove them.
 
-## Configuration
+## Run your own copy
 
 Everything the app can be set to is under Settings, listed in [docs/FEATURES.md](docs/FEATURES.md). To run or host your own copy:
 

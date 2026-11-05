@@ -1,0 +1,71 @@
+name: README art
+
+# The moving picture at the top of the README (docs/assets/smothered-mate-*.svg) is a lesson
+# played in the app, drawn by scripts/readme-art.mjs. This plays the lesson again in a production
+# build and fails when the coach's words or the moves no longer match the picture, so the README
+# never shows a lesson the app no longer teaches. The pictures it drew are kept as an artifact,
+# ready to commit. Its own workflow, not a CI job, so a stale picture never holds up a deploy.
+on:
+  pull_request:
+    paths:
+      - 'src/features/learn/**'
+      - 'src/components/board/**'
+      - 'scripts/readme-art.mjs'
+      - 'scripts/lib/screenshots.mjs'
+      - 'docs/assets/smothered-mate-*.svg'
+      - '.github/workflows/readme-art.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'src/features/learn/**'
+      - 'src/components/board/**'
+      - 'scripts/readme-art.mjs'
+      - 'scripts/lib/screenshots.mjs'
+      - 'docs/assets/smothered-mate-*.svg'
+      - '.github/workflows/readme-art.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: readme-art-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    name: The README's picture matches its lesson
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+
+      - uses: ./.github/actions/setup
+        with:
+          engine: 'true'
+          maia: 'true'
+          browser: chromium
+
+      - name: Build
+        run: npm run build
+        env:
+          VITE_BASE_PATH: /
+
+      - name: Serve the build
+        run: |
+          npm run preview -- --port 4173 --strictPort --host 127.0.0.1 &
+          for i in $(seq 1 30); do
+            curl -sf http://127.0.0.1:4173/ >/dev/null && break
+            sleep 1
+          done
+
+      - name: Play the lesson and compare
+        run: npm run readme:art -- --check
+
+      - name: Upload the pictures it drew
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: readme-art
+          path: test-results/readme-art/
+          retention-days: 7
