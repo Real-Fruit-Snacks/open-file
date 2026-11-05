@@ -31,6 +31,7 @@ jobs:
             --accept 200,206,429
             --exclude-all-private
             --exclude '^https://lichess\.org/@/'
+            --exclude '^https://www\.gnu\.org/'
             --exclude 'example\.com|your-subdomain|(user|you)\.github\.io'
             './**/*.md'
           fail: true
