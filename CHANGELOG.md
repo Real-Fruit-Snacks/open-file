@@ -6,6 +6,11 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.32.2] - 2026-11-05
+
+Nothing changes in the app itself: the repository has a new front page, and two workflows keep it
+true.
+
 ### Changed
 
 - **The README opens on the app itself.** At the top, a lesson played in the app: the smothered
@@ -19,7 +24,8 @@ All notable changes to this project are documented here. The format follows
   `make-cover.py`) stays for the brand's gallery.
 - **Two workflows for the README.** _README art_ plays the lesson again in a production build and
   fails when its words or moves no longer match the picture; _Links_ checks every link in the
-  Markdown when it changes and once a month.
+  Markdown when it changes and once a month, leaving out Lichess's profile pages, which refuse
+  link checkers, and gnu.org, which times out from GitHub's runners.
 - **CI, again.** Azure's Ubuntu mirror crawled on 0.32.1's first run too, before the cache held
   anything. A browser's packages now get 6 minutes from it, then 12 from Ubuntu's own archive with
   what was already fetched in hand; the cache keeps whatever was downloaded even when a job fails,
