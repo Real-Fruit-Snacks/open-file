@@ -11,7 +11,7 @@ Learn and play chess in your browser, offline
 
 Above is the first step of _Mating patterns every player should know_, one of 75 lessons, played in the app the way a learner might: the tempting move first. Each lesson is a conversation with a coach who says why every move works, and who answers a tempting mistake by playing the reply that punishes it, on the board, until you take the move back. The pieces are Colin M.L. Burnett's ([CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/)); the sets in the other pictures are credited in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md#piece-sets).
 
-To take the whole app with you, every [release](https://github.com/Real-Fruit-Snacks/open-file/releases/latest) has `open-file-<version>-offline.zip` (about 190 MB). Unzip it and double-click **Start Open File** (the `.exe` on Windows, the `.command` on macOS, `start-open-file.sh` on Linux); it opens at `http://localhost:8064/` with no internet connection.
+To take the whole app with you, every [release](https://github.com/Real-Fruit-Snacks/open-file/releases/latest) has `open-file-<version>-offline.zip` (about 190 MB). Unzip it and double-click **Start Open File** (the `.exe` on Windows, the `.command` on macOS, `start-open-file.sh` on Linux); it opens at `http://localhost:8064/` with no internet connection. To work on Open File offline, on Windows, the release also has `open-file-<version>-dev-windows-x64.zip` (about 420 MB): the source with every package, the engine, the model and the browser its tests need, set up by its `offline/setup.ps1` once Node.js and Go are installed ([Developing offline](CONTRIBUTING.md#developing-offline)).
 
 The name: in chess, an open file is a column with no pawns on it, the road a rook takes into the game.
 

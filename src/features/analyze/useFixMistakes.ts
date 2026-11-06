@@ -7,7 +7,7 @@ import type { GameTree, TreeNode } from '@/chess/tree';
 import type { Fen, LongColor, PromotionPiece, San, Uci } from '@/chess/types';
 import { playMoveSound } from '@/lib/sound';
 import { useSettings } from '@/store/settings';
-import { classifyAttempt, type FixResult, isGoodEnough, mistakesToFix } from './fixMistakes';
+import { classifyAttempt, type FixResult, isGoodEnough, mistakesToFix } from './fixMistakesRules';
 import type { ReviewedMove, ReviewSummary } from './gameReview';
 import { judgeSuggestion } from './selfReview';
 import type { UseAnalysis } from './useAnalysis';

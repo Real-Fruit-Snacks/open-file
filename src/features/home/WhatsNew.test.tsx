@@ -3,7 +3,7 @@ import { MemoryRouter, Route, Routes, useLocation } from 'react-router';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { readSeenVersion, SEEN_VERSION_KEY, writeSeenVersion } from './seenVersion';
 import { WhatsNewCard, WhatsNewDialog } from './WhatsNew';
-import { CHANGELOG_URL, type Highlight, type Release } from './whatsNew';
+import { CHANGELOG_URL, type Highlight, type Release } from './releases';
 
 vi.hoisted(() => {
   HTMLDialogElement.prototype.showModal = function showModal(this: HTMLDialogElement) {

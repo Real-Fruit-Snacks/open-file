@@ -11,6 +11,8 @@ export default tseslint.config(
       'dist/**',
       // The offline copy (npm run release:offline): a copy of dist/ and the launchers.
       'release/**',
+      // An unzipped dev kit's npm cache, engine, model and browser (scripts/build-dev-kit.mjs).
+      'offline/**',
       'coverage/**',
       'playwright-report/**',
       'test-results/**',

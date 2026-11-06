@@ -55,7 +55,8 @@
     "e2e:offline": "playwright test --config playwright.offline.config.ts",
     "relay:dev": "node relay/src/server.mjs --db :memory: --port 8787",
     "relay:deploy": "npm ci --prefix relay && npx --yes wrangler@4 deploy --config relay/wrangler.jsonc",
-    "release:offline": "node scripts/package-offline.mjs"
+    "release:offline": "node scripts/package-offline.mjs",
+    "release:dev-kit": "node scripts/build-dev-kit.mjs"
   },
   "dependencies": {
     "@lichess-org/chessground": "^10.5.0",

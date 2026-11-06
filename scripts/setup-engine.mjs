@@ -20,12 +20,17 @@
  * `--lite` installs the two lite builds only: the content checks and the dev
  * server (which runs no service worker, so no full engine) need no more.
  *
- * Usage:  node scripts/setup-engine.mjs [--force] [--lite]
+ * `--from <folder>` copies the files from a folder instead of downloading them
+ * (the dev kit's offline/files/engine/, or files fetched by hand), with the
+ * same checksum checks.
+ *
+ * Usage:  node scripts/setup-engine.mjs [--force] [--lite] [--from <folder>]
  */
 import { createHash } from 'node:crypto';
 import { mkdir, readFile, rename, rm, stat, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { sourceFolder } from './lib/dev-kit.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -105,22 +110,32 @@ async function isValid(file) {
   return sha256(data) === file.sha256;
 }
 
-async function download(file) {
-  const url = ENGINE.releaseBase + file.name;
+/** Downloads `file` from the pinned release, or copies it from `from` when that names a folder. */
+async function install(file, from) {
   const target = join(OUT_DIR, file.name);
   const tmp = `${target}.download`;
 
-  process.stdout.write(`  ↓ ${file.name} … `);
-  const res = await fetch(url, { redirect: 'follow' });
-  if (!res.ok) {
-    throw new Error(`Failed to download ${url}: HTTP ${res.status}`);
+  let data;
+  if (from) {
+    process.stdout.write(`  ← ${file.name} … `);
+    const source = join(from, file.name);
+    if (!(await exists(source))) throw new Error(`${file.name} is not in ${from}`);
+    data = await readFile(source);
+  } else {
+    const url = ENGINE.releaseBase + file.name;
+    process.stdout.write(`  ↓ ${file.name} … `);
+    const res = await fetch(url, { redirect: 'follow' });
+    if (!res.ok) {
+      throw new Error(`Failed to download ${url}: HTTP ${res.status}`);
+    }
+    data = Buffer.from(await res.arrayBuffer());
   }
-  const data = Buffer.from(await res.arrayBuffer());
   const digest = sha256(data);
   if (digest !== file.sha256) {
     throw new Error(
       `Checksum mismatch for ${file.name}\n  expected ${file.sha256}\n  received ${digest}\n` +
-        'The upstream release may have been altered. Refusing to install.',
+        (from ? 'It is not the pinned file.' : 'The upstream release may have been altered.') +
+        ' Refusing to install.',
     );
   }
   await writeFile(tmp, data);
@@ -166,6 +181,7 @@ export async function writeVersionFile(dir = OUT_DIR) {
 }
 
 async function main() {
+  const from = sourceFolder(process.argv.slice(2));
   await mkdir(OUT_DIR, { recursive: true });
 
   const wanted = ENGINE.files.filter((file) => !liteOnly || LITE_BUILDS.has(file.build));
@@ -180,11 +196,11 @@ async function main() {
     );
   } else {
     console.log(
-      `Installing Stockfish ${ENGINE.version} (${liteOnly ? 'lite builds' : 'lite and full builds, about 200 MB the first time'}) into public/engine/`,
+      `Installing Stockfish ${ENGINE.version} (${liteOnly ? 'lite builds' : 'lite and full builds, about 200 MB the first time'}) into public/engine/${from ? ` from ${from}` : ''}`,
     );
     for (const file of missing) {
       await rm(join(OUT_DIR, file.name), { force: true });
-      await download(file);
+      await install(file, from);
     }
   }
 
@@ -200,7 +216,7 @@ if (invokedDirectly) {
   main().catch((err) => {
     console.error(`\nEngine setup failed: ${err.message}`);
     console.error(
-      'If you are offline, download the files listed in public/engine/README.md manually.',
+      'Offline? Fetch the files public/engine/README.md lists by hand, then run this again with --from <their folder>.',
     );
     process.exit(1);
   });

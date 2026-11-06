@@ -351,6 +351,14 @@ export default defineConfig(({ mode }) => {
       // Stylesheets are stubbed out of component tests; only their text is
       // served (`?raw`), for the stylesheet-scope test in src/styles.
       css: { include: [/\.css\?raw$/] },
+      // The plugin's service-worker hook as a file: on Windows, Vitest's vm pool cannot load
+      // the virtual module the plugin makes of it (`/@vite-plugin-pwa/…` is no Windows path).
+      // jsdom has no service worker, so it registers nothing, as before.
+      alias: {
+        'virtual:pwa-register/react': fileURLToPath(
+          new URL('./node_modules/vite-plugin-pwa/dist/client/build/react.js', import.meta.url),
+        ),
+      },
       // The app's tests run in the vmThreads pool: each file in a fresh context of a worker that
       // stays up, so its modules and stores are its own, as in a process of its own, but jsdom is
       // loaded once per worker instead of once per file, which took half the run.

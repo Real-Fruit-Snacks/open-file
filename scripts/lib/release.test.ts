@@ -61,8 +61,22 @@ describe('release checks', () => {
         `^- Something\\.\\n\\nLive app: ${siteConfig.siteUrl}\\n\\nOffline copy: download \`open-file-1\\.0\\.0-offline\\.zip\` below`,
       ),
     );
-    expect(withCopy).toContain('SHA256SUMS.txt');
+    expect(withCopy).toContain('SHA256SUMS.txt holds its checksum.');
     expect(withCopy.endsWith('.\n')).toBe(true);
+    // And with a dev kit, what that is, after the offline copy; the checksums are of both.
+    const withKit = releaseNotes(
+      '- Something.',
+      siteConfig.siteUrl,
+      'open-file-1.0.0-offline.zip',
+      'open-file-1.0.0-dev-windows-x64.zip',
+    );
+    expect(withKit.startsWith(withCopy.replace(' SHA256SUMS.txt holds its checksum.\n', ''))).toBe(
+      true,
+    );
+    expect(withKit).toMatch(/\n\nDev kit: `open-file-1\.0\.0-dev-windows-x64\.zip` is the source/);
+    expect(withKit).toContain('SHA256SUMS.txt holds their checksums.');
+    expect(withKit.match(/SHA256SUMS/g)).toHaveLength(1);
+    expect(withKit.endsWith('.\n')).toBe(true);
     expect(() => siteUrlFrom('export const siteConfig = {};')).toThrow(/siteUrl/);
   });
 });

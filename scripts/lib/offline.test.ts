@@ -1,6 +1,7 @@
 // @vitest-environment node
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
 import { describe, expect, it } from 'vitest';
 import {
   ENGINE_BUILDS,
@@ -16,6 +17,9 @@ import {
 } from './offline.mjs';
 
 const read = (path: string) => readFileSync(new URL(`../../${path}`, import.meta.url), 'utf8');
+
+/** Whether there is a POSIX shell to ask: always on Linux and macOS, on Windows only Git's on the PATH. */
+const hasShell = !spawnSync('sh', ['-c', 'exit 0']).error;
 
 const ENGINE = {
   files: ENGINE_BUILDS.flatMap((build, i) => [
@@ -108,12 +112,17 @@ describe('the offline copy', () => {
       expect(script).toContain(`$here/${path}`);
     }
     for (const { from } of START_SCRIPTS) {
-      // Valid shell: `sh -n` reads without running.
+      expect(scripts[from]?.startsWith('#!/bin/sh\n')).toBe(true);
+    }
+  });
+
+  it.skipIf(!hasShell)('starts them with valid shell', () => {
+    for (const { from } of START_SCRIPTS) {
+      // `sh -n` reads without running.
       execFileSync('sh', [
         '-n',
-        new URL(`../../launcher/bundle/${from}`, import.meta.url).pathname,
+        fileURLToPath(new URL(`../../launcher/bundle/${from}`, import.meta.url)),
       ]);
-      expect(scripts[from]?.startsWith('#!/bin/sh\n')).toBe(true);
     }
   });
 

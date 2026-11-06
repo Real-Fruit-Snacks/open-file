@@ -11,7 +11,7 @@ import {
   releasesUpTo,
   unseenRelease,
   versionLabel,
-} from './whatsNew';
+} from './releases';
 
 const release = (version: string): Release => ({ version, date: '2026-01-01', highlights: [] });
 const TEST_RELEASES = [release('0.29.0'), release('0.28.1'), release('0.28.0'), release('0.30.0')];

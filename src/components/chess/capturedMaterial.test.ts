@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { capturedMaterial } from './material';
+import { capturedMaterial } from './capturedMaterial';
 
 // After 1. e4 d5 2. exd5 Qxd5 3. Nc3 Qa5: a pawn each, nothing else.
 const PAWN_EACH = 'rnb1kbnr/ppp1pppp/8/q7/8/2N5/PPPP1PPP/R1BQKBNR w KQkq - 2 4';

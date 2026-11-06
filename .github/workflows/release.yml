@@ -1,10 +1,13 @@
 name: Release
 
 # Publishes a GitHub release for every version tag: the version's CHANGELOG.md section as the
-# notes, a link to the live app (its URL is read from src/site.config.ts), and the offline
-# copy to download — the whole app with a launcher for Windows, macOS and Linux
-# (scripts/package-offline.mjs, launcher/). The copy is built, then unzipped and tried in a
-# browser as a learner gets it; only then is the release published, with the zip attached.
+# notes, a link to the live app (its URL is read from src/site.config.ts), the offline copy to
+# download — the whole app with a launcher for Windows, macOS and Linux
+# (scripts/package-offline.mjs, launcher/) — and the dev kit, the source with everything it
+# installs, to work on it offline on Windows (scripts/build-dev-kit.mjs). The copy is built, then
+# unzipped and tried in a browser as a learner gets it, and attached to a draft of the release;
+# then the dev kit is built on Windows and tried offline as a developer gets it (dev-kit.yml), and
+# only then is it attached and the release published.
 on:
   push:
     tags: ['v*']
@@ -25,7 +28,7 @@ concurrency:
 
 jobs:
   release:
-    name: Build the offline copy and publish the release
+    name: Build the offline copy and attach it to the release
     runs-on: ubuntu-latest
     timeout-minutes: 40
     env:
@@ -76,17 +79,22 @@ jobs:
         env:
           CI: 'true'
 
-      - name: Publish the release
+      # A new release stays a draft until the dev kit joins it (the dev-kit job). Published again,
+      # a release keeps the other assets' checksums (the dev kit's) beside the copy's new one.
+      - name: Attach the offline copy to the release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
           zip=$(ls release/open-file-*-offline.zip)
           if gh release view "$TAG" >/dev/null 2>&1; then
+            gh release download "$TAG" --pattern SHA256SUMS.txt --output - \
+              | { grep -v -F "  $(basename "$zip")" || true; } >> release/SHA256SUMS.txt
+            sort -k2 -o release/SHA256SUMS.txt release/SHA256SUMS.txt
             gh release edit "$TAG" --title "$TAG" --notes-file release-notes.md
             gh release upload "$TAG" "$zip" release/SHA256SUMS.txt --clobber
           else
             gh release create "$TAG" "$zip" release/SHA256SUMS.txt \
-              --title "$TAG" --notes-file release-notes.md --verify-tag
+              --title "$TAG" --notes-file release-notes.md --verify-tag --draft
           fi
 
       - name: Upload the Playwright report
@@ -96,3 +104,14 @@ jobs:
           name: playwright-report-offline
           path: playwright-report/
           retention-days: 3
+
+  # Built and tried on Windows, then attached; it publishes the release (dev-kit.yml).
+  dev-kit:
+    name: Dev kit
+    needs: release
+    uses: ./.github/workflows/dev-kit.yml
+    permissions:
+      contents: write
+    with:
+      ref: ${{ inputs.tag || github.ref }}
+      release: ${{ inputs.tag || github.ref_name }}

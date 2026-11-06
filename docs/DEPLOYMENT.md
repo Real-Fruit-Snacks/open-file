@@ -60,11 +60,14 @@ the new version at the visitor's next in-app navigation.
 Bump `version` in `package.json` and add the version's `CHANGELOG.md` section, then push a matching
 tag (`git tag v0.12.0 && git push origin v0.12.0`). The **Release** workflow refuses a tag that does
 not match `package.json`. Otherwise it builds the [offline copy](#the-offline-copy) from the tag,
-unzips it and tries it in a browser with its own launcher, then publishes a GitHub release for the
+unzips it and tries it in a browser with its own launcher, and drafts a GitHub release for the
 tag: that section as the notes, a link to the live app (the `siteUrl` in `src/site.config.ts`), and
-`open-file-<version>-offline.zip` with its `SHA256SUMS.txt` attached. A release that failed can
-be published again from the **Actions** tab (_Release → Run workflow_, with the tag), from the tag's
-own code.
+`open-file-<version>-offline.zip` attached. Then, on Windows, it builds the
+[dev kit](../CONTRIBUTING.md#developing-offline) from the tag and tries it with the network cut
+off (`.github/workflows/dev-kit.yml`); only then does `open-file-<version>-dev-windows-x64.zip`
+join the release, with `SHA256SUMS.txt` holding the checksums of both, and the release is
+published. A release that failed can be published again from the **Actions** tab
+(_Release → Run workflow_, with the tag), from the tag's own code.
 
 When a release changes how the app looks, refresh the README's pictures before tagging it: run
 `npm run build && npm run preview`, then `npm run readme:screenshots` and `npm run readme:art` in

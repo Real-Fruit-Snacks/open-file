@@ -52,3 +52,6 @@ relay.db*
 
 # The offline copy and its zip, made by `npm run release:offline`
 release/
+
+# An unzipped dev kit's own files: its npm cache, engine, model and browser (scripts/build-dev-kit.mjs)
+/offline/

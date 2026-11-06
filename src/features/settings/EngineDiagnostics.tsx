@@ -6,12 +6,7 @@ import { isBuildAvailable } from '@/engine/fullEngine';
 import { engineOptionsFromSettings } from '@/engine/useEngine';
 import { readIsolationFlag } from '@/sw/isolation';
 import { useSettings } from '@/store/settings';
-import {
-  type Benchmark,
-  benchmarkEngine,
-  describeBenchmark,
-  diagnosticRows,
-} from './engineDiagnostics';
+import { type Benchmark, benchmarkEngine, describeBenchmark, diagnosticRows } from './engineReport';
 import { currentEngineDownload, subscribeToEngineDownload } from './fullEngineDownload';
 import './settings.css';
 

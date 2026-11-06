@@ -590,7 +590,7 @@ filters in the address, replacing the history entry rather than adding one.
   it, first of all), forgives one typo in a word of five letters or more, groups and limits the
   results (8 a kind, 30 in all) and gives the ranges to mark. The reference's anchors
   (`glossary-<term>`, `faq-<question>`) come from `src/features/reference/anchors.ts`.
-- **What's new** (`src/features/home/whatsNew.ts`, `WhatsNew.tsx`). Each release's highlights (an
+- **What's new** (`src/features/home/releases.ts`, `WhatsNew.tsx`). Each release's highlights (an
   icon, a title, a sentence, and a page or the quick search), newest first, and the version
   helpers: `releasesUpTo` (a build never tells of a later release) and `unseenRelease`. The version
   last seen is the device's (`open-file:seen-version` in `localStorage`, `seenVersion.ts`),

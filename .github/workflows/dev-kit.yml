@@ -1,0 +1,156 @@
+name: Dev kit
+
+# The dev kit a release carries (scripts/build-dev-kit.mjs): the source with everything it
+# installs, to build, test and change Open File on Windows with no internet connection. Built on
+# Windows, then tried as a developer gets it: unzipped into a fresh folder and, with the registries
+# and the internet out of reach, set up by its own offline/setup.ps1 (in Windows PowerShell 5.1,
+# then PowerShell 7), checked and built (npm run check), tried in a browser and the launcher
+# tested. Runs on demand, and from the Release workflow, which then attaches the kit to the release
+# and publishes it.
+on:
+  workflow_dispatch:
+  workflow_call:
+    inputs:
+      ref:
+        description: The commit or tag to build the kit from
+        type: string
+        required: true
+      release:
+        description: The draft release to attach the kit to and publish once it passes
+        type: string
+        default: ''
+
+permissions:
+  contents: read
+
+jobs:
+  dev-kit:
+    name: Build the dev kit and try it offline
+    runs-on: windows-latest
+    timeout-minutes: 60
+    permissions:
+      # To attach the kit to the release (inputs.release); runs by hand only read.
+      contents: write
+    env:
+      RELEASE: ${{ inputs.release }}
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7
+        with:
+          ref: ${{ inputs.ref || github.ref }}
+
+      # The Node and Go CI uses everywhere: the kit names them, and must be built with them.
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7
+        with:
+          node-version-file: .nvmrc
+
+      - uses: actions/setup-go@b7ad1dad31e06c5925ef5d2fc7ad053ef454303e # v7
+        with:
+          go-version-file: launcher/go.mod
+          cache: false
+
+      # The release's checksums so far (the offline copy's), for the kit's to join.
+      - name: Fetch the release's checksums
+        if: env.RELEASE != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          New-Item -ItemType Directory -Force release | Out-Null
+          gh release download $env:RELEASE --pattern SHA256SUMS.txt --dir release --clobber
+
+      # Every package and file fetched fresh, into the kit's own cache and folders.
+      - name: Build the dev kit
+        run: node scripts/build-dev-kit.mjs
+
+      - name: Unzip it into a fresh folder
+        run: |
+          $zip = Get-Item release\open-file-*-dev-windows-x64.zip
+          $into = Join-Path $env:RUNNER_TEMP 'dev-kit'
+          New-Item -ItemType Directory -Force $into | Out-Null
+          & "$env:SystemRoot\System32\tar.exe" -xf $zip.FullName -C $into
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          $kit = (Get-ChildItem $into -Directory | Select-Object -First 1).FullName
+          "KIT=$kit" >> $env:GITHUB_ENV
+          Write-Host "$($zip.Name): $([math]::Round($zip.Length / 1MB)) MiB, unzipped in $kit"
+
+      # From here on, no registry and no internet: every proxy is a closed port (Node's own fetch
+      # goes through them too, with NODE_USE_ENV_PROXY), npm's registry and Playwright's download
+      # host too, Go's module proxy is off, and npm's cache and Playwright's browsers are empty
+      # folders of their own, so nothing the runner keeps can stand in for the kit. Only
+      # localhost answers (the preview server the tests run against).
+      - name: Cut off the registries and the internet
+        run: |
+          $dead = 'http://127.0.0.1:9'
+          $empty = Join-Path $env:RUNNER_TEMP 'empty'
+          New-Item -ItemType Directory -Force "$empty\npm-cache", "$empty\ms-playwright" | Out-Null
+          @(
+            "HTTP_PROXY=$dead", "HTTPS_PROXY=$dead", "ALL_PROXY=$dead", 'NO_PROXY=localhost,127.0.0.1',
+            'NODE_USE_ENV_PROXY=1',
+            "npm_config_registry=$dead/", "npm_config_cache=$empty\npm-cache",
+            "PLAYWRIGHT_DOWNLOAD_HOST=$dead", "PLAYWRIGHT_BROWSERS_PATH=$empty\ms-playwright",
+            'GOPROXY=off', "GOMODCACHE=$empty\go-mod"
+          ) | Add-Content $env:GITHUB_ENV
+
+      - name: Set up the kit, in Windows PowerShell 5.1
+        shell: powershell
+        working-directory: ${{ env.KIT }}
+        run: .\offline\setup.ps1
+
+      # Again in PowerShell 7, over the first setup, as a developer may run it twice.
+      - name: Set up the kit again, in PowerShell 7
+        working-directory: ${{ env.KIT }}
+        run: .\offline\setup.ps1
+
+      - name: Lint, dead code, format, types, unit tests, build and budgets
+        working-directory: ${{ env.KIT }}
+        run: npm run check
+
+      # Against that build, in the kit's headless Chromium, as offline/README.md says to in a new
+      # window: the smoke tests and the threaded engine, desktop and phone.
+      - name: End-to-end tests
+        working-directory: ${{ env.KIT }}
+        env:
+          CI: 'true'
+        run: |
+          $env:PLAYWRIGHT_BROWSERS_PATH = "$env:KIT\offline\files\ms-playwright"
+          npx playwright test --project=desktop-chromium --project=mobile-chromium e2e/smoke.spec.ts e2e/threads.spec.ts
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+
+      - name: Vet and test the launcher
+        working-directory: ${{ env.KIT }}\launcher
+        run: |
+          go vet ./...
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          go test ./...
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+
+      # The network back, for the report and the release.
+      - name: Reconnect
+        if: always()
+        run: |
+          @(
+            'HTTP_PROXY=', 'HTTPS_PROXY=', 'ALL_PROXY=', 'NODE_USE_ENV_PROXY=',
+            'npm_config_registry=https://registry.npmjs.org/'
+          ) | Add-Content $env:GITHUB_ENV
+
+      - name: Upload the Playwright report
+        if: failure()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7
+        with:
+          name: playwright-report-dev-kit
+          path: ${{ env.KIT }}\playwright-report\
+          retention-days: 3
+
+      # The draft the Release workflow made gets the kit and the checksums of both, and is published.
+      - name: Attach the kit and publish the release
+        if: env.RELEASE != ''
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $zip = (Get-Item release\open-file-*-dev-windows-x64.zip).FullName
+          gh release upload $env:RELEASE $zip release\SHA256SUMS.txt --clobber
+          if ($LASTEXITCODE -ne 0) { exit 1 }
+          gh release edit $env:RELEASE --draft=false
+          if ($LASTEXITCODE -ne 0) { exit 1 }

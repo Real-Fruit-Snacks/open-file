@@ -12,7 +12,7 @@ import {
   releasesUpTo,
   unseenRelease,
   versionLabel,
-} from './whatsNew';
+} from './releases';
 import './whats-new.css';
 
 /** How many of a release's highlights the card shows before "Show all". */

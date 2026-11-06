@@ -9,7 +9,7 @@ import {
   mistakeCounts,
   mistakesToFix,
   tallyFixes,
-} from './fixMistakes';
+} from './fixMistakesRules';
 
 const SANS = ['e4', 'e5', 'Bc4', 'Nc6', 'Qh5', 'Nf6', 'Nc3', 'Nxh5'];
 const REVIEW = reviewOf(SANS, {

@@ -49,4 +49,7 @@ engine always starts (`src/engine/EngineClient.ts`).
 
 If you cannot reach GitHub from your machine, download the eight files (or, with `--lite`, the four
 lite ones) from the release page linked above, place them here and run `npm run engine:setup` — it
-will verify the checksums and write `version.json`.
+will verify the checksums and write `version.json`. Or keep them in a folder of their own and run
+`npm run engine:setup -- --from <that folder>`, which copies them here with the same checks; the
+dev kit ([CONTRIBUTING.md](../../CONTRIBUTING.md#developing-offline)) carries them in
+`offline/files/engine/`.

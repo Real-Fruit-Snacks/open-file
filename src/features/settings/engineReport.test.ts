@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import type { EngineClient } from '@/engine/EngineClient';
-import { benchmarkEngine, describeBenchmark, diagnosticRows } from './engineDiagnostics';
+import { benchmarkEngine, describeBenchmark, diagnosticRows } from './engineReport';
 
 const base = {
   env: { isolated: false, sharedMemory: false, cores: 8 },

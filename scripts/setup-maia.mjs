@@ -16,15 +16,18 @@
  * left alone, and anything else in the folder (an earlier pin's files, a
  * download a stopped run left behind) is removed, so it is never deployed.
  *
- * Usage:  node scripts/setup-maia.mjs [--force] [--optional]
+ * Usage:  node scripts/setup-maia.mjs [--force] [--optional] [--from <folder>]
  *
  *   --optional  warn instead of failing when the files cannot be installed (`npm run dev`:
  *               the rest of the app works without them; a build needs them).
+ *   --from      copy the model from a folder instead of downloading it (the dev kit's
+ *               offline/files/maia/, or a file fetched by hand), with the same checksum check.
  */
 import { createHash } from 'node:crypto';
 import { mkdir, readdir, readFile, rename, rm, stat, writeFile } from 'node:fs/promises';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { sourceFolder } from './lib/dev-kit.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, '..');
@@ -85,21 +88,35 @@ function refuse(name, expected, received, why) {
   );
 }
 
-async function installModel() {
+/** Downloads the pinned model, or copies it from `from` when that names a folder. */
+async function installModel(from) {
   const { model } = MAIA;
   const target = join(OUT_DIR, model.name);
   if (!force && (await matches(target, model.sha256))) return false;
-  process.stdout.write(`  ↓ ${model.name} … `);
-  const res = await fetch(model.url, { redirect: 'follow' });
-  if (!res.ok) throw new Error(`Failed to download ${model.url}: HTTP ${res.status}`);
-  const data = Buffer.from(await res.arrayBuffer());
+  let data;
+  if (from) {
+    process.stdout.write(`  ← ${model.name} … `);
+    const source = join(from, model.name);
+    try {
+      data = await readFile(source);
+    } catch {
+      throw new Error(`${model.name} is not in ${from}`);
+    }
+  } else {
+    process.stdout.write(`  ↓ ${model.name} … `);
+    const res = await fetch(model.url, { redirect: 'follow' });
+    if (!res.ok) throw new Error(`Failed to download ${model.url}: HTTP ${res.status}`);
+    data = Buffer.from(await res.arrayBuffer());
+  }
   const digest = sha256(data);
   if (digest !== model.sha256) {
     throw refuse(
       model.name,
       model.sha256,
       digest,
-      'The pinned file may have been altered. Refusing to install.',
+      from
+        ? 'It is not the pinned file. Refusing to install.'
+        : 'The pinned file may have been altered. Refusing to install.',
     );
   }
   await install(target, data);
@@ -165,13 +182,14 @@ async function writeVersionFile() {
 }
 
 async function main() {
+  const from = sourceFolder(process.argv.slice(2));
   await mkdir(OUT_DIR, { recursive: true });
   // Files of an earlier pin (a different model or runtime version) are of no use any more.
   for (const stale of staleMaiaFiles(await readdir(OUT_DIR))) {
     await rm(join(OUT_DIR, stale), { force: true, recursive: true });
     console.log(`  - removed public/maia/${stale}`);
   }
-  const model = await installModel();
+  const model = await installModel(from);
   const runtime = await installRuntime();
   if (!model && !runtime) {
     console.log('Maia-3 and ONNX Runtime already installed in public/maia/');

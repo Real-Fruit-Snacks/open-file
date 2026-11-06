@@ -14,7 +14,7 @@ import {
 } from '@/features/puzzles/ownPuzzles';
 import { useProgress } from '@/store/progress';
 import { explainReviewedMove, MOTIF_HELP } from './commentary';
-import { fixSummaryLine, judgementWords, mistakeCounts, tallyFixes } from './fixMistakes';
+import { fixSummaryLine, judgementWords, mistakeCounts, tallyFixes } from './fixMistakesRules';
 import type { ReviewSummary } from './gameReview';
 import { moveNumberOfPly } from './timeUse';
 import type { UseFixMistakes } from './useFixMistakes';

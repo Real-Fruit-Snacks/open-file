@@ -1,7 +1,7 @@
 import { useMemo } from 'react';
 import type { Fen, LongColor } from '@/chess/types';
 import { useSettings } from '@/store/settings';
-import { capturedMaterial, MATERIAL_ORDER } from './material';
+import { capturedMaterial, MATERIAL_ORDER } from './capturedMaterial';
 import './chess-components.css';
 
 /**
