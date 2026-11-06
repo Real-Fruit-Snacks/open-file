@@ -6,6 +6,45 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.32.3] - 2026-11-05
+
+Nothing changes in the app itself: each release now carries a dev kit too, to work on Open File
+with no internet connection, and the project's checks pass on Windows.
+
+### Added
+
+- **A dev kit, to work on Open File offline.** Each release has
+  `open-file-<version>-dev-windows-x64.zip` beside the offline copy (about 420 MB): the source at
+  the release's tag, every npm package `npm ci` installs on Windows (for the app and for
+  `relay/`), the pinned engine builds and Maia-3 model, the headless Chromium the end-to-end tests
+  run in, and the licence of each. Its `offline/setup.ps1`, for Windows PowerShell 5.1 and
+  PowerShell 7, checks for Node.js and Go, installs everything from the kit with no network and
+  prints the commands to build and test; its `offline/README.md` names the Node.js and Go CI uses,
+  with their offline installers, and what the kit leaves out. `npm run release:dev-kit`
+  (`scripts/build-dev-kit.mjs`) builds it, refusing any package whose licence does not allow
+  passing it on. See _Developing offline_ in `CONTRIBUTING.md`.
+- **The _Dev kit_ workflow** builds the kit on Windows, unzips it into a fresh folder and, with the
+  registries and the internet cut off, sets it up and runs `npm run check`, the smoke and threads
+  end-to-end tests and the launcher's tests. It runs on demand and for every tag: the release is a
+  draft until the kit has passed and joined it, and `SHA256SUMS.txt` holds the checksums of both
+  downloads.
+- **`--from <folder>`** for `npm run engine:setup` and `npm run maia:setup`: the pinned files are
+  copied from a folder instead of downloaded, with the same checksum checks.
+
+### Fixed
+
+- **The checks on Windows.** Four modules had a component beside them whose name differed only in
+  case (`material.ts` and `Material.tsx`, and likewise for _Fix your mistakes_, _What's new_ and
+  the engine diagnostics). Windows and macOS ignore case, so there `./Material` imported
+  `material.ts`, more than 80 unit tests failed, and TypeScript and ESLint left the four
+  components out. The modules are now `capturedMaterial.ts`, `fixMistakesRules.ts`, `releases.ts`
+  and `engineReport.ts`, and a unit test fails on any two names that only case tells apart. The
+  unit tests also load the service worker's registration hook as a file (Vitest could not load its
+  virtual module on Windows), and the check of the launcher's shell scripts runs wherever there is
+  a `sh`.
+- **The lockfile** named yocto-queue 0.2.0, a version that does not exist, for the 0.1.0 package
+  it installs, so `npm ci` asked the registry which to install, and could not offline.
+
 ## [0.32.2] - 2026-11-05
 
 Nothing changes in the app itself: the repository has a new front page, and two workflows keep it
