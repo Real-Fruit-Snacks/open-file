@@ -101,7 +101,7 @@ true.
 
 ## [0.32.0] - 2026-10-26
 
-Open File takes on the RFS brand ([Real-Fruit-Snacks/.github](https://github.com/Real-Fruit-Snacks/.github)):
+Open File takes on the RFS brand ([Real-Fruit-Snacks/rfs-brand](https://github.com/Real-Fruit-Snacks/rfs-brand)):
 its two themes, its one accent, its type and its mark.
 
 ### Changed
