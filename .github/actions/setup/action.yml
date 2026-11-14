@@ -146,13 +146,15 @@ runs:
         path: /var/cache/open-file-apt/*.deb
         key: apt-${{ steps.image.outputs.os }}-${{ inputs.browser }}-${{ steps.apt-set.outputs.hash }}
 
+    # Named by the runner image, not just the OS: Playwright downloads a build for each Ubuntu
+    # release, and Ubuntu 24.04's WebKit won't start on 26.04 (it needs libicu 74).
     - name: Restore the Playwright browser
       if: inputs.browser != '' && steps.deps.outcome == 'success'
       id: browser-cache
       uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6
       with:
         path: ~/.cache/ms-playwright
-        key: playwright-${{ runner.os }}-${{ inputs.browser }}-${{ steps.playwright.outputs.version }}
+        key: playwright-${{ steps.image.outputs.os }}-${{ inputs.browser }}-${{ steps.playwright.outputs.version }}
 
     # The browser itself comes from Playwright's own download servers, which have been quick.
     - name: Install the Playwright browser
