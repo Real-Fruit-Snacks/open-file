@@ -125,13 +125,15 @@ function StorageCard() {
         open={confirming}
         onClose={() => setConfirming(false)}
         title="Reset everything?"
+        danger
         actions={
           <>
-            <Button variant="ghost" onClick={() => setConfirming(false)}>
+            <Button variant="secondary" autoFocus onClick={() => setConfirming(false)}>
               Cancel
             </Button>
             <Button
               variant="danger"
+              className="btn--danger-solid"
               data-testid="reset-confirm"
               onClick={() => {
                 void (async () => {

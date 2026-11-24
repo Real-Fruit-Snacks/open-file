@@ -127,7 +127,7 @@ test.describe('progress', () => {
     await page.goto('/settings');
     await page
       .getByRole('radiogroup', { name: 'Colour scheme' })
-      .getByRole('radio', { name: 'Nightshift' })
+      .getByRole('radio', { name: 'LX 263' })
       .click();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
     await page.reload();

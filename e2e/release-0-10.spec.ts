@@ -65,12 +65,12 @@ test.describe('notation', () => {
 });
 
 test.describe('colour scheme and board', () => {
-  test('Nightshift, the piece sets and the palettes apply and persist', async ({ page }) => {
+  test('LX 263 Dark, the piece sets and the palettes apply and persist', async ({ page }) => {
     await seed(page);
     await page.goto('/settings');
     await page
       .getByRole('radiogroup', { name: 'Colour scheme' })
-      .getByRole('radio', { name: 'Nightshift' })
+      .getByRole('radio', { name: 'LX 263' })
       .click();
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
     await expect(page.locator('meta[name="theme-color"]')).toHaveAttribute(

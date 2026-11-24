@@ -2,6 +2,7 @@ import {
   type ComponentType,
   type KeyboardEvent,
   type FocusEvent,
+  type MouseEvent,
   lazy,
   Suspense,
   useEffect,
@@ -200,20 +201,48 @@ function isSectionActive(to: string, pathname: string, end?: boolean): boolean {
   return navSection(pathname) === to;
 }
 
-/** The mark: a rook on an open file (the lane down the middle), in the theme's accent. */
+/** The mark: a rook on an open file, set on a Cyclorama Dawn tile with a Steel-to-Beacon rule. */
 function Logo() {
-  // The rook tile: the brand's Caps Tile (RFS BRAND.md) with the rook where the mark's letters
-  // stand, always white, and the Ember rule beneath (scripts/icons/logo.svg draws the same).
   return (
     <svg viewBox="0 0 512 512" width="28" height="28" aria-hidden="true" focusable="false">
+      <defs>
+        <linearGradient id="rfs-of-h" x1="0%" y1="0%" x2="100%" y2="0%">
+          <stop offset="0%" stopColor="#133954" />
+          <stop offset="44%" stopColor="#1F547A" />
+          <stop offset="76%" stopColor="#CC5016" />
+          <stop offset="100%" stopColor="#F06E2B" />
+        </linearGradient>
+        <linearGradient id="rfs-of-f" x1="0%" y1="0%" x2="0%" y2="100%">
+          <stop offset="0%" stopColor="#FFFFFF" stopOpacity="0" />
+          <stop offset="46%" stopColor="#FFFFFF" stopOpacity="0.06" />
+          <stop offset="78%" stopColor="#FFFFFF" stopOpacity="0.48" />
+          <stop offset="100%" stopColor="#FFFFFF" stopOpacity="0.88" />
+        </linearGradient>
+        <mask id="rfs-of-m" maskContentUnits="objectBoundingBox">
+          <rect width="1" height="1" fill="url(#rfs-of-f)" />
+        </mask>
+        <linearGradient id="rfs-of-r" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stopColor="#74B8E8" />
+          <stop offset="50%" stopColor="#1F547A" />
+          <stop offset="100%" stopColor="#F06E2B" />
+        </linearGradient>
+      </defs>
       <rect width="512" height="512" rx="112" fill="var(--logo-tile)" />
-      <g fill="#ffffff" transform="translate(149.48 88) scale(0.85906) translate(-132 -156)">
+      <rect
+        width="512"
+        height="512"
+        rx="112"
+        fill="url(#rfs-of-h)"
+        opacity="0.72"
+        mask="url(#rfs-of-m)"
+      />
+      <g fill="#f4f5f8" transform="translate(149.48 88) scale(0.85906) translate(-132 -156)">
         <path d="M176 156h36v28h22v-28h44v28h22v-28h36v64c0 8-6 14-14 14H190c-8 0-14-6-14-14z" />
         <path d="M200 246h112l12 118H188z" />
         <path d="M172 376h168c10 0 18 8 18 18v4c0 6-4 10-10 10H164c-6 0-10-4-10-10v-4c0-10 8-18 18-18z" />
         <path d="M150 420h212c10 0 18 8 18 18v6c0 6-4 10-10 10H142c-6 0-10-4-10-10v-6c0-10 8-18 18-18z" />
       </g>
-      <rect x="112" y="384" width="288" height="32" rx="16" fill="var(--logo-rule)" />
+      <rect x="112" y="384" width="288" height="32" rx="16" fill="url(#rfs-of-r)" />
     </svg>
   );
 }
@@ -260,19 +289,49 @@ function SearchButton({ onOpen }: { onOpen: () => void }) {
 function ThemeToggle() {
   const scheme = useSettings((s) => s.colorScheme);
   const update = useSettings((s) => s.update);
-  // Round in the order Settings lists them: System, Nightshift, Dayshift.
+  // Round in the order Settings lists them: System, LX 263 (dark), LX 512 (light).
   const next = scheme === 'system' ? 'dark' : scheme === 'dark' ? 'light' : 'system';
-  // The brand's name, with the plain word beside it so nobody has to guess what it is.
   const label =
     scheme === 'system'
       ? `Theme: ${SCHEME_NAMES.system}`
       : `Theme: ${SCHEME_NAMES[scheme]} (${scheme})`;
   const icon: IconName = scheme === 'system' ? 'auto' : scheme === 'light' ? 'sun' : 'moon';
+  const onToggle = (ev: MouseEvent<HTMLButtonElement>) => {
+    const swap = () => update({ colorScheme: next });
+    const doc = document as Document & {
+      startViewTransition?: (cb: () => void) => { ready: Promise<void> };
+    };
+    if (
+      !('startViewTransition' in doc) ||
+      typeof doc.startViewTransition !== 'function' ||
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    ) {
+      swap();
+      return;
+    }
+    const r = ev.currentTarget.getBoundingClientRect();
+    const x = r.left + r.width / 2;
+    const y = r.top + r.height / 2;
+    const end = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
+    doc
+      .startViewTransition(swap)
+      .ready.then(() => {
+        document.documentElement.animate(
+          { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${end}px at ${x}px ${y}px)`] },
+          {
+            duration: 520,
+            easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+            pseudoElement: '::view-transition-new(root)',
+          },
+        );
+      })
+      .catch(() => undefined);
+  };
   return (
     <button
       type="button"
       className="shell__iconbtn"
-      onClick={() => update({ colorScheme: next })}
+      onClick={onToggle}
       aria-label={`${label}. Switch theme`}
       title={label}
     >
@@ -559,7 +618,8 @@ export function Shell() {
             <Suspense fallback={CLASSIC_CREDIT}>
               <PieceCredit />
             </Suspense>{' '}
-            · Puzzles and openings: Lichess (CC0) · Type: IBM Plex (
+            · Puzzles and openings: Lichess (CC0) · Type: Big Shoulders Stencil, Albert Sans &amp;
+            Azeret Mono (
             <a href={`${import.meta.env.BASE_URL}licence-ofl.txt`} target="_blank" rel="noreferrer">
               OFL-1.1
             </a>

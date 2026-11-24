@@ -35,12 +35,12 @@ describe('postbuild', () => {
     expect(readFileSync(join(dist, 'licence-apache.txt'), 'utf8')).toContain(
       'Apache License\n                           Version 2.0',
     );
-    // So are the fonts, IBM Plex, under the SIL Open Font License.
+    // So are the bundled Cyclorama Dawn fonts under the SIL Open Font License.
     expect(readFileSync(join(dist, 'licence-ofl.txt'), 'utf8')).toContain(
       'SIL OPEN FONT LICENSE Version 1.1',
     );
     expect(readFileSync(join(dist, 'notices.txt'), 'utf8')).toContain('Colin M.L. Burnett');
-    expect(readFileSync(join(dist, 'notices.txt'), 'utf8')).toContain('IBM Plex');
+    expect(readFileSync(join(dist, 'notices.txt'), 'utf8')).toContain('Albert Sans');
     expect(readFileSync(join(dist, 'notices.txt'), 'utf8')).toContain('Maia-3');
     expect(readFileSync(join(dist, 'notices.txt'), 'utf8')).toContain('CC BY-NC-SA 4.0');
     expect(result.licences).toEqual([

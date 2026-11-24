@@ -24,8 +24,8 @@ const ROOT = join(__dirname, '..');
 const SRC = join(__dirname, 'icons');
 const OUT = join(ROOT, 'public', 'icons');
 
-/** The brand tile's fill (RFS Caps Tile, Nightshift), behind every icon. */
-const BRAND = '#1a1d24';
+/** The brand tile's fill (RFS Cyclorama Dawn LX 263), behind every icon. */
+const BRAND = '#050507';
 
 /** Simple white glyphs for manifest shortcuts (96×96, on the brand tile). */
 const shortcutGlyphs = {
@@ -60,7 +60,7 @@ function maskableSvg(logoSvg) {
  * icon is the logo with square corners: the tile's (the first rect), not the rule's.
  */
 function squareSvg(logoSvg) {
-  return logoSvg.replace(/(<rect[^>]*?) rx="\d+"/, '$1');
+  return logoSvg.replaceAll(' rx="112"', '');
 }
 
 /**

@@ -1,13 +1,36 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512" role="img" aria-label="Open File">
-  <!-- The brand's Caps Tile (RFS BRAND.md): a 64-unit tile with corner radius 14, Ember rule 36 by 4 at y 48; here at 512 units. -->
-  <rect width="512" height="512" rx="112" fill="#1a1d24"/>
-  <!-- The rook, always white, standing where the mark's letters stand. -->
-  <g id="rook" fill="#ffffff" transform="translate(149.48 88) scale(0.85906) translate(-132 -156)">
+  <defs>
+    <linearGradient id="cyc-h" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#133954"/>
+      <stop offset="44%" stop-color="#1F547A"/>
+      <stop offset="76%" stop-color="#CC5016"/>
+      <stop offset="100%" stop-color="#F06E2B"/>
+    </linearGradient>
+    <linearGradient id="cyc-f" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="46%" stop-color="#FFFFFF" stop-opacity="0.06"/>
+      <stop offset="78%" stop-color="#FFFFFF" stop-opacity="0.48"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.88"/>
+    </linearGradient>
+    <mask id="cyc-m" maskContentUnits="objectBoundingBox">
+      <rect width="1" height="1" fill="url(#cyc-f)"/>
+    </mask>
+    <linearGradient id="rule-d" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#74B8E8"/>
+      <stop offset="50%" stop-color="#1F547A"/>
+      <stop offset="100%" stop-color="#F06E2B"/>
+    </linearGradient>
+  </defs>
+  <!-- RFS Cyclorama Dawn tile (64-unit geometry scaled to 512). -->
+  <rect width="512" height="512" rx="112" fill="#050507"/>
+  <rect width="512" height="512" rx="112" fill="url(#cyc-h)" opacity="0.72" mask="url(#cyc-m)"/>
+  <!-- The rook, standing where the mark's letters stand. -->
+  <g id="rook" fill="#f4f5f8" transform="translate(149.48 88) scale(0.85906) translate(-132 -156)">
     <path d="M176 156h36v28h22v-28h44v28h22v-28h36v64c0 8-6 14-14 14H190c-8 0-14-6-14-14z"/>
     <path d="M200 246h112l12 118H188z"/>
     <path d="M172 376h168c10 0 18 8 18 18v4c0 6-4 10-10 10H164c-6 0-10-4-10-10v-4c0-10 8-18 18-18z"/>
     <path d="M150 420h212c10 0 18 8 18 18v6c0 6-4 10-10 10H142c-6 0-10-4-10-10v-6c0-10 8-18 18-18z"/>
   </g>
-  <!-- The Ember rule beneath. -->
-  <rect id="rule" x="112" y="384" width="288" height="32" rx="16" fill="#ff6a3d"/>
+  <!-- Cyclorama Steel-to-Beacon rule beneath. -->
+  <rect id="rule" x="112" y="384" width="288" height="32" rx="16" fill="url(#rule-d)"/>
 </svg>

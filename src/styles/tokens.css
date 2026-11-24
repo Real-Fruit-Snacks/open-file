@@ -1,68 +1,72 @@
 /*
- * Design tokens, from the RFS brand (github.com/Real-Fruit-Snacks/rfs-brand, BRAND.md): two
- * themes, Nightshift (dark, the default) and Dayshift (light), one accent, Ember. Nightshift
- * holds unless the device asks for light, or the learner picks a scheme (data-theme on <html>).
- *
- * The brand's colours are used as they are, except where the app sets text on a raised surface
- * the brand did not test: there Dayshift's Ember, grey, Amber and Mint are shifted a step darker,
- * by the brand's own rule, until they pass WCAG AA (4.5:1) there too. Danger has no brand colour
- * (Ember is the brand, never an error), so it is a red kept well apart from Ember.
+ * Design tokens — RFS Cyclorama Dawn v2.1.0 (Steel & Beacon Orange + Signal Crimson Fault).
+ * Matte Dark (LX 263, #050507) is the explicit default; Alabaster Day (LX 512, #F5F7F9) is an
+ * opt-in light scheme (or system light when the learner explicitly selects System).
  */
 :root {
   color-scheme: dark;
 
-  --font-sans: 'IBM Plex Sans', Inter, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
-  --font-mono: 'IBM Plex Mono', 'JetBrains Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+  --font-display: 'Big Shoulders Stencil', 'Arial Narrow', sans-serif;
+  --font-sans: 'Albert Sans', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: 'Azeret Mono', ui-monospace, 'Cascadia Code', Consolas, monospace;
 
-  /* Brand: Ember. One per screen; Nightshift may glow, never Dayshift. */
-  --accent: #ff6a3d;
-  --accent-strong: #ff8a66;
-  --accent-soft: #33190f;
-  --accent-contrast: #0c0d10;
-  --accent-glow: 0 0 0 4px rgba(255, 106, 61, 0.16), 0 0 18px rgba(255, 106, 61, 0.28);
-  /* The mark keeps the brand's own values: its tile, and Ember for its rule. */
-  --logo-tile: #1a1d24;
-  --logo-rule: #ff6a3d;
+  /* Cyclorama Steel & Beacon Orange; gradients interpolate in Cartesian oklab where supported. */
+  --steel: #1f547a;
+  --steel-fill: #18496b;
+  --steel-ink: #74b8e8;
+  --accent: #f06e2b;
+  --accent-strong: #ff9254;
+  --accent-soft: #2c1509;
+  --accent-contrast: #050507;
+  --accent-glow: none;
+  --cta-bg: linear-gradient(110deg, #1f547a 0%, #bd4811 100%);
+  --cta-bg-hover: linear-gradient(110deg, #276895 0%, #d45417 100%);
+  --horizon-rule: linear-gradient(90deg, #74b8e8 0%, #1f547a 48%, #f06e2b 100%);
+  --wash-steel: rgba(31, 84, 122, 0.14);
+  --wash-beacon: rgba(240, 110, 43, 0.09);
+  --logo-tile: #050507;
+  --logo-rule: #f06e2b;
 
-  /* Surfaces & text: bg, surface (cards), raised (inputs, chips), a step above for presses. */
-  --bg: #0c0d10;
-  --bg-elevated: #13151a;
-  --surface: #13151a;
-  --surface-2: #1a1d24;
-  --surface-3: #22262e;
+  /* Matte Cyclorama surfaces & text (LX 263). */
+  --bg: #050507;
+  --bg-elevated: #0c0c10;
+  --surface: #0c0c10;
+  --surface-2: #14141a;
+  --surface-3: #1c1d26;
+  --code-bg: #08080b;
   /* The chosen option of a segmented control: lifted off its track. */
-  --segmented-on: #262a33;
-  --text: #e8e6e1;
-  --text-muted: #8a8f99;
-  --text-faint: #8a8f99;
+  --segmented-on: #232531;
+  --text: #f4f5f8;
+  --text-muted: #b3b5c0;
+  --text-faint: #989ba8;
   /* Borders replace shadows. */
-  --border: #262a33;
-  --border-strong: #3a3f4a;
+  --border: #252834;
+  --border-strong: #62646d;
 
-  /* Semantic: Mint only ever means OK; Amber warns and prompts. */
+  /* Semantic roles: Mint OK, Amber warn, Signal Crimson fault, Glacial Steel info. */
   --success: #3ddc97;
-  --success-soft: #10291f;
+  --success-soft: #0d271c;
   --warning: #ffc247;
-  --warning-soft: #2e2410;
-  --danger: #f2557a;
-  --danger-soft: #33121b;
-  --danger-contrast: #0c0d10;
-  /* Information is plain: the brand has no third accent, and Amber is kept for warnings, so an
-     inaccuracy (info) never looks like a mistake (warning). */
-  --info: #e8e6e1;
-  --info-soft: #1a1d24;
+  --warning-soft: #2b210d;
+  --danger: #ff5c6c;
+  --danger-fill: #c92438;
+  --danger-fill-hover: #e02e44;
+  --danger-soft: #2c0f15;
+  --danger-contrast: #ffffff;
+  --info: #74b8e8;
+  --info-soft: #102435;
 
   /* Eval bar */
-  --eval-white: #e8e6e1;
-  --eval-black: #1a1d24;
+  --eval-white: #f4f5f8;
+  --eval-black: #14141a;
 
-  /* Geometry */
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
+  /* Geometry: sharp technical corners, no capsule pills on badges/chips. */
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
   --radius-pill: 999px;
 
-  /* Nightshift has no shadows: a border marks every edge. */
+  /* Matte surfaces have no shadows: 1px borders carry structure. */
   --shadow-sm: none;
   --shadow-md: none;
   --shadow-board: none;
@@ -81,108 +85,145 @@
   --header-height: calc(60px + env(safe-area-inset-top, 0px));
   --bottom-nav-height: calc(60px + env(safe-area-inset-bottom, 0px));
 
-  /*
-   * Focus: an opaque 2px outline (see global.css) in a colour that reads at 3:1 on
-   * every surface, with a 1px halo in the page colour so it also shows on a
-   * primary button. `--focus-ring` is the same look as a box-shadow for the few
-   * places that cannot use an outline; `--selected-ring` marks a selected swatch
-   * or strip and is deliberately different from focus (inset, accent).
-   */
-  --focus: #ff6a3d;
-  --focus-halo: #0c0d10;
+  /* Focus: opaque 2px Beacon outline with 1px page-colour halo for every surface. */
+  --focus: #ff9254;
+  --focus-halo: #050507;
   --focus-ring: 0 0 0 1px var(--focus-halo), 0 0 0 3px var(--focus);
   --selected-ring: inset 0 0 0 2px var(--accent);
-  --transition: 160ms ease;
+  --transition: 150ms cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Dayshift: the light theme, for a device that asks for light or a learner who picks it. */
+/* Alabaster Day (LX 512): when the learner chooses System on a light device. */
 @media (prefers-color-scheme: light) {
   :root:not([data-theme='dark']) {
     color-scheme: light;
 
-    --accent: #b83a0f;
-    --accent-strong: #9a300c;
-    --accent-soft: #f7e1d8;
+    --steel: #1f547a;
+    --steel-fill: #18496b;
+    --steel-ink: #164669;
+    --accent: #ad3d0a;
+    --accent-strong: #8f3107;
+    --accent-soft: #f9e4d9;
     --accent-contrast: #ffffff;
     --accent-glow: none;
-    --logo-tile: #1a1b1e;
-    --logo-rule: #c43f11;
+    --cta-bg: linear-gradient(110deg, #18496b 0%, #ad3d0a 100%);
+    --cta-bg-hover: linear-gradient(110deg, #1f547a 0%, #bd4811 100%);
+    --horizon-rule: linear-gradient(90deg, #18496b 0%, #1f547a 48%, #ad3d0a 100%);
+    --wash-steel: rgba(31, 84, 122, 0.06);
+    --wash-beacon: rgba(240, 110, 43, 0.05);
+    --logo-tile: #050507;
+    --logo-rule: #f06e2b;
 
-    --bg: #f6f5f2;
+    --bg: #f5f7f9;
     --bg-elevated: #ffffff;
     --surface: #ffffff;
-    --surface-2: #eceae4;
-    --surface-3: #e2dfd7;
+    --surface-2: #e3e8ee;
+    --surface-3: #d6dde6;
+    --code-bg: #eef2f5;
     --segmented-on: #ffffff;
-    --text: #1a1b1e;
-    --text-muted: #5f636c;
-    --text-faint: #5f636c;
-    --border: #d6d3cb;
-    --border-strong: #b9b5ab;
+    --text: #0d1016;
+    --text-muted: #474d59;
+    --text-faint: #525966;
+    --border: #ccd3dc;
+    --border-strong: #6e7682;
 
-    --success: #147048;
-    --success-soft: #ddf2e8;
-    --warning: #8c5e00;
-    --warning-soft: #f8edd3;
-    --danger: #b4233f;
-    --danger-soft: #f8dde2;
+    --success: #127247;
+    --success-soft: #dcf2e7;
+    --warning: #885800;
+    --warning-soft: #f9edd3;
+    --danger: #b91c2e;
+    --danger-fill: #b91c2e;
+    --danger-fill-hover: #991525;
+    --danger-soft: #fce0e3;
     --danger-contrast: #ffffff;
-    --info: #1a1b1e;
-    --info-soft: #eceae4;
+    --info: #164669;
+    --info-soft: #dfecf5;
 
     --eval-white: #ffffff;
-    --eval-black: #1a1b1e;
+    --eval-black: #0d1016;
 
-    /* Dayshift may add a hairline under a card, nothing more. */
-    --shadow-sm: 0 1px 0 rgba(26, 27, 30, 0.06);
-    --shadow-md: 0 1px 2px rgba(26, 27, 30, 0.08);
+    --shadow-sm: 0 1px 0 rgba(13, 16, 22, 0.06);
+    --shadow-md: 0 1px 2px rgba(13, 16, 22, 0.08);
     --shadow-board: none;
 
-    --focus: #b83a0f;
-    --focus-halo: #f6f5f2;
+    --focus: #ad3d0a;
+    --focus-halo: #f5f7f9;
   }
 }
 
 :root[data-theme='light'] {
   color-scheme: light;
 
-  --accent: #b83a0f;
-  --accent-strong: #9a300c;
-  --accent-soft: #f7e1d8;
+  --steel: #1f547a;
+  --steel-fill: #18496b;
+  --steel-ink: #164669;
+  --accent: #ad3d0a;
+  --accent-strong: #8f3107;
+  --accent-soft: #f9e4d9;
   --accent-contrast: #ffffff;
   --accent-glow: none;
-  --logo-tile: #1a1b1e;
-  --logo-rule: #c43f11;
+  --cta-bg: linear-gradient(110deg, #18496b 0%, #ad3d0a 100%);
+  --cta-bg-hover: linear-gradient(110deg, #1f547a 0%, #bd4811 100%);
+  --horizon-rule: linear-gradient(90deg, #18496b 0%, #1f547a 48%, #ad3d0a 100%);
+  --wash-steel: rgba(31, 84, 122, 0.06);
+  --wash-beacon: rgba(240, 110, 43, 0.05);
+  --logo-tile: #050507;
+  --logo-rule: #f06e2b;
 
-  --bg: #f6f5f2;
+  --bg: #f5f7f9;
   --bg-elevated: #ffffff;
   --surface: #ffffff;
-  --surface-2: #eceae4;
-  --surface-3: #e2dfd7;
+  --surface-2: #e3e8ee;
+  --surface-3: #d6dde6;
+  --code-bg: #eef2f5;
   --segmented-on: #ffffff;
-  --text: #1a1b1e;
-  --text-muted: #5f636c;
-  --text-faint: #5f636c;
-  --border: #d6d3cb;
-  --border-strong: #b9b5ab;
+  --text: #0d1016;
+  --text-muted: #474d59;
+  --text-faint: #525966;
+  --border: #ccd3dc;
+  --border-strong: #6e7682;
 
-  --success: #147048;
-  --success-soft: #ddf2e8;
-  --warning: #8c5e00;
-  --warning-soft: #f8edd3;
-  --danger: #b4233f;
-  --danger-soft: #f8dde2;
+  --success: #127247;
+  --success-soft: #dcf2e7;
+  --warning: #885800;
+  --warning-soft: #f9edd3;
+  --danger: #b91c2e;
+  --danger-fill: #b91c2e;
+  --danger-fill-hover: #991525;
+  --danger-soft: #fce0e3;
   --danger-contrast: #ffffff;
-  --info: #1a1b1e;
-  --info-soft: #eceae4;
+  --info: #164669;
+  --info-soft: #dfecf5;
 
   --eval-white: #ffffff;
-  --eval-black: #1a1b1e;
+  --eval-black: #0d1016;
 
-  --shadow-sm: 0 1px 0 rgba(26, 27, 30, 0.06);
-  --shadow-md: 0 1px 2px rgba(26, 27, 30, 0.08);
+  --shadow-sm: 0 1px 0 rgba(13, 16, 22, 0.06);
+  --shadow-md: 0 1px 2px rgba(13, 16, 22, 0.08);
   --shadow-board: none;
 
-  --focus: #b83a0f;
-  --focus-halo: #f6f5f2;
+  --focus: #ad3d0a;
+  --focus-halo: #f5f7f9;
+}
+
+@supports (background: linear-gradient(in oklab, #1f547a, #bd4811)) {
+  :root {
+    --cta-bg: linear-gradient(110deg in oklab, #1f547a 0%, #bd4811 100%);
+    --cta-bg-hover: linear-gradient(110deg in oklab, #276895 0%, #d45417 100%);
+    --horizon-rule: linear-gradient(90deg in oklab, #74b8e8 0%, #1f547a 48%, #f06e2b 100%);
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme='dark']) {
+      --cta-bg: linear-gradient(110deg in oklab, #18496b 0%, #ad3d0a 100%);
+      --cta-bg-hover: linear-gradient(110deg in oklab, #1f547a 0%, #bd4811 100%);
+      --horizon-rule: linear-gradient(90deg in oklab, #18496b 0%, #1f547a 48%, #ad3d0a 100%);
+    }
+  }
+
+  :root[data-theme='light'] {
+    --cta-bg: linear-gradient(110deg in oklab, #18496b 0%, #ad3d0a 100%);
+    --cta-bg-hover: linear-gradient(110deg in oklab, #1f547a 0%, #bd4811 100%);
+    --horizon-rule: linear-gradient(90deg in oklab, #18496b 0%, #1f547a 48%, #ad3d0a 100%);
+  }
 }

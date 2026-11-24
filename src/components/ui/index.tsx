@@ -581,6 +581,7 @@ export function Dialog({
   actions,
   dismissible = true,
   wide = false,
+  danger = false,
   stackActions = false,
   closeLabel = 'Close',
 }: {
@@ -593,6 +594,8 @@ export function Dialog({
   dismissible?: boolean;
   /** Use most of the viewport width (for editors and tables). */
   wide?: boolean;
+  /** Destructive confirmation: carries a Signal Crimson top accent rule. */
+  danger?: boolean;
   /**
    * The ways on at the end of a game, three or more: two to a row, the main one the full width
    * under them, rather than a row that wraps where it happens to.
@@ -621,7 +624,9 @@ export function Dialog({
   return (
     <dialog
       ref={ref}
-      className={wide ? 'dialog dialog--wide' : 'dialog'}
+      className={['dialog', wide && 'dialog--wide', danger && 'dialog--danger']
+        .filter(Boolean)
+        .join(' ')}
       aria-labelledby={titleId}
       // React passes a nested dialog's close and cancel events up to this one too (a
       // confirmation inside the library, say): only this dialog's own events count.
@@ -706,13 +711,20 @@ export function ConfirmDialog({
       open={open}
       onClose={onClose}
       title={title}
+      danger={danger}
       actions={(close) => (
         <>
-          <Button variant="secondary" onClick={close} data-testid="confirm-cancel">
+          <Button
+            variant="secondary"
+            autoFocus={danger}
+            onClick={close}
+            data-testid="confirm-cancel"
+          >
             {cancelLabel}
           </Button>
           <Button
             variant={danger ? 'danger' : 'primary'}
+            className={danger ? 'btn--danger-solid' : undefined}
             onClick={() => {
               onConfirm();
               close();

@@ -41,15 +41,17 @@ a.btn:focus {
 }
 
 .btn--primary {
-  background: var(--accent);
-  color: var(--accent-contrast);
+  background-color: var(--steel);
+  background-image: var(--cta-bg);
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
 }
 
 .btn--primary:hover:not(:disabled) {
-  background: var(--accent-strong);
-  color: var(--accent-contrast);
-  /* Nightshift's Ember glows under the pointer; Dayshift's does not (--accent-glow: none). */
-  box-shadow: var(--accent-glow);
+  background-color: var(--steel);
+  background-image: var(--cta-bg-hover);
+  border-color: rgba(255, 255, 255, 0.24);
+  color: #ffffff;
 }
 
 .btn--secondary {
@@ -83,11 +85,24 @@ a.btn:focus {
 .btn--danger {
   background: var(--danger-soft);
   color: var(--danger);
-  border-color: transparent;
+  border-color: color-mix(in srgb, var(--danger) 42%, transparent);
 }
 
 .btn--danger:hover:not(:disabled) {
-  background: var(--danger);
+  background: var(--danger-fill);
+  border-color: var(--danger-fill);
+  color: var(--danger-contrast);
+}
+
+.btn--danger-solid {
+  background: var(--danger-fill);
+  border-color: var(--danger-fill);
+  color: var(--danger-contrast);
+}
+
+.btn--danger-solid:hover:not(:disabled) {
+  background: var(--danger-fill-hover);
+  border-color: var(--danger-fill-hover);
   color: var(--danger-contrast);
 }
 
@@ -223,20 +238,22 @@ a.btn:focus {
   font-family: var(--font-mono);
 }
 
-/* ---------- Badge ---------- */
+/* ---------- Badge (Cyclorama Terminal Token) ---------- */
 .badge {
   display: inline-flex;
   align-items: center;
   gap: 4px;
-  padding: 2px 10px;
-  border-radius: var(--radius-pill);
-  font-size: 0.75rem;
-  font-weight: 600;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
   line-height: 1.6;
-  background: var(--surface-2);
+  background: var(--code-bg);
   color: var(--text-muted);
   border: 1px solid var(--border);
-  /* A pill never breaks over two lines ("Ye/s" in a narrow table cell). */
+  /* A token never breaks over two lines ("Ye/s" in a narrow table cell). */
   white-space: nowrap;
   overflow-wrap: normal;
   word-break: normal;
@@ -345,7 +362,7 @@ a.btn:focus {
 
 /* ---------- Dialog ---------- */
 .dialog {
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-lg);
   background: var(--bg-elevated);
   color: var(--text);
@@ -359,13 +376,17 @@ a.btn:focus {
   box-shadow: var(--shadow-md);
 }
 
+.dialog--danger {
+  border-top: 2px solid var(--danger-fill);
+}
+
 .dialog[open] {
   display: flex;
   flex-direction: column;
 }
 
 .dialog::backdrop {
-  background: rgba(12, 13, 16, 0.6);
+  background: rgba(5, 5, 7, 0.72);
   backdrop-filter: blur(2px);
 }
 
@@ -393,6 +414,12 @@ a.btn:focus {
   margin: calc(-1 * var(--space-5)) calc(-1 * var(--space-5)) var(--space-2);
   padding: var(--space-5) var(--space-5) var(--space-2);
   background: var(--bg-elevated);
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
 }
 
 /* Room for the close control beside the title. */
@@ -735,14 +762,15 @@ a.btn:focus {
 .progress {
   height: 8px;
   width: 100%;
-  border-radius: var(--radius-pill);
+  border-radius: 3px;
   background: var(--surface-3);
   overflow: hidden;
 }
 
 .progress__fill {
   height: 100%;
-  background: var(--accent);
+  background-color: var(--steel);
+  background-image: var(--horizon-rule);
   border-radius: inherit;
   transition: width 300ms ease;
 }
@@ -946,11 +974,12 @@ a.btn:focus {
   min-width: 1.4em;
   margin-left: 6px;
   padding: 0 5px;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-sm);
   background: var(--warning);
-  /* The page colour reads on Amber in both themes (white does not in Nightshift). */
+  /* The page colour reads on Amber in both themes (white does not in LX 263 Dark). */
   color: var(--bg);
-  font-size: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
   line-height: 1.5;
   text-align: center;
   vertical-align: 1px;

@@ -154,7 +154,7 @@ test.afterAll(async () => {
 
 /** The schemes in the order the theme button goes through them, each with the name it shows. */
 const SCHEMES = ['dark', 'light'] as const satisfies readonly Scheme[];
-const NAMES: Record<Scheme, string> = { dark: 'Nightshift', light: 'Dayshift' };
+const NAMES: Record<Scheme, string> = { dark: 'LX 263', light: 'LX 512' };
 
 test.describe('axe sweep', () => {
   for (const path of PAGES) {

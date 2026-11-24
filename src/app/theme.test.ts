@@ -28,7 +28,7 @@ describe('colour scheme', () => {
     expect(meta.content).toBe(siteConfig.backgroundColor);
     applyColorScheme('system');
     expect(document.documentElement.dataset.theme).toBeUndefined();
-    // A device that states no preference gets Nightshift, the default.
+    // A device that states no preference gets LX 263 dark, the default.
     expect(meta.content).toBe(siteConfig.backgroundColor);
   });
 

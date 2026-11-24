@@ -637,8 +637,8 @@ link to a card (`/settings#profiles` from the profile badge, `#lichess` after th
 join link's `#sync=…`) opens the card's tab and scrolls to it. The tabs are one tab stop: the arrow
 keys, Home and End move between them, and on phones they wrap onto two rows.
 
-**Appearance.** _Display_: the colour scheme (_System_, the default, which is _Nightshift_ unless the device asks for
-light; _Nightshift_, dark; or _Dayshift_, light) and
+**Appearance.** _Display_: the colour scheme (_LX 263_, matte dark, the default; _LX 512_, light; or
+_System_, which follows the device) and
 **move notation** — figurines drawn from the piece set (♘f3) or letters (Nf3), everywhere a move is
 written. _Sound & vibration_: the sounds, their theme (which also picks the vibration patterns) and
 volume, and vibration. _Board_: every Lichess board — the flat Brown, Blue, Green, IC and Purple,

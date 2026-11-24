@@ -53,7 +53,7 @@ function DisplayCard() {
           />
         </div>
         <p className="small muted" style={{ margin: 0 }}>
-          Nightshift is dark, Dayshift is light. System follows your device.
+          LX 263 is matte dark, LX 512 is light. System follows your device.
         </p>
         <div className="settings__row">
           <span>Move notation</span>

@@ -131,7 +131,7 @@ test.describe('shell', () => {
 
   // The black scheme went in 0.32: a save that still names it shows the dark one from the start.
   for (const saved of ['dark', 'black'] as const) {
-    test(`a saved ${saved} scheme applies as Nightshift before the app chunk runs`, async ({
+    test(`a saved ${saved} scheme applies as LX 263 dark before the app chunk runs`, async ({
       page,
     }) => {
       await seed(page, { colorScheme: saved });

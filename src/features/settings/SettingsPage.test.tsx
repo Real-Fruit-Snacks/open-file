@@ -222,15 +222,15 @@ describe('SettingsPage', () => {
       within(schemes)
         .getAllByRole('radio')
         .map((b) => b.textContent),
-    ).toEqual(['System', 'Nightshift', 'Dayshift']);
+    ).toEqual(['System', 'LX 263', 'LX 512']);
     expect(
-      screen.getByText('Nightshift is dark, Dayshift is light. System follows your device.'),
+      screen.getByText('LX 263 is matte dark, LX 512 is light. System follows your device.'),
     ).toBeInTheDocument();
-    fireEvent.click(within(schemes).getByRole('radio', { name: 'Nightshift' }));
+    fireEvent.click(within(schemes).getByRole('radio', { name: 'LX 263' }));
     expect(useSettings.getState().colorScheme).toBe('dark');
-    fireEvent.click(within(schemes).getByRole('radio', { name: 'Dayshift' }));
+    fireEvent.click(within(schemes).getByRole('radio', { name: 'LX 512' }));
     expect(useSettings.getState().colorScheme).toBe('light');
-    expect(within(schemes).getByRole('radio', { name: 'Dayshift' })).toHaveAttribute(
+    expect(within(schemes).getByRole('radio', { name: 'LX 512' })).toHaveAttribute(
       'aria-checked',
       'true',
     );

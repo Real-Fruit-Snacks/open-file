@@ -239,7 +239,7 @@ test.describe('engine says', () => {
 });
 
 test.describe('daily opening', () => {
-  test('the tiles say what they mean in words and glyphs, with AA contrast (Nightshift)', async ({
+  test('the tiles say what they mean in words and glyphs, with AA contrast (LX 263)', async ({
     page,
   }) => {
     await seed(page, {}, { colorScheme: 'dark' });

@@ -223,7 +223,7 @@ export interface SettingsState {
 }
 
 export const DEFAULT_SETTINGS = {
-  colorScheme: 'system' as ColorScheme,
+  colorScheme: 'dark' as ColorScheme,
   boardTheme: 'brown' as BoardTheme,
   pieceSet: 'classic' as PieceSet,
   showCoordinates: true,

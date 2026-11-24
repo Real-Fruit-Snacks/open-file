@@ -56,10 +56,24 @@ const FADE = 160;
 /** At the end the first screen fades in again, over the last. */
 const LOOP_FADE = 700;
 
-/** The brand's two themes, the only colours the picture adds to the app's own. */
+/** RFS Cyclorama Dawn v2.1.0 themes (LX 263 Dark and LX 512 Light). */
 const THEMES = {
-  dark: { bg: '#0C0D10', line: '#262A33', text: '#E8E6E1', mute: '#8A8F99', ember: '#FF6A3D' },
-  light: { bg: '#F6F5F2', line: '#D6D3CB', text: '#1A1B1E', mute: '#666A73', ember: '#C03B0A' },
+  dark: {
+    bg: '#050507',
+    line: '#252834',
+    text: '#F4F5F8',
+    mute: '#B3B5C0',
+    ember: '#FF9254',
+    rule: 'linear-gradient(90deg, #74B8E8 0%, #1F547A 48%, #F06E2B 100%)',
+  },
+  light: {
+    bg: '#F5F7F9',
+    line: '#CCD3DC',
+    text: '#0D1016',
+    mute: '#474D59',
+    ember: '#AD3D0A',
+    rule: 'linear-gradient(90deg, #18496B 0%, #1F547A 48%, #AD3D0A 100%)',
+  },
 };
 
 /**
@@ -308,6 +322,9 @@ async function frame(page, theme, fonts, shot, place, caption, index) {
     height: ${place.height}px;
     overflow: hidden;
     background: ${theme.bg};
+    background-image: ${theme.rule};
+    background-size: 100% 3px;
+    background-repeat: no-repeat;
     color: ${theme.text};
     font-family: 'Newsreader', serif;
     font-optical-sizing: auto;

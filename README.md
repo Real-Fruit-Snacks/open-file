@@ -92,8 +92,8 @@ opponent's model, Maia-3, and Lichess's board pictures are under the GNU Affero 
 License v3, which the GPL v3 allows the app to be combined with
 ([LICENSES/AGPL-3.0.txt](LICENSES/AGPL-3.0.txt)). Third-party components
 and their licences are listed in [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md). The built site
-ships the texts (`licence.txt`, `licence-agpl.txt`, `licence-apache.txt`, `licence-ofl.txt` for the IBM
-Plex fonts, and `notices.txt`) and links
+ships the texts (`licence.txt`, `licence-agpl.txt`, `licence-apache.txt`, `licence-ofl.txt` for the
+bundled Big Shoulders Stencil, Albert Sans and Azeret Mono fonts, and `notices.txt`) and links
 them from the footer of every page, next to the credits the components ask for — among them the
 chosen piece set's. The piece sets come from the Lichess collection under their own licences; four of
 them (California, Maestro, Staunty and Cardinal) are CC BY-NC-SA 4.0 and may not be used commercially,

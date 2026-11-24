@@ -20,12 +20,24 @@ html {
   /* Where scroll bars take room (a mouse on Windows or Linux), the page keeps it while a dialog
      holds the page still, so nothing shifts sideways as one opens and closes. */
   scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) var(--bg);
+}
+
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+  mix-blend-mode: normal;
 }
 
 body {
   margin: 0;
   min-height: 100dvh;
-  background: var(--bg);
+  background-color: var(--bg);
+  background-image:
+    radial-gradient(760px 380px at 8% 0%, var(--wash-steel), transparent 72%),
+    radial-gradient(720px 340px at 94% 0%, var(--wash-beacon), transparent 70%);
+  background-repeat: no-repeat;
   color: var(--text);
   font-family: var(--font-sans);
   /* The brand's body: 15 px on 1.6 at the browser's default size. */
@@ -82,7 +94,7 @@ button {
   color: var(--accent);
 }
 
-/* The brand's type roles: h1 32 on 1.1, bold, -0.02em; h2 22 on 1.2, semibold, -0.01em. */
+/* Cyclorama Dawn type roles: Big Shoulders Stencil display h1, Albert Sans UI headings. */
 h1,
 h2,
 h3,
@@ -94,9 +106,11 @@ h4 {
 }
 
 h1 {
-  font-size: clamp(1.75rem, 1.5rem + 1vw, 2rem);
-  line-height: 1.1;
-  letter-spacing: -0.02em;
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 1.75rem + 1vw, 2.5rem);
+  line-height: 1;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
   font-weight: 700;
 }
 
@@ -115,8 +129,9 @@ p {
 code,
 kbd {
   font-family: var(--font-mono);
-  font-size: 0.9em;
-  background: var(--surface-2);
+  font-size: 0.875em;
+  background: var(--code-bg);
+  border: 1px solid var(--border);
   padding: 0.1em 0.35em;
   border-radius: var(--radius-sm);
 }

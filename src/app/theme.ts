@@ -3,18 +3,18 @@ import { type ColorScheme, PIECE_SET_IDS, type PieceSet, useSettings } from '@/s
 import { siteConfig } from '@/site.config';
 
 /**
- * What the schemes are called: the brand's names for its two themes. Nightshift is the dark one
- * and Dayshift the light one; the values stored and put on <html> stay 'dark' and 'light'.
+ * What the schemes are called: RFS Cyclorama Dawn's lux names for its two themes. LX 263 is matte
+ * dark (the explicit default) and LX 512 is Alabaster Day (light); stored values stay 'dark' and 'light'.
  */
 export const SCHEME_NAMES: Record<ColorScheme, string> = {
   system: 'System',
-  dark: 'Nightshift',
-  light: 'Dayshift',
+  dark: 'LX 263',
+  light: 'LX 512',
 };
 
 /**
- * The system scheme is Dayshift only on a device that asks for light; on any other, one that
- * asks for dark or states no preference, it is Nightshift, as the stylesheet has it.
+ * The system scheme is LX 512 (light) only on a device that asks for light; on any other, one that
+ * asks for dark or states no preference, it is LX 263 (dark), as the stylesheet has it.
  */
 const LIGHT_QUERY = '(prefers-color-scheme: light)';
 
@@ -37,6 +37,16 @@ export function applyColorScheme(scheme: ColorScheme): void {
   else root.setAttribute('data-theme', scheme);
 
   const prefersLight = window.matchMedia(LIGHT_QUERY).matches;
+  const isLight = scheme === 'light' || (scheme === 'system' && prefersLight);
+  const colorSchemeMeta = document.querySelector<HTMLMetaElement>('meta[name="color-scheme"]');
+  if (colorSchemeMeta) colorSchemeMeta.content = isLight ? 'light' : 'dark';
+  if (scheme === 'light' || scheme === 'dark') {
+    try {
+      localStorage.setItem('rfs-theme', scheme);
+    } catch {
+      // Storage unavailable (private mode / quota).
+    }
+  }
   // The page leaves two theme-colour tags for the system scheme (light when the device asks for
   // it, dark otherwise); once the app runs, one tag with the resolved colour is what every
   // browser reads.

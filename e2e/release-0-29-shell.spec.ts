@@ -235,7 +235,7 @@ test.describe('quick search', () => {
   });
 });
 
-test.describe('in Nightshift, the dark scheme', () => {
+test.describe('in LX 263, the dark scheme', () => {
   test('the search results and the card read clearly', async ({ page }) => {
     await seed(page, '0.0.1');
     await page.addInitScript(

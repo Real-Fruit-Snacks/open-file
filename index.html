@@ -5,21 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <title>%SITE_NAME% — %SITE_TAGLINE%</title>
     <meta name="description" content="%SITE_DESCRIPTION%" />
-    <!-- The browser UI follows the page background; the inline script below picks
-         the saved scheme before the first paint, the app keeps it current after.
-         Without one, the light colour holds only where the device asks for light
-         and the dark one everywhere else (the first tag that matches is used). -->
-    <meta
-      name="theme-color"
-      media="(prefers-color-scheme: light)"
-      content="%SITE_LIGHT_BACKGROUND%"
-    />
+    <!-- Matte Dark (LX 263) is the explicit default; the inline script below applies
+         the saved scheme before first paint and the app keeps it current afterwards. -->
     <meta name="theme-color" content="%SITE_BACKGROUND%" />
-    <meta name="color-scheme" content="dark light" />
+    <meta name="color-scheme" content="dark" />
     <script>
       // Applies the saved colour scheme and piece set before anything paints, so
-      // a visitor who chose Nightshift (dark) or Dayshift (light) never sees a
-      // flash of the other one. Mirrors applyColorScheme() in src/app/theme.ts.
+      // a visitor who chose LX 263 (dark) or LX 512 (light) never sees a flash of
+      // the other one. Mirrors applyColorScheme() in src/app/theme.ts.
       (function () {
         try {
           // The active profile's settings (a profile without its own has the main one's).
@@ -32,12 +25,18 @@
           var raw = localStorage.getItem(key);
           var state = raw ? JSON.parse(raw).state || {} : {};
           var scheme = state.colorScheme;
+          if (!scheme) {
+            var rfs = localStorage.getItem('rfs-theme');
+            scheme = rfs === 'light' ? 'light' : 'dark';
+          }
           // The black scheme went in 0.32: a save that still names it is dark, as the app reads it.
           if (scheme === 'black') scheme = 'dark';
           var root = document.documentElement;
           if (scheme === 'light' || scheme === 'dark') {
             root.setAttribute('data-theme', scheme);
             var colour = scheme === 'dark' ? '%SITE_BACKGROUND%' : '%SITE_LIGHT_BACKGROUND%';
+            var cs = document.querySelector('meta[name="color-scheme"]');
+            if (cs) cs.setAttribute('content', scheme);
             var metas = document.querySelectorAll('meta[name="theme-color"]');
             for (var i = 0; i < metas.length; i++) {
               if (i === 0) {
@@ -50,7 +49,7 @@
           }
           if (typeof state.pieceSet === 'string') root.setAttribute('data-pieces', state.pieceSet);
         } catch (e) {
-          // No storage, or a damaged blob: the system scheme applies until the app loads.
+          // No storage, or a damaged blob: matte dark (LX 263) holds until the app loads.
         }
       })();
     </script>
