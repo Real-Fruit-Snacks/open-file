@@ -183,8 +183,7 @@
   overflow-x: hidden;
   overscroll-behavior-y: contain;
   scroll-padding-top: var(--space-3);
-  scroll-padding-bottom: calc(var(--bottom-nav-height) + 8px);
-  scrollbar-gutter: stable;
+  scroll-padding-bottom: var(--space-3);
   scrollbar-width: thin;
   scrollbar-color: var(--border-strong) var(--bg);
 }
@@ -196,7 +195,7 @@
 /* ---------- Main ---------- */
 .shell__main {
   flex: 1 0 auto;
-  padding-bottom: calc(var(--bottom-nav-height) + var(--space-5));
+  padding-bottom: var(--space-5);
   outline: none;
 }
 
@@ -222,7 +221,6 @@
   padding: var(--space-4) 0;
   font-size: 0.8rem;
   color: var(--text-muted);
-  margin-bottom: var(--bottom-nav-height);
 }
 
 .shell__footer-inner {
@@ -234,10 +232,8 @@
 
 /* ---------- Bottom navigation (mobile) ---------- */
 .shell__bottomnav {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
+  flex: none;
+  position: relative;
   /* The height already includes the home-bar inset (tokens.css). */
   height: var(--bottom-nav-height);
   padding-bottom: env(safe-area-inset-bottom, 0px);
