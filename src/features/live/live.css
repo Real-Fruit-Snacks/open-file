@@ -678,9 +678,9 @@
 
 /* ---------- The bar under the header ---------- */
 .live-bar {
-  position: sticky;
-  top: var(--header-height);
-  /* Under the header (and its menus), over the page. */
+  flex: none;
+  position: relative;
+  /* Under the header (and its menus), above the scroll region. */
   z-index: 45;
   background: var(--surface-2);
   border-bottom: 1px solid var(--border);

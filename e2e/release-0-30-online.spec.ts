@@ -111,7 +111,11 @@ test('an analysis room keeps its board in view beside the long panel, and says w
   await expect(host.getByTestId('together-news')).toHaveText('Nobody else is here yet.');
   if (isPhone(host)) return;
   // Wide screens: scrolled to the panel's end, the board is still on screen.
-  await host.evaluate(() => window.scrollTo(0, document.documentElement.scrollHeight));
+  await host.evaluate(() => {
+    const scroller = document.querySelector('.shell__scroll');
+    if (scroller) scroller.scrollTop = scroller.scrollHeight;
+    else window.scrollTo(0, document.documentElement.scrollHeight);
+  });
   await expect(host.getByRole('region', { name: 'Messages' })).toBeInViewport();
   const board = await box(await expectBoard(host));
   const viewport = host.viewportSize();

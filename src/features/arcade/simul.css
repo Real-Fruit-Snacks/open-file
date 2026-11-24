@@ -61,7 +61,7 @@
 
 /* Waiting for you: a hint of the accent; the board on the big board: all of it. */
 .simul-thumb--move {
-  border-color: color-mix(in srgb, var(--accent) 45%, transparent);
+  border-color: color-mix(in oklab, var(--accent) 45%, transparent);
 }
 
 .simul-thumb.is-active {
@@ -221,7 +221,7 @@
 /* ---------- Summary ---------- */
 /* Scrolled to when the simul ends: clear of the sticky header. */
 .simul__summary-anchor {
-  scroll-margin-top: calc(var(--header-height) + 12px);
+  scroll-margin-top: 12px;
 }
 
 .simul__summary {

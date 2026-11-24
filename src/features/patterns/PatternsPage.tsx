@@ -72,7 +72,9 @@ export default function PatternsPage() {
 
   const startDrill = (patterns: MatingPattern[], random = true) => {
     setQueue(random ? shuffle(patterns) : patterns);
-    window.scrollTo({ top: 0 });
+    const scroller = document.querySelector('.shell__scroll');
+    if (scroller) scroller.scrollTop = 0;
+    else window.scrollTo({ top: 0 });
   };
 
   return (

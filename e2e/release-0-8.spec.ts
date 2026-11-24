@@ -355,19 +355,21 @@ test.describe('playing on from a position on a phone', () => {
     await page.getByRole('button', { name: 'Start', exact: true }).click();
     const board = await expectBoard(page);
     await revealBoard(board);
-    const before = await page.evaluate(() => window.scrollY);
+    const getScroll = () =>
+      page.evaluate(() => document.querySelector('.shell__scroll')?.scrollTop ?? window.scrollY);
+    const before = await getScroll();
     const moves = page.locator('.movelist .movelist__move');
 
     await playMove(board, 'a4', 'b3');
     await expect(moves).toHaveCount(2, { timeout: 30_000 });
     await page.waitForTimeout(250);
-    expect(await page.evaluate(() => window.scrollY)).toBe(before);
+    expect(await getScroll()).toBe(before);
     await expect(board).toBeInViewport({ ratio: 1 });
 
     await playMove(board, 'd2', 'd3');
     await expect(moves).toHaveCount(4, { timeout: 30_000 });
     await page.waitForTimeout(250);
-    expect(await page.evaluate(() => window.scrollY)).toBe(before);
+    expect(await getScroll()).toBe(before);
     await expect(board).toBeInViewport({ ratio: 1 });
   });
 });
@@ -391,7 +393,11 @@ test.describe('small phones', () => {
       .evaluate((el) => parseFloat(getComputedStyle(el).fontSize));
     expect(titleSize).toBeLessThan(24);
     // … so the board and both player bars sit above the bottom navigation without scrolling.
-    expect(await page.evaluate(() => window.scrollY)).toBe(0);
+    expect(
+      await page.evaluate(
+        () => document.querySelector('.shell__scroll')?.scrollTop ?? window.scrollY,
+      ),
+    ).toBe(0);
     const layout = await page.evaluate(() => {
       const bars = Array.from(
         document.querySelectorAll<HTMLElement>('.playerbar'),

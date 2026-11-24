@@ -1,5 +1,6 @@
 .shell {
-  min-height: 100dvh;
+  height: 100dvh;
+  overflow: hidden;
   display: flex;
   flex-direction: column;
 }
@@ -20,14 +21,14 @@
 
 /* ---------- Header ---------- */
 .shell__header {
-  position: sticky;
-  top: 0;
+  flex: none;
+  position: relative;
   z-index: 50;
   height: var(--header-height);
   /* The status bar / notch strip is part of the header, so nothing scrolls under it. */
   padding-top: env(safe-area-inset-top, 0px);
   background: var(--bg);
-  background: color-mix(in srgb, var(--bg) 92%, transparent);
+  background: color-mix(in oklab, var(--bg) 92%, transparent);
   background-image: var(--horizon-rule);
   background-size: 100% 2px;
   background-repeat: no-repeat;
@@ -172,9 +173,29 @@
   color: var(--text);
 }
 
+/* ---------- Below-header scroll region ---------- */
+.shell__scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  overflow-x: hidden;
+  overscroll-behavior-y: contain;
+  scroll-padding-top: var(--space-3);
+  scroll-padding-bottom: calc(var(--bottom-nav-height) + 8px);
+  scrollbar-gutter: stable;
+  scrollbar-width: thin;
+  scrollbar-color: var(--border-strong) var(--bg);
+}
+
+.shell:has(dialog[open]) .shell__scroll {
+  overflow-y: hidden;
+}
+
 /* ---------- Main ---------- */
 .shell__main {
-  flex: 1;
+  flex: 1 0 auto;
   padding-bottom: calc(var(--bottom-nav-height) + var(--space-5));
   outline: none;
 }

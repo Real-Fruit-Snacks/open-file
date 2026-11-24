@@ -9,17 +9,13 @@
 }
 
 html {
+  height: 100%;
+  overflow: hidden;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   /* The browser's font-size preference applies: 1rem is whatever the visitor chose. */
   font-size: 100%;
   scroll-behavior: smooth;
-  /* A focused or targeted element scrolls clear of the sticky header and the bottom bar. */
-  scroll-padding-top: calc(var(--header-height) + 8px);
-  scroll-padding-bottom: calc(var(--bottom-nav-height) + 8px);
-  /* Where scroll bars take room (a mouse on Windows or Linux), the page keeps it while a dialog
-     holds the page still, so nothing shifts sideways as one opens and closes. */
-  scrollbar-gutter: stable;
   scrollbar-width: thin;
   scrollbar-color: var(--border-strong) var(--bg);
 }
@@ -32,11 +28,14 @@ html {
 
 body {
   margin: 0;
-  min-height: 100dvh;
+  height: 100%;
   background-color: var(--bg);
-  background-image:
-    radial-gradient(760px 380px at 8% 0%, var(--wash-steel), transparent 72%),
-    radial-gradient(720px 340px at 94% 0%, var(--wash-beacon), transparent 70%);
+  background-image: linear-gradient(
+    125deg in oklab,
+    var(--wash-steel) 0%,
+    transparent 48%,
+    var(--wash-beacon) 100%
+  );
   background-repeat: no-repeat;
   color: var(--text);
   font-family: var(--font-sans);
@@ -358,7 +357,7 @@ kbd {
 
   .trainer__panel {
     position: sticky;
-    top: calc(var(--header-height) + var(--space-4));
+    top: var(--space-4);
   }
 }
 
@@ -420,7 +419,7 @@ kbd {
      than the panel scrolling in a box of its own next to the page's scroll bar. */
   .trainer > :not(.trainer__panel, .trainer__lead) {
     position: sticky;
-    top: calc(var(--header-height) + var(--space-2));
+    top: var(--space-2);
     align-self: start;
   }
 
@@ -485,7 +484,7 @@ kbd {
   display: grid;
   place-items: center;
   min-width: 0;
-  background: color-mix(in srgb, var(--bg) 60%, transparent);
+  background: color-mix(in oklab, var(--bg) 60%, transparent);
   border-radius: var(--radius-md);
   z-index: 5;
 }
@@ -510,7 +509,7 @@ kbd {
   /* A card covers nearly all of the board on a phone: what shows of the board round it is
      faded further, so a sliver of cut-off pieces reads as background, not as a glitch. */
   .trainer__overlay:has(> .card) {
-    background: color-mix(in srgb, var(--bg) 85%, transparent);
+    background: color-mix(in oklab, var(--bg) 85%, transparent);
   }
 
   /* The card's buttons fill its width, a row at a time, rather than a ragged centred stack. */
@@ -639,8 +638,30 @@ details[open] > summary::before {
   }
 }
 
+/* ---------- Reduced transparency ---------- */
+@media (prefers-reduced-transparency: reduce) {
+  .shell__header {
+    backdrop-filter: none;
+    background-color: var(--bg);
+  }
+
+  .dialog::backdrop {
+    backdrop-filter: none;
+    background: rgba(5, 5, 7, 0.88);
+  }
+}
+
 /* ---------- Print ---------- */
 @media print {
+  html,
+  body,
+  .shell,
+  .shell__scroll {
+    height: auto !important;
+    overflow: visible !important;
+    display: block !important;
+  }
+
   .shell__header,
   .shell__bottomnav,
   .shell__footer,

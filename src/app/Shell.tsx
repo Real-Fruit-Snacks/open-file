@@ -3,6 +3,7 @@ import {
   type KeyboardEvent,
   type FocusEvent,
   type MouseEvent,
+  type RefObject,
   lazy,
   Suspense,
   useEffect,
@@ -11,7 +12,14 @@ import {
   useRef,
   useState,
 } from 'react';
-import { Link, NavLink, Outlet, ScrollRestoration, useLocation } from 'react-router';
+import {
+  Link,
+  NavigationType,
+  NavLink,
+  Outlet,
+  useLocation,
+  useNavigationType,
+} from 'react-router';
 import { Spinner, Icon, type IconName } from '@/components/ui';
 import { Toasts } from '@/components/ui/toast';
 import { toast } from '@/components/ui/toastStore';
@@ -465,25 +473,69 @@ function MoreMenu({
 }
 
 /**
- * Route changes land at their scroll position at once. The stylesheet gives the
- * page smooth scrolling for in-page links, which would otherwise turn every
- * navigation's scroll-to-top (ScrollRestoration) into a glide through the new
- * page. Rendered just before <ScrollRestoration /> so its effect runs first.
+ * Scroll restoration for the below-header `.shell__scroll` container: new routes
+ * open cleanly at the top (or scroll to a `#hash` target), while browser Back /
+ * Forward restores the saved scroll offset for each history entry.
  */
-function InstantRouteScroll() {
-  const { key } = useLocation();
+function useShellScroll(scrollRef: RefObject<HTMLDivElement | null>) {
+  const { key, hash } = useLocation();
+  const navType = useNavigationType();
+  const positions = useRef(new Map<string, number>());
+  const activeKey = useRef(key);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const onScroll = () => positions.current.set(activeKey.current, el.scrollTop);
+    el.addEventListener('scroll', onScroll, { passive: true });
+    return () => el.removeEventListener('scroll', onScroll);
+  }, [scrollRef]);
+
   useLayoutEffect(() => {
-    const root = document.documentElement;
-    root.style.scrollBehavior = 'auto';
-    const frame = requestAnimationFrame(() => {
-      root.style.scrollBehavior = '';
-    });
-    return () => {
-      cancelAnimationFrame(frame);
-      root.style.scrollBehavior = '';
-    };
-  }, [key]);
-  return null;
+    const el = scrollRef.current;
+    if (!el) return;
+    activeKey.current = key;
+
+    if (navType === NavigationType.Pop) {
+      const saved = positions.current.get(key) ?? 0;
+      el.scrollTop = saved;
+      if (saved <= 0) return;
+      let done = false;
+      const stop = () => {
+        done = true;
+      };
+      const apply = () => {
+        if (done) return;
+        el.scrollTop = saved;
+        if (el.scrollTop >= saved - 1) stop();
+      };
+      const frame = requestAnimationFrame(apply);
+      const child = el.firstElementChild;
+      const ro = typeof ResizeObserver === 'function' && child ? new ResizeObserver(apply) : null;
+      if (ro && child) ro.observe(child);
+      const timer = setTimeout(stop, 1500);
+      return () => {
+        stop();
+        cancelAnimationFrame(frame);
+        ro?.disconnect();
+        clearTimeout(timer);
+      };
+    }
+
+    if (hash) {
+      const scrollHash = () => {
+        const id = decodeURIComponent(hash.slice(1));
+        const target = id ? document.getElementById(id) : null;
+        target?.scrollIntoView({ behavior: 'instant' });
+        return Boolean(target);
+      };
+      if (scrollHash()) return;
+      const frame = requestAnimationFrame(scrollHash);
+      return () => cancelAnimationFrame(frame);
+    }
+
+    el.scrollTop = 0;
+  }, [key, hash, navType, scrollRef]);
 }
 
 export function Shell() {
@@ -494,7 +546,9 @@ export function Shell() {
   const inMore = MORE_PATHS.has(section);
   const shortcuts = useShortcutsDialog();
   const search = useQuickSearch();
+  const scrollRef = useRef<HTMLDivElement>(null);
   const mainRef = useRef<HTMLElement>(null);
+  useShellScroll(scrollRef);
 
   // A newcomer's first visit counts this version's news as seen (Home's "What's new").
   useEffect(() => noteFirstVisit(isReturningLearner(useProgress.getState())), []);
@@ -522,8 +576,6 @@ export function Shell() {
 
   return (
     <div className={focus ? 'shell shell--focus' : 'shell'} data-focus={focus || undefined}>
-      <InstantRouteScroll />
-      <ScrollRestoration />
       <PlatformHooks />
       <a className="skip-link" href="#main" onClick={skipToContent}>
         Skip to content
@@ -570,70 +622,76 @@ export function Shell() {
         </Suspense>
       ) : null}
 
-      <main id="main" className="shell__main container" tabIndex={-1} ref={mainRef}>
-        {/* A page that crashes takes only the page with it: the header and the
-            navigation stay, and the next route starts afresh. */}
-        <ErrorBoundary resetKey={location.pathname} inline>
-          <Suspense
-            fallback={
-              <div className="shell__loading">
-                <Spinner label="Loading…" />
-              </div>
-            }
-          >
-            <Outlet key={location.pathname.split('/')[1]} />
-          </Suspense>
-        </ErrorBoundary>
-      </main>
-
-      <footer className="shell__footer">
-        <div className="container shell__footer-inner">
-          {/* The licence texts are copied into the build by scripts/postbuild.mjs. */}
-          <span>
-            {/* A no-break space keeps each dot at the end of a line, never at the start. */}
-            {siteConfig.name} v{__APP_VERSION__} · Free and open source (GPL-3.0-or-later)
-            {'\u00a0· '}
-            <a href={siteConfig.repositoryUrl} target="_blank" rel="noreferrer">
-              GitHub
-            </a>
-            {'\u00a0· '}
-            <a href={`${import.meta.env.BASE_URL}licence.txt`} target="_blank" rel="noreferrer">
-              Licence
-            </a>
-            {'\u00a0· '}
-            <a href={`${import.meta.env.BASE_URL}notices.txt`} target="_blank" rel="noreferrer">
-              Third-party notices
-            </a>
-          </span>
-          <span className="faint" data-testid="credits">
-            Engine: Stockfish (GPL-3.0) · Human-like opponent: Maia-3 (
-            <a
-              href={`${import.meta.env.BASE_URL}licence-agpl.txt`}
-              target="_blank"
-              rel="noreferrer"
+      <div className="shell__scroll" ref={scrollRef}>
+        <main id="main" className="shell__main container" tabIndex={-1} ref={mainRef}>
+          {/* A page that crashes takes only the page with it: the header and the
+              navigation stay, and the next route starts afresh. */}
+          <ErrorBoundary resetKey={location.pathname} inline>
+            <Suspense
+              fallback={
+                <div className="shell__loading">
+                  <Spinner label="Loading…" />
+                </div>
+              }
             >
-              AGPL-3.0
-            </a>
-            ) · Board: Chessground (GPL-3.0) ·{' '}
-            <Suspense fallback={CLASSIC_CREDIT}>
-              <PieceCredit />
-            </Suspense>{' '}
-            · Puzzles and openings: Lichess (CC0) · Type: Big Shoulders Stencil, Albert Sans &amp;
-            Azeret Mono (
-            <a href={`${import.meta.env.BASE_URL}licence-ofl.txt`} target="_blank" rel="noreferrer">
-              OFL-1.1
-            </a>
-            ) · Runs entirely in your browser
-            {/* Touch screens have no keyboard to take shortcuts from. */}
-            <span className="keyboard-only">
+              <Outlet key={location.pathname.split('/')[1]} />
+            </Suspense>
+          </ErrorBoundary>
+        </main>
+
+        <footer className="shell__footer">
+          <div className="container shell__footer-inner">
+            {/* The licence texts are copied into the build by scripts/postbuild.mjs. */}
+            <span>
+              {/* A no-break space keeps each dot at the end of a line, never at the start. */}
+              {siteConfig.name} v{__APP_VERSION__} · Free and open source (GPL-3.0-or-later)
               {'\u00a0· '}
-              <button type="button" className="linklike" onClick={() => shortcuts.setOpen(true)}>
-                Keyboard shortcuts
-              </button>
+              <a href={siteConfig.repositoryUrl} target="_blank" rel="noreferrer">
+                GitHub
+              </a>
+              {'\u00a0· '}
+              <a href={`${import.meta.env.BASE_URL}licence.txt`} target="_blank" rel="noreferrer">
+                Licence
+              </a>
+              {'\u00a0· '}
+              <a href={`${import.meta.env.BASE_URL}notices.txt`} target="_blank" rel="noreferrer">
+                Third-party notices
+              </a>
             </span>
-          </span>
-        </div>
-      </footer>
+            <span className="faint" data-testid="credits">
+              Engine: Stockfish (GPL-3.0) · Human-like opponent: Maia-3 (
+              <a
+                href={`${import.meta.env.BASE_URL}licence-agpl.txt`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                AGPL-3.0
+              </a>
+              ) · Board: Chessground (GPL-3.0) ·{' '}
+              <Suspense fallback={CLASSIC_CREDIT}>
+                <PieceCredit />
+              </Suspense>{' '}
+              · Puzzles and openings: Lichess (CC0) · Type: Big Shoulders Stencil, Albert Sans &amp;
+              Azeret Mono (
+              <a
+                href={`${import.meta.env.BASE_URL}licence-ofl.txt`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                OFL-1.1
+              </a>
+              ) · Runs entirely in your browser
+              {/* Touch screens have no keyboard to take shortcuts from. */}
+              <span className="keyboard-only">
+                {'\u00a0· '}
+                <button type="button" className="linklike" onClick={() => shortcuts.setOpen(true)}>
+                  Keyboard shortcuts
+                </button>
+              </span>
+            </span>
+          </div>
+        </footer>
+      </div>
       <ShortcutsDialog open={shortcuts.open} onClose={() => shortcuts.setOpen(false)} />
       {search.mounted ? (
         <Suspense fallback={null}>

@@ -27,19 +27,24 @@ test.describe('shell', () => {
     await seed(page);
     await page.goto('/learn');
     await expect(page.getByRole('heading', { level: 1 })).toBeVisible();
-    await page.evaluate(() => window.scrollTo({ top: 1200, behavior: 'instant' }));
-    const scrolled = await page.evaluate(() => window.scrollY);
+    await page.evaluate(() => {
+      const scroller = document.querySelector('.shell__scroll');
+      (scroller ?? window).scrollTo({ top: 1200, behavior: 'instant' });
+    });
+    const getScrollTop = () =>
+      page.evaluate(() => document.querySelector('.shell__scroll')?.scrollTop ?? window.scrollY);
+    const scrolled = await getScrollTop();
     expect(scrolled).toBeGreaterThan(400);
 
     // In-app navigation: the header link on a desktop, the bottom-bar one on a phone.
     await page.getByRole('link', { name: 'Puzzles', exact: true }).locator('visible=true').click();
     await expect(page).toHaveURL(/\/puzzles$/);
     await expect(page.locator('main h1').first()).toBeVisible();
-    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeLessThan(5);
+    await expect.poll(getScrollTop).toBeLessThan(5);
 
     await page.goBack();
     await expect(page).toHaveURL(/\/learn$/);
-    await expect.poll(() => page.evaluate(() => window.scrollY)).toBeGreaterThan(400);
+    await expect.poll(getScrollTop).toBeGreaterThan(400);
   });
 
   test('the skip link focuses the page without touching the URL hash', async ({ page }) => {

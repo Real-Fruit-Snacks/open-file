@@ -201,7 +201,11 @@ export function CoachLog({
 
 /** The nearest element around `from` that scrolls its content (not the page itself), if any. */
 function scrollingAncestor(from: HTMLElement): HTMLElement | null {
-  for (let el = from.parentElement; el && el !== document.body; el = el.parentElement) {
+  for (
+    let el = from.parentElement;
+    el && el !== document.body && !el.classList.contains('shell__scroll');
+    el = el.parentElement
+  ) {
     if (
       /(auto|scroll)/.test(getComputedStyle(el).overflowY) &&
       el.scrollHeight > el.clientHeight + 1

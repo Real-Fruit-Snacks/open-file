@@ -48,19 +48,19 @@
 }
 
 .clickboard__square--correct {
-  background: color-mix(in srgb, var(--success) 55%, var(--light));
+  background: color-mix(in oklab, var(--success) 55%, var(--light));
 }
 
 .clickboard__square--dark.clickboard__square--correct {
-  background: color-mix(in srgb, var(--success) 55%, var(--dark));
+  background: color-mix(in oklab, var(--success) 55%, var(--dark));
 }
 
 .clickboard__square--wrong {
-  background: color-mix(in srgb, var(--danger) 60%, var(--light));
+  background: color-mix(in oklab, var(--danger) 60%, var(--light));
 }
 
 .clickboard__square--dark.clickboard__square--wrong {
-  background: color-mix(in srgb, var(--danger) 60%, var(--dark));
+  background: color-mix(in oklab, var(--danger) 60%, var(--dark));
 }
 
 .clickboard__square--dot::after {
@@ -148,9 +148,9 @@
 }
 
 .clickboard--texture .clickboard__square.clickboard__square--correct {
-  background-color: color-mix(in srgb, var(--success) 55%, transparent);
+  background-color: color-mix(in oklab, var(--success) 55%, transparent);
 }
 
 .clickboard--texture .clickboard__square.clickboard__square--wrong {
-  background-color: color-mix(in srgb, var(--danger) 60%, transparent);
+  background-color: color-mix(in oklab, var(--danger) 60%, transparent);
 }

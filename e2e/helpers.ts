@@ -28,7 +28,11 @@ export async function revealBoard(board: Locator) {
     const target = rect.height <= free ? header + (free - rect.height) / 2 : header + 8;
     const delta = rect.top - target;
     // Instant, not smooth: the click coordinates are measured right after this.
-    if (Math.abs(delta) > 1) window.scrollBy({ top: delta, behavior: 'instant' });
+    const scroller = document.querySelector('.shell__scroll');
+    if (Math.abs(delta) > 1) {
+      if (scroller) scroller.scrollTop += delta;
+      else window.scrollBy({ top: delta, behavior: 'instant' });
+    }
     return delta;
   });
   // Let the scroll event reach chessground, which recomputes its cached bounds on it.

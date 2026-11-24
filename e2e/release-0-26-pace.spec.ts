@@ -42,7 +42,10 @@ async function seedDueRecallCard(page: Page, id: string) {
   );
 }
 
-const scrollY = (page: Page) => page.evaluate(() => Math.round(window.scrollY));
+const scrollY = (page: Page) =>
+  page.evaluate(() =>
+    Math.round(document.querySelector('.shell__scroll')?.scrollTop ?? window.scrollY),
+  );
 
 /** Continue in a line: under the board on a phone (where the learner reads), in the panel otherwise. */
 async function goOn(page: Page, isMobile: boolean, testId = 'lesson-play-on') {

@@ -1,7 +1,7 @@
 /* The sections, in a bar that follows down the page and marks the one being read. */
 .reference__tabs {
   position: sticky;
-  top: var(--header-height);
+  top: 0;
   z-index: 2;
   display: flex;
   flex-wrap: wrap;
@@ -53,7 +53,7 @@
 .reference__section {
   margin-bottom: var(--space-7);
   /* Clear of the header and the bar of sections. */
-  scroll-margin-top: calc(var(--header-height) + 64px);
+  scroll-margin-top: 64px;
 }
 
 .reference__section > h2 {
@@ -110,7 +110,7 @@
   break-inside: avoid;
   padding: var(--space-3) 0;
   border-bottom: 1px solid var(--border);
-  scroll-margin-top: calc(var(--header-height) + 64px);
+  scroll-margin-top: 64px;
 }
 
 .reference__entry dt {
@@ -131,7 +131,7 @@
 
 .reference__faq {
   border-bottom: 1px solid var(--border);
-  scroll-margin-top: calc(var(--header-height) + 64px);
+  scroll-margin-top: 64px;
 }
 
 .reference__faq:last-child {

@@ -41,16 +41,18 @@ a.btn:focus {
 }
 
 .btn--primary {
+  border: 0;
   background-color: var(--steel);
   background-image: var(--cta-bg);
-  border-color: rgba(255, 255, 255, 0.14);
+  background-origin: border-box;
+  background-clip: border-box;
   color: #ffffff;
 }
 
 .btn--primary:hover:not(:disabled) {
   background-color: var(--steel);
   background-image: var(--cta-bg-hover);
-  border-color: rgba(255, 255, 255, 0.24);
+  filter: brightness(1.05);
   color: #ffffff;
 }
 
@@ -85,7 +87,7 @@ a.btn:focus {
 .btn--danger {
   background: var(--danger-soft);
   color: var(--danger);
-  border-color: color-mix(in srgb, var(--danger) 42%, transparent);
+  border-color: color-mix(in oklab, var(--danger) 42%, transparent);
 }
 
 .btn--danger:hover:not(:disabled) {
@@ -202,7 +204,7 @@ a.btn:focus {
 
 /* A card that in-page links point at (#profiles, the lab sections) lands below the sticky header. */
 .card[id] {
-  scroll-margin-top: calc(var(--header-height) + var(--space-3));
+  scroll-margin-top: var(--space-4);
 }
 
 .card--interactive {
@@ -493,10 +495,57 @@ a.btn:focus {
   width: 100%;
   min-height: 40px;
   padding: var(--space-2) var(--space-3);
-  border: 1px solid var(--border);
+  border: 1px solid var(--border-strong);
   border-radius: var(--radius-md);
   background: var(--surface);
   color: var(--text);
+}
+
+.select {
+  cursor: pointer;
+}
+
+@supports (appearance: base-select) {
+  .select,
+  .select::picker(select) {
+    appearance: base-select;
+  }
+
+  .select {
+    display: inline-flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .select::picker-icon {
+    color: var(--steel-ink);
+  }
+
+  .select::picker(select) {
+    margin-block-start: 4px;
+    padding: 4px;
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-strong);
+    background: var(--bg-elevated);
+    color: var(--text);
+  }
+
+  .select option {
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    cursor: pointer;
+  }
+
+  .select option:hover,
+  .select option:focus-visible {
+    background: var(--surface-2);
+  }
+
+  .select option::checkmark {
+    color: var(--accent-strong);
+  }
 }
 
 .textarea {
@@ -1020,14 +1069,12 @@ a.btn:focus {
    the content and hide the shadows at the ends). */
 .history__scroll {
   overflow-x: auto;
-  --scroll-shade: color-mix(in srgb, var(--text) 22%, transparent);
+  --scroll-shade: color-mix(in oklab, var(--text) 22%, transparent);
   background:
     linear-gradient(to right, var(--surface) 40%, transparent) left / 32px 100% no-repeat local,
     linear-gradient(to left, var(--surface) 40%, transparent) right / 32px 100% no-repeat local,
-    radial-gradient(farthest-side at 0 50%, var(--scroll-shade), transparent) left / 12px 100%
-      no-repeat scroll,
-    radial-gradient(farthest-side at 100% 50%, var(--scroll-shade), transparent) right / 12px 100%
-      no-repeat scroll;
+    linear-gradient(to right, var(--scroll-shade), transparent) left / 12px 100% no-repeat scroll,
+    linear-gradient(to left, var(--scroll-shade), transparent) right / 12px 100% no-repeat scroll;
 }
 
 .history__scroll:focus-visible {

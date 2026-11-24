@@ -42,7 +42,7 @@
 .editor__tool--active {
   border-color: var(--accent);
   background: var(--accent-soft);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 30%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 30%, transparent);
 }
 
 .editor__tool piece {

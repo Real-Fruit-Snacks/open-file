@@ -57,7 +57,7 @@
 }
 
 .endgame-row--done {
-  border-color: color-mix(in srgb, var(--success) 45%, var(--border));
+  border-color: color-mix(in oklab, var(--success) 45%, var(--border));
 }
 
 .endgame-row__mark {
@@ -228,7 +228,7 @@
 }
 
 .drill-card--done {
-  border-color: color-mix(in srgb, var(--success) 45%, var(--border));
+  border-color: color-mix(in oklab, var(--success) 45%, var(--border));
 }
 
 /* What's the threat? */

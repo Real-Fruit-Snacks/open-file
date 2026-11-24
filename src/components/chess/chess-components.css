@@ -284,7 +284,7 @@ button.movelist__move:hover {
 .playerbar__dot {
   width: 10px;
   height: 10px;
-  border-radius: 50%;
+  border-radius: 2px;
   border: 1px solid var(--border-strong);
   display: inline-block;
 }
@@ -324,7 +324,7 @@ button.movelist__move:hover {
   color: var(--text);
   background: var(--surface);
   border-color: var(--accent);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 25%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--accent) 25%, transparent);
 }
 
 .clock--low {
@@ -333,7 +333,7 @@ button.movelist__move:hover {
 
 .clock--running.clock--low {
   border-color: var(--danger);
-  box-shadow: 0 0 0 2px color-mix(in srgb, var(--danger) 25%, transparent);
+  box-shadow: 0 0 0 2px color-mix(in oklab, var(--danger) 25%, transparent);
 }
 
 /* ---------- Move input ---------- */

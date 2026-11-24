@@ -245,7 +245,7 @@ test.describe('the new game screen', () => {
           return b ? `${Math.round(b.top)}..${Math.round(b.bottom)}` : 'none';
         };
         return [
-          `scrollY ${Math.round(window.scrollY)} of ${document.documentElement.scrollHeight}`,
+          `scrollY ${Math.round(document.querySelector('.shell__scroll')?.scrollTop ?? window.scrollY)} of ${document.querySelector('.shell__scroll')?.scrollHeight ?? document.documentElement.scrollHeight}`,
           `viewport ${window.innerHeight}`,
           `header ${box('.shell__header')}`,
           `panel ${box('.trainer__panel')}`,
@@ -321,11 +321,13 @@ test.describe('the new game screen', () => {
       // At the foot of the panel the whole board is still on screen, under the header.
       await page.evaluate(() => {
         const panel = document.querySelector('.trainer__panel');
-        if (panel)
-          window.scrollTo({
-            top: panel.getBoundingClientRect().bottom + scrollY - innerHeight + 60,
-            behavior: 'instant',
-          });
+        const scroller = document.querySelector('.shell__scroll');
+        if (panel) {
+          const cur = scroller ? scroller.scrollTop : window.scrollY;
+          const next = panel.getBoundingClientRect().bottom + cur - innerHeight + 60;
+          if (scroller) scroller.scrollTop = next;
+          else window.scrollTo({ top: next, behavior: 'instant' });
+        }
       });
       await expect
         .poll(() =>
