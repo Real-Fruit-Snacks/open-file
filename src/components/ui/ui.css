@@ -515,6 +515,8 @@ a.btn:focus {
     display: inline-flex;
     align-items: center;
     justify-content: space-between;
+    flex-wrap: nowrap;
+    white-space: nowrap;
     gap: 0.5rem;
   }
 
