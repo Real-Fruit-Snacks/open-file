@@ -38,8 +38,33 @@ const shortcutGlyphs = {
 
 function shortcutSvg(glyph) {
   return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96">
-  <rect width="96" height="96" rx="20" fill="${BRAND}"/>
-  <g fill="#ffffff">${glyph}</g>
+  <defs>
+    <linearGradient id="cyc-h" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#133954"/>
+      <stop offset="44%" stop-color="#1F547A"/>
+      <stop offset="76%" stop-color="#CC5016"/>
+      <stop offset="100%" stop-color="#F06E2B"/>
+    </linearGradient>
+    <linearGradient id="cyc-f" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF" stop-opacity="0"/>
+      <stop offset="46%" stop-color="#FFFFFF" stop-opacity="0.06"/>
+      <stop offset="78%" stop-color="#FFFFFF" stop-opacity="0.48"/>
+      <stop offset="100%" stop-color="#FFFFFF" stop-opacity="0.88"/>
+    </linearGradient>
+    <mask id="cyc-m" maskContentUnits="objectBoundingBox">
+      <rect width="1" height="1" fill="url(#cyc-f)"/>
+    </mask>
+    <linearGradient id="rule-d" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#74B8E8"/>
+      <stop offset="50%" stop-color="#1F547A"/>
+      <stop offset="100%" stop-color="#F06E2B"/>
+    </linearGradient>
+  </defs>
+  <rect width="96" height="96" rx="21" fill="${BRAND}"/>
+  <rect width="96" height="96" rx="21" fill="url(#cyc-h)" opacity="0.72" mask="url(#cyc-m)"/>
+  <rect x="1" y="1" width="94" height="94" rx="20" fill="none" stroke="rgba(255,255,255,0.16)" stroke-width="2"/>
+  <g fill="#f4f5f8" transform="translate(48 43) scale(0.84) translate(-48 -48)">${glyph}</g>
+  <rect x="21" y="75" width="54" height="6" rx="3" fill="url(#rule-d)"/>
 </svg>`;
 }
 
