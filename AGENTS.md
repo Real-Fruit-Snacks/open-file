@@ -15,3 +15,4 @@ This repository is part of **Real-Fruit-Snacks** (**RFS**) and follows the **Cyc
 - **Typography:** Six self-hosted variable `.woff2` files in `src/styles/fonts/` (`Big Shoulders Stencil`, `Albert Sans`, `Azeret Mono`, latin + latin-ext) licensed under `LICENSES/OFL-1.1.txt` (published as `licence-ofl.txt`).
 - **Shapes & Dialogs:** Use sharp technical radii (`4px`/`6px`/`8px`) with no capsule pills on badges or chips. Never use `window.alert()`, `window.confirm()`, or `window.prompt()`; use `<Dialog>` / `<ConfirmDialog danger>` with `autoFocus` on **Cancel** and solid Signal Crimson confirm buttons.
 - **Board Readability:** Never tint or alter chess board square themes or piece sets — keep every board palette and piece graphic razor-sharp in both `LX 263` and `LX 512`.
+- **README & Docs (`BRAND.md` §14):** Keep `README.md` ultra-minimal (40–60 lines); put detailed guides, screenshots, known issues, and hosting instructions in `docs/*.md` (never GitHub Wiki).
