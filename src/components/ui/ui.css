@@ -147,15 +147,15 @@ a.btn:focus {
 /* Touch screens: small controls still get a finger-sized target. */
 @media (pointer: coarse) {
   .btn--sm {
-    min-height: 40px;
+    min-height: 44px;
   }
 
   .btn--icon.btn--sm {
-    width: 40px;
+    width: 44px;
   }
 
   .segmented__option {
-    min-height: 38px;
+    min-height: 44px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -376,6 +376,15 @@ a.btn:focus {
   max-height: calc(100dvh - 2 * var(--space-5));
   overflow: hidden;
   box-shadow: var(--shadow-md);
+  opacity: 0;
+  transition-property: opacity, transform, display, overlay;
+  transition-duration: 220ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-behavior: allow-discrete;
+}
+
+.dialog:modal {
+  overscroll-behavior: contain;
 }
 
 .dialog--danger {
@@ -385,11 +394,50 @@ a.btn:focus {
 .dialog[open] {
   display: flex;
   flex-direction: column;
+  opacity: 1;
+}
+
+@starting-style {
+  .dialog[open] {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .dialog {
+    transform: translateY(8px);
+  }
+
+  .dialog[open] {
+    transform: translateY(0);
+  }
+
+  @starting-style {
+    .dialog[open] {
+      transform: translateY(8px);
+    }
+  }
 }
 
 .dialog::backdrop {
-  background: rgba(5, 5, 7, 0.72);
+  overflow: hidden;
+  overscroll-behavior: contain;
+  background-color: rgba(5, 5, 7, 0);
   backdrop-filter: blur(2px);
+  transition-property: background-color, display, overlay;
+  transition-duration: 220ms;
+  transition-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+  transition-behavior: allow-discrete;
+}
+
+.dialog[open]::backdrop {
+  background-color: rgba(5, 5, 7, 0.72);
+}
+
+@starting-style {
+  .dialog[open]::backdrop {
+    background-color: rgba(5, 5, 7, 0);
+  }
 }
 
 .dialog__body {
@@ -769,6 +817,12 @@ a.btn:focus {
   .tabs__tab:nth-child(4):nth-last-child(2),
   .tabs__tab:nth-child(5):last-child {
     grid-column: span 3;
+  }
+}
+
+@media (pointer: coarse) {
+  .tabs__tab {
+    min-height: 44px;
   }
 }
 

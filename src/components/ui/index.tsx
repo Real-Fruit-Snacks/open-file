@@ -612,7 +612,10 @@ export function Dialog({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    if (open && !el.open) el.showModal();
+    if (open && !el.open) {
+      el.returnValue = '';
+      el.showModal();
+    }
     if (!open && el.open) el.close();
   }, [open]);
 
@@ -631,7 +634,10 @@ export function Dialog({
       // React passes a nested dialog's close and cancel events up to this one too (a
       // confirmation inside the library, say): only this dialog's own events count.
       onClose={(e) => {
-        if (e.target === e.currentTarget) onClose();
+        if (e.target === e.currentTarget) {
+          e.currentTarget.returnValue = '';
+          onClose();
+        }
       }}
       onCancel={(e) => {
         if (e.target === e.currentTarget && !dismissible) e.preventDefault();

@@ -109,8 +109,8 @@
     --cta-bg: linear-gradient(110deg, #18496b 0%, #ad3d0a 100%);
     --cta-bg-hover: linear-gradient(110deg, #1f547a 0%, #bd4811 100%);
     --horizon-rule: linear-gradient(90deg, #18496b 0%, #1f547a 48%, #ad3d0a 100%);
-    --wash-steel: rgba(31, 84, 122, 0.06);
-    --wash-beacon: rgba(240, 110, 43, 0.05);
+    --wash-steel: rgba(31, 84, 122, 0.28);
+    --wash-beacon: rgba(240, 110, 43, 0.24);
     --logo-tile: #050507;
     --logo-rule: #f06e2b;
 
@@ -165,8 +165,8 @@
   --cta-bg: linear-gradient(110deg, #18496b 0%, #ad3d0a 100%);
   --cta-bg-hover: linear-gradient(110deg, #1f547a 0%, #bd4811 100%);
   --horizon-rule: linear-gradient(90deg, #18496b 0%, #1f547a 48%, #ad3d0a 100%);
-  --wash-steel: rgba(31, 84, 122, 0.06);
-  --wash-beacon: rgba(240, 110, 43, 0.05);
+  --wash-steel: rgba(31, 84, 122, 0.28);
+  --wash-beacon: rgba(240, 110, 43, 0.24);
   --logo-tile: #050507;
   --logo-rule: #f06e2b;
 

@@ -162,6 +162,7 @@ function RatingCard() {
         onConfirm={apply}
         title="Reset your puzzle rating?"
         confirmLabel={choice === 'calibrate' ? 'Start calibration' : 'Reset rating'}
+        danger
       >
         <p className="muted">
           {choice === 'calibrate'

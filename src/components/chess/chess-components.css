@@ -34,11 +34,13 @@
   left: 0;
   right: 0;
   text-align: center;
-  font-size: 0.75rem;
+  font-size: 0.65rem;
   font-weight: 700;
   font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
   line-height: 1;
-  padding: 4px 0;
+  padding: 4px 1px;
+  white-space: nowrap;
   pointer-events: none;
   letter-spacing: -0.06em;
 }
@@ -173,12 +175,16 @@ button.movelist__move:hover {
 }
 
 .line__pv {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-inline-end: 1.5em;
   white-space: nowrap;
   overflow: hidden;
   font-family: var(--font-mono);
   color: var(--text-muted);
   /* A long line fades out at the edge: an ellipsis was drawn over the figurines of the move it
      cut (they are images, not letters). */
+  -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2em), transparent);
   mask-image: linear-gradient(to right, #000 calc(100% - 2em), transparent);
 }
 

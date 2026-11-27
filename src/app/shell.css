@@ -164,6 +164,13 @@
   font-size: 1.1rem;
 }
 
+@media (pointer: coarse) {
+  .shell__iconbtn {
+    width: 44px;
+    height: 44px;
+  }
+}
+
 .shell__navlink .icon--chevron-down {
   margin-left: 4px;
 }

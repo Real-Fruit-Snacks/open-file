@@ -307,7 +307,11 @@ function ThemeToggle() {
   const onToggle = (ev: MouseEvent<HTMLButtonElement>) => {
     const swap = () => update({ colorScheme: next });
     const doc = document as Document & {
-      startViewTransition?: (cb: () => void) => { ready: Promise<void> };
+      startViewTransition?: (cb: () => void) => {
+        ready: Promise<void>;
+        updateCallbackDone: Promise<void>;
+        finished: Promise<void>;
+      };
     };
     if (
       !('startViewTransition' in doc) ||
@@ -321,19 +325,18 @@ function ThemeToggle() {
     const x = r.left + r.width / 2;
     const y = r.top + r.height / 2;
     const end = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
-    doc
-      .startViewTransition(swap)
-      .ready.then(() => {
-        document.documentElement.animate(
-          { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${end}px at ${x}px ${y}px)`] },
-          {
-            duration: 520,
-            easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
-            pseudoElement: '::view-transition-new(root)',
-          },
-        );
-      })
-      .catch(() => undefined);
+    const vt = doc.startViewTransition(swap);
+    const animated = vt.ready.then(() => {
+      document.documentElement.animate(
+        { clipPath: [`circle(0px at ${x}px ${y}px)`, `circle(${end}px at ${x}px ${y}px)`] },
+        {
+          duration: 520,
+          easing: 'cubic-bezier(0.16, 1, 0.3, 1)',
+          pseudoElement: '::view-transition-new(root)',
+        },
+      );
+    });
+    void Promise.allSettled([animated, vt.updateCallbackDone, vt.finished]);
   };
   return (
     <button

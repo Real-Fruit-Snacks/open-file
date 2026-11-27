@@ -31,7 +31,7 @@ body {
   height: 100%;
   background-color: var(--bg);
   background-image: linear-gradient(
-    125deg in oklab,
+    125deg,
     var(--wash-steel) 0%,
     transparent 48%,
     var(--wash-beacon) 100%
@@ -44,6 +44,17 @@ body {
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   overscroll-behavior-y: none;
+}
+
+@supports (background: linear-gradient(in oklab, #1f547a, #bd4811)) {
+  body {
+    background-image: linear-gradient(
+      125deg in oklab,
+      var(--wash-steel) 0%,
+      transparent 48%,
+      var(--wash-beacon) 100%
+    );
+  }
 }
 
 /* The page behind a modal dialog stays put. */
@@ -638,6 +649,40 @@ details[open] > summary::before {
   }
 }
 
+/* ---------- High contrast ---------- */
+@media (prefers-contrast: more) {
+  :root {
+    --border: #62646d;
+    --border-strong: #f4f5f8;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme='dark']) {
+      --border: #6e7682;
+      --border-strong: #0d1016;
+    }
+  }
+
+  :root[data-theme='light'] {
+    --border: #6e7682;
+    --border-strong: #0d1016;
+  }
+
+  html,
+  .shell__scroll,
+  .movelist,
+  .treemoves,
+  .coach,
+  .import__games,
+  .arcade__options,
+  .simul__moves,
+  .dialog__body,
+  .search__panel,
+  .more__menu {
+    scrollbar-color: var(--text) var(--bg);
+  }
+}
+
 /* ---------- Reduced transparency ---------- */
 @media (prefers-reduced-transparency: reduce) {
   .shell__header {
@@ -645,7 +690,7 @@ details[open] > summary::before {
     background-color: var(--bg);
   }
 
-  .dialog::backdrop {
+  .dialog[open]::backdrop {
     backdrop-filter: none;
     background: rgba(5, 5, 7, 0.88);
   }

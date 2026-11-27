@@ -323,6 +323,7 @@ function DeviceSync() {
           }}
           title="Turn off sync on this device?"
           confirmLabel="Turn off"
+          danger
         >
           <p className="muted">
             This device stops syncing and forgets the recovery phrase. Its data stays here, and the
