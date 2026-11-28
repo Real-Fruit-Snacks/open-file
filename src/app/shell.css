@@ -1,6 +1,7 @@
 .shell {
   height: 100dvh;
   overflow: hidden;
+  overflow: clip;
   display: flex;
   flex-direction: column;
 }

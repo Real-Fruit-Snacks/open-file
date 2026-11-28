@@ -11,6 +11,7 @@
 html {
   height: 100%;
   overflow: hidden;
+  overflow: clip;
   -webkit-text-size-adjust: 100%;
   text-size-adjust: 100%;
   /* The browser's font-size preference applies: 1rem is whatever the visitor chose. */

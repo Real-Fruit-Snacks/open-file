@@ -1,18 +1,24 @@
-# AGENTS.md — Repository Guardrails (open-file)
+# AGENTS.md — Repository Guardrails (Real-Fruit-Snacks)
 
-This repository is part of **Real-Fruit-Snacks** (**RFS**) and follows the **Cyclorama Dawn `v2.1.0` — Steel & Beacon Orange + Signal Crimson Fault** brand system (`Real-Fruit-Snacks/rfs-brand`).
+This repository is part of **Real-Fruit-Snacks** (**RFS**) and follows the **Cyclorama Dawn — Steel & Beacon Orange** brand system (`Real-Fruit-Snacks/rfs-brand` v2.3.2).
+
+## Brand Skill & Machine-Readable References
+- **Installable Agent Skill:** `npx skills add Real-Fruit-Snacks/rfs-brand` (`skills/rfs-brand/SKILL.md` with 6 progressive-disclosure `references/`, `assets/starter-page.html`, and standalone `scripts/verify-brand.py`).
+- **Live Index & Rules:** https://real-fruit-snacks.github.io/rfs-brand/llms.txt · `rfs-brand/brand/BRAND-RULES.md` · https://real-fruit-snacks.github.io/rfs-brand/
 
 ## Core Commitments
+1. **Local-first by default:** Operate directly on the user's machine with zero accounts, zero telemetry, and zero third-party CDN calls.
+2. **Plain, specific, honest voice:** No emoji, no hype copy, no exclamation marks in headings or descriptions.
+3. **Verifiable outputs:** Every command and UI state displays plain inputs, outputs, and explicit status words (`[ok]`, `[!]`, `[x]`, `[i]`).
 
-1. **Local-first offline chess trainer:** Runs entirely in the browser with Stockfish WASM and optional Maia-3 ONNX; zero accounts, zero tracking, and optional network features off by default.
-2. **British English & plain, honest voice:** Keep UI copy in British English with no emoji, no hype copy, and no exclamation marks in headings or descriptions.
-3. **Strict CI gates:** Keep `npm run check` (`lint`, `lint:dead`, `format:check`, `typecheck`, `test`, `build`, `bundle:check`), Playwright E2E + `axe-core` WCAG 2.1 A/AA contrast sweeps, Lighthouse, and visual baselines green.
-
-## Brand & UI Rules (`rfs-brand` v2.1.0)
-
-- **Theme & Motion:** Matte Dark (`#050507`, `LX 263`) is the explicit default (`<meta name="color-scheme" content="dark">`, `DEFAULT_SETTINGS.colorScheme = 'dark'`); Alabaster Day (`#F5F7F9`, `LX 512`) and `System` are opt-in choices synchronized with `rfs-theme` (`localStorage`) and radial View Transitions under `prefers-reduced-motion: no-preference`.
-- **Palette:** Glacial Steel (`#1F547A` / `#74B8E8` / `#164669`), Maritime Beacon Orange (`#F06E2B` / `#BD4811` / `#FF9254` / `#AD3D0A`), Signal Crimson Fault (`#FF5C6C` / `#C92438` / `#E02E44` dark, `#B91C2E` / `#991525` light, `#FFFFFF` on-fault), Amber (`#FFC247` / `#885800`), Mint (`#3DDC97` / `#127247`). Interpolate primary and horizon gradients in Cartesian `in oklab` (never `in oklch`), with zero neon glows.
-- **Typography:** Six self-hosted variable `.woff2` files in `src/styles/fonts/` (`Big Shoulders Stencil`, `Albert Sans`, `Azeret Mono`, latin + latin-ext) licensed under `LICENSES/OFL-1.1.txt` (published as `licence-ofl.txt`).
-- **Shapes & Dialogs:** Use sharp technical radii (`4px`/`6px`/`8px`) with no capsule pills on badges or chips. Never use `window.alert()`, `window.confirm()`, or `window.prompt()`; use `<Dialog>` / `<ConfirmDialog danger>` with `autoFocus` on **Cancel** and solid Signal Crimson confirm buttons.
-- **Board Readability:** Never tint or alter chess board square themes or piece sets — keep every board palette and piece graphic razor-sharp in both `LX 263` and `LX 512`.
-- **README & Docs (`BRAND.md` §14):** Keep `README.md` ultra-minimal (40–60 lines); put detailed guides, screenshots, known issues, and hosting instructions in `docs/*.md` (never GitHub Wiki).
+## Brand & UI Rules (Summary of `rfs-brand/brand/BRAND-RULES.md`)
+- **Theme & Motion:** Dark mode (`#050507`, `LX 263`) is the explicit default on every page (`<meta name="color-scheme" content="dark">`); Light (`#F5F7F9`, `LX 512`) is an opt-in toggle. Keep browser animations, `--rfs-ease-detent` mechanical detents, and View Transitions enabled by default.
+- **Palette:** Glacial Steel `#1F547A` + Maritime Beacon Orange `#F06E2B`. Always interpolate gradients in Cartesian `in oklab` (never polar `in oklch`).
+- **Typography:** Self-hosted `Big Shoulders Stencil` (display), `Albert Sans` (UI/prose), `Azeret Mono` (code/CLI).
+- **Web UIs, Controls, Loaders & Icons:** Load `rfs.css` then `rfs-components.css` (+ `rfs-motion.js` for jumping radios, console faders, armed latches, LED ladders, and clickable icons); use the 60-icon Precision Silkscreen sprite `rfs-icons.svg` (`24×24`, `1.75px` `square`/`miter`, opt-in `.rfs-icon-live` + bespoke `part-*` verbs) and the 4 native `<progress>` loaders.
+- **Code Blocks:** Always display a language header + syntax coloring (`.rfs-code-card` + `.rfs-tok-*`) and wrap by default (`pre-wrap`, `overflow-wrap: anywhere`; `.rfs-code-scroll` opt-in).
+- **Badges & Chips:** `D · Terminal Token` (`4px` recessed `code-bg`, `1px` border, bracketed `.k` prefix) — zero `99px` capsule pills or status dots.
+- **Scrollbars:** Never extend a vertical scrollbar to the top edge alongside a top header — use `.rfs-shell` (`position: fixed; inset: 0; overflow: clip`) + `.rfs-shell-header` + `.rfs-scroll-region` with `overflow: clip` on `html`.
+- **Modals & Toasts:** Strictly forbid `window.alert()`, `window.confirm()`, and `window.prompt()`. Use branded native `<dialog class="rfs-dialog">` modals, and always prompt destructive actions (delete/clear/reset/overwrite) with `<dialog class="rfs-dialog is-destructive">`, `autofocus` on **Cancel**, and `.rfs-btn-fault` confirm. Tint toasts by semantic status (`.rfs-toast.is-{ok,warn,fail,info}`).
+- **CLIs:** Respect `NO_COLOR` and non-TTY stdout, keep bracketed ASCII prefixes (`[ok]`, `[!]`, `[x]`, `[i]`), and exit `0` (ok), `1` (runtime), `2` (usage).
+- **README, Docs & Verification:** Keep `README.md` ultra-minimal (40–60 lines: title, `≤ 60`-char no-period one-liner, `<picture>` dark/light cover, quick install/run, 3–5 bullets, `docs/` links, license); put deep docs in `docs/*.md` (never GitHub Wiki). Run `python scripts/verify-brand.py --repo .` (exit `0`) before pushing.
